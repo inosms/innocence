@@ -5,6 +5,7 @@
 #include "GameLoop.h"
 #include "VideoSystem.h"
 #include "UniqueNumberGenerator.h"
+#include "EventManager.h"
 
 
 class Application : public GameLoop
@@ -14,6 +15,7 @@ public:
 	/** IMPORTANT GAME SUBSYSTEMS */
 	VideoSystem* m_videoSystem;
 	UniqueNumberGenerator m_uniqueNumberGenerator;
+	EventManager m_eventManager;
 	/**/
 
 	Application();
@@ -28,6 +30,7 @@ public:
 
 extern Application* g_application;
 extern UniqueNumberGenerator* GetUniqueNumberGenerator();
+extern EventManager* GetEventManager();
 
 
 #endif 

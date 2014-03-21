@@ -14,7 +14,9 @@ void Application::VUpdate()
 {
 	PEDANTIC_DEBUG_MESSAGE("VUpdate() called");
 
-	// TODO 
+	GetEventManager()->ProcessEvents();
+	
+	// TODO gamelogic!
 }
 
 void Application::VRender(double n_interpolation)
@@ -55,4 +57,9 @@ bool Application::VExit()
 UniqueNumberGenerator* GetUniqueNumberGenerator()
 {
 	return &(g_application->m_uniqueNumberGenerator);
+}
+
+EventManager* GetEventManager()
+{
+	return &(g_application->m_eventManager);
 }
