@@ -2,9 +2,12 @@
 #include "Error.h"
 #include "VideoSystem_SDL_OpenGL.h"
 
+Application* g_application = NULL ;
+
 Application::Application()
 {
 	m_videoSystem = new VideoSystem_SDL_OpenGL();
+	g_application = this;
 }
 
 void Application::VUpdate()
@@ -47,4 +50,9 @@ bool Application::VExit()
 
 	DEBUG_MESSAGE("clean exit");
 	return true;
+}
+
+UniqueNumberGenerator* GetUniqueNumberGenerator()
+{
+	return &(g_application->m_uniqueNumberGenerator);
 }

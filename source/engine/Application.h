@@ -4,13 +4,17 @@
 #include <iostream>
 #include "GameLoop.h"
 #include "VideoSystem.h"
+#include "UniqueNumberGenerator.h"
 
 
 class Application : public GameLoop
 {
-protected:
-	VideoSystem* m_videoSystem;
 public:
+
+	/** IMPORTANT GAME SUBSYSTEMS */
+	VideoSystem* m_videoSystem;
+	UniqueNumberGenerator m_uniqueNumberGenerator;
+	/**/
 
 	Application();
 
@@ -21,6 +25,9 @@ public:
 	virtual bool VInit();
 	virtual bool VExit();
 };
+
+extern Application* g_application;
+extern UniqueNumberGenerator* GetUniqueNumberGenerator();
 
 
 #endif 

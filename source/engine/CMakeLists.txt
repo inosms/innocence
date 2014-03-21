@@ -1,1 +1,1 @@
-add_library( engine Application.cpp GameLoop.cpp VideoSystem_SDL_OpenGL.cpp)
+add_library( engine Application.cpp GameLoop.cpp UniqueNumberGenerator.cpp VideoSystem_SDL_OpenGL.cpp)
