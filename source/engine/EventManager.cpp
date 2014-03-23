@@ -44,9 +44,6 @@ void EventManager::ProcessEvents()
 
 void EventManager::AddEventListener( EventListener* n_eventListener, unsigned int n_event )
 {
-	// if( m_eventToListenerMap.find(n_event) == m_eventToListenerMap.end() )
-	// 	m_eventToListenerMap[n_event] = std::vector<EventListener*>;
-
 	m_eventToListenerMap[n_event].push_back(n_eventListener);	
 }
 

@@ -7,6 +7,8 @@ Application* g_application = NULL ;
 Application::Application()
 {
 	m_videoSystem = new VideoSystem_SDL_OpenGL();
+	m_gameLogic = CreateGameLogic();	
+
 	g_application = this;
 }
 
@@ -16,7 +18,8 @@ void Application::VUpdate()
 
 	GetEventManager()->ProcessEvents();
 	
-	// TODO gamelogic!
+	m_gameLogic->VUpdate();
+
 }
 
 void Application::VRender(double n_interpolation)
@@ -62,4 +65,9 @@ UniqueNumberGenerator* GetUniqueNumberGenerator()
 EventManager* GetEventManager()
 {
 	return &(g_application->m_eventManager);
+}
+
+GameLogic* GetGameLogic()
+{
+	return (g_application->m_gameLogic);
 }

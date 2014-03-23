@@ -30,10 +30,10 @@ public:
 	// processes all queued events
 	void ProcessEvents();
 
-	void AddEventListener( EventListener*, unsigned int n_event );
+	void AddEventListener( EventListener*, unsigned int n_eventType );
 
 	// removes an eventListener for a specific event
-	void RemoveEventLister( EventListener*, unsigned int n_event );
+	void RemoveEventLister( EventListener*, unsigned int n_eventType );
 };
 
 #endif
