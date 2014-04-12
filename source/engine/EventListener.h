@@ -11,14 +11,14 @@ public:
 	// return false if event is not consumed
 	// return true if event is consumed and no further
 	// EventListener should receive this Event
-	virtual bool VProcessEvent( Event* n_event ) = 0;
+	virtual bool VProcessEvent( Event& n_event ) = 0;
 };
 
 class EventListener_DEBUG_OUTPUT : public EventListener
 {
 public:
 
-	bool VProcessEvent( Event* n_event );
+	bool VProcessEvent( Event& n_event );
 };
 
 #endif

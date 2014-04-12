@@ -28,7 +28,7 @@ void EventManager::ProcessEvents()
 				// process current Event with every event listener
 				// until one returns true (means the evenlistener has fully 
 				// consumed the event)
-				if( tmp_find->second[j]->VProcessEvent(m_eventQueue[tmp_indexForProcessedQueue][i]) == true )
+				if( tmp_find->second[j]->VProcessEvent(*(m_eventQueue[tmp_indexForProcessedQueue][i])) == true )
 					break;
 			}
 		}

@@ -1,9 +1,12 @@
+
+
+
 #include "EventListener.h"
 #include "Error.h"
 
-bool EventListener_DEBUG_OUTPUT::VProcessEvent( Event* n_event )
+bool EventListener_DEBUG_OUTPUT::VProcessEvent( Event& n_event )
 {
-	DEBUG_MESSAGE(n_event->GetType());
+	DEBUG_MESSAGE(n_event.GetType());
 
 	// event was not consumed
 	return false;

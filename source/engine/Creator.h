@@ -17,11 +17,11 @@ public:
 	// should create a new game object, which should be added to 
 	// the game logic afterwards -  and must also set up the object
 	// (also for physicssystem etc; as this is _not_ handled automatically)
-	virtual void CreateGameObject(GameLogic* n_gameLogic) = 0;
+	virtual void CreateGameObject(GameLogic& n_gameLogic) = 0;
 
 	// similar to CreateGameObject this must set up the SceneNode
 	// and add it to the GameView
-	virtual void CreateScenenNode(GameView* n_gameView) = 0;
+	virtual void CreateScenenNode(GameView& n_gameView) = 0;
 
 	virtual ~Creator(){}
 };
