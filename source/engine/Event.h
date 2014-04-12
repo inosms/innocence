@@ -15,6 +15,7 @@ public:
 enum Event_Type
 {
 	Event_Type_CreateNewObject,
+	Event_Type_RemoveObject,
 
 	// yeah the name says it all...
 	// when declaring a game specific Event_Type_blablabla
@@ -35,7 +36,7 @@ class Event_CreateNewObject : public Event
 {
 public:
 	Creator* m_creator;
-	Event_CreateNewObject(n_creator* n_creator);
+	Event_CreateNewObject(Creator* n_creator);
 	~Event_CreateNewObject();
 };
 

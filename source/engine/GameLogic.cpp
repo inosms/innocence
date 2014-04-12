@@ -14,6 +14,7 @@ void GameLogic::RemoveObject( unsigned int n_id )
 	{
 		if( m_objects[i]->GetID() == n_id )
 		{
+			delete m_objects[i];
 			m_objects.erase(m_objects.begin()+i);
 			DEBUG_MESSAGE("Removed object with ID " << n_id); 
 

@@ -1,4 +1,5 @@
 #include "Event.h"	
+#include "Creator.h"
 
 Event::Event( unsigned int n_type ) : m_type( n_type ){}
 
@@ -8,7 +9,10 @@ unsigned int Event::GetType()
 }
 
 
-Event_CreateNewObject::Event_CreateNewObject(n_creator* n_creator) : m_creator(n_creator){}
+Event_CreateNewObject::Event_CreateNewObject(Creator* n_creator) : 
+	Event(Event_Type_CreateNewObject),
+	m_creator(n_creator)
+	{}
 
 Event_CreateNewObject::~Event_CreateNewObject()
 {
@@ -16,4 +20,7 @@ Event_CreateNewObject::~Event_CreateNewObject()
 }
 
 
-Event_RemoveObject::Event_RemoveObject(unsigned int n_id) : m_id( n_id )
+Event_RemoveObject::Event_RemoveObject(unsigned int n_id) : 
+	Event(Event_Type_RemoveObject),
+	m_id( n_id ) 
+	{}

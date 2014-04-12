@@ -32,7 +32,7 @@ public:
 
 	// MUST be implemented by actual game to offer 
 	// the game's game logic (and not some dummy logic...)
-	virtual GameLogic* CreateGameLogic() = 0;
+	virtual GameLogic* VCreateGameLogic() = 0;
 };
 
 extern Application* g_application;

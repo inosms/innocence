@@ -7,7 +7,6 @@ Application* g_application = NULL ;
 Application::Application()
 {
 	m_videoSystem = new VideoSystem_SDL_OpenGL();
-	m_gameLogic = CreateGameLogic();	
 
 	g_application = this;
 }
@@ -40,6 +39,8 @@ void Application::VInput()
 
 bool Application::VInit()
 {
+	m_gameLogic = VCreateGameLogic();	
+	if( !m_gameLogic ) return false;
 	if( !m_videoSystem->VInit() ) return false;
 
 	// TODO 

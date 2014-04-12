@@ -1,8 +1,8 @@
 #include <iostream>
-#include "engine/Application.h"
+#include "game/inApplication.h"
 
 int main( int argc, char** argv )
 {
-	Application tmp_application;
+	inApplication tmp_application;
 	return tmp_application.Run();
 }

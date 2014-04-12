@@ -16,6 +16,8 @@ public:
 	
 	virtual void VUpdate() = 0;
 
+	virtual ~GameObject(){}
+
 };
 
 #endif

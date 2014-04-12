@@ -20,6 +20,7 @@ IF( APPLE )
 ENDIF()
 
 add_subdirectory(engine)
+add_subdirectory(game)
 
 add_executable(innocence main.cpp)
-target_link_libraries( innocence engine ${SDL2_LIBRARY} ${OPENGL_LIBRARY} )
+target_link_libraries( innocence engine game ${SDL2_LIBRARY} ${OPENGL_LIBRARY} )
