@@ -1,7 +1,9 @@
 #include "Event.h"	
 #include "Creator.h"
 
-Event::Event( unsigned int n_type ) : m_type( n_type ){}
+Event::Event( unsigned int n_type ) : 
+	m_type( n_type )
+	{}
 
 unsigned int Event::GetType()
 {

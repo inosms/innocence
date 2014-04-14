@@ -10,6 +10,8 @@ public:
 	Event( unsigned int n_type );
 
 	unsigned int GetType();
+
+	virtual ~Event(){}
 };
 
 enum Event_Type
@@ -20,9 +22,9 @@ enum Event_Type
 	// yeah the name says it all...
 	// when declaring a game specific Event_Type_blablabla
 	// the first value should be this
-	// (to make shure that the game specific events don't
+	// (to make sure that the game specific events don't
 	// have the same ids at the engine events)
-	Event_Type_STARTGAMESPECIFICEVENTTYPESWITHTHISVALUE
+	Event_Type_LIST_END
 };
 
 /** Here are some very basic events */

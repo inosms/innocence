@@ -5,10 +5,16 @@
 #include "EventListener.h"
 #include <vector>
 #include <map>
+#include <mutex>
+#include <thread>
 
 class EventManager
 {
 private:
+
+	// to ensure EventManager QueueEvent(Event*) is thread safe
+	std::mutex m_mutex;
+
 	// two event queues are used in order to
 	// make sure that while processing one queue
 	// the new events are stored in the other queue
