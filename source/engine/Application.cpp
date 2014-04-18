@@ -2,7 +2,7 @@
 #include "Error.h"
 #include "VideoSystem_SDL_OpenGL.h"
 
-Application* g_application = NULL ;
+Application* g_application = nullptr ;
 
 Application::Application()
 {
@@ -15,10 +15,15 @@ void Application::VUpdate()
 {
 	PEDANTIC_DEBUG_MESSAGE("VUpdate() called");
 
-	GetEventManager()->ProcessEvents();
+	for( GameView* i_gameView : m_gameViews )
+	{
+		// only update the AI GameViews as the Human GameViews
+		// (should) have their own thread
+		if( i_gameView->GetGameViewType() == GameView_Type_AI )
+			i_gameView->VUpdate();
+	}
 	
 	m_gameLogic->VUpdate();
-
 }
 
 void Application::VRender(double n_interpolation)
@@ -50,11 +55,20 @@ bool Application::VInit()
 
 bool Application::VExit()
 {
+	// try to stop all processes
+	m_processManager.KillAllProcesses();
+	DEBUG_MESSAGE("Waiting for all processes to shut down");
+		while( m_processManager.AllProcessesDead() == false )
+			SDL_Delay(100);
+	DEBUG_MESSAGE("All processes shut down");
+
 	if( !m_videoSystem->VExit() ) return false;
+
 
 	// TODO 
 
 	DEBUG_MESSAGE("clean exit");
+
 	return true;
 }
 
@@ -71,4 +85,9 @@ EventManager* GetEventManager()
 GameLogic* GetGameLogic()
 {
 	return (g_application->m_gameLogic);
+}
+
+ProcessManager* GetProcessManager()
+{
+	return &(g_application->m_processManager);
 }

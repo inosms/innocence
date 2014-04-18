@@ -12,29 +12,20 @@ class EventManager
 {
 private:
 
-	// to ensure EventManager QueueEvent(Event*) is thread safe
+	// to ensure the EventManager is thread safe  
 	std::mutex m_mutex;
-
-	// two event queues are used in order to
-	// make sure that while processing one queue
-	// the new events are stored in the other queue
-	// (no endless queue processing)
-	std::vector<Event*> m_eventQueue[2];
-
-	// stores wich queue is currently filled with new events
-	int m_currentQueue;
 
 	// unsigned int is the EventType
 	std::map< unsigned int , std::vector<EventListener*> > m_eventToListenerMap;
 
 public:
 
-	EventManager();
-
-	void QueueEvent( Event* n_event );
-
-	// processes all queued events
-	void ProcessEvents();
+	// the shared_ptr is neccessary as the threaded
+	// event listeners process the event at different times
+	// and so deleting the event at the end of send event is not possible
+	// this directly send the event to the event queue of all the registered 
+	// eventlistener
+	void SendEvent( std::shared_ptr<Event> n_event );
 
 	void AddEventListener( EventListener*, unsigned int n_eventType );
 

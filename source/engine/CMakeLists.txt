@@ -1,1 +1,1 @@
-add_library( engine Application.cpp Creator.cpp Event.cpp EventListener.cpp EventManager.cpp GameLogic.cpp GameLoop.cpp GameObject.cpp UniqueNumberGenerator.cpp VideoSystem_SDL_OpenGL.cpp)
+add_library( engine Application.cpp Creator.cpp Event.cpp EventListener.cpp EventManager.cpp GameLogic.cpp GameLoop.cpp GameObject.cpp GameView.cpp Process.cpp ProcessManager.cpp Tickmeter.cpp UniqueNumberGenerator.cpp VideoSystem_SDL_OpenGL.cpp)

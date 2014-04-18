@@ -37,7 +37,7 @@ bool VideoSystem_SDL_OpenGL::VInit()
 		}
 	}
 
-	glClearColor(1,0,0,1);
+	glClearColor(0,0,0.1,1);
 
 	DEBUG_MESSAGE( "SDL Init successful" );
 

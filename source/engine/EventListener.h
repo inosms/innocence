@@ -2,23 +2,35 @@
 #define _EVENTLISTENER_H_
 
 #include "Event.h"
+#include <mutex>
+#include <vector>
 
 class EventListener
 {
+private:
+	
+	std::vector<std::shared_ptr<Event> > m_queue[2];
+	int m_currentQueue = 0;
+	std::mutex m_mutex;
+
 public:
 
-	// is called when event arrives;
-	// return false if event is not consumed
-	// return true if event is consumed and no further
-	// EventListener should receive this Event
-	virtual bool VProcessEvent( Event& n_event ) = 0;
+	// is called when queued event is processed
+	virtual void VProcessEvent( Event& n_event ) = 0;
+
+	// is called when EventManager processes events and 
+	// this EventListener is registered for this particular event type
+	void QueueEvent(std::shared_ptr<Event> n_event);
+
+	// processes all queued events
+	void ProcessQueuedEvents();
 };
 
 class EventListener_DEBUG_OUTPUT : public EventListener
 {
 public:
 
-	bool VProcessEvent( Event& n_event );
+	void VProcessEvent( Event& n_event );
 };
 
 #endif

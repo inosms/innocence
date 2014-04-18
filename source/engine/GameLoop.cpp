@@ -1,5 +1,6 @@
 #include "GameLoop.h"
 #include "Error.h"
+#include "Tickmeter.h"
 #include <SDL2/SDL.h>
 
 GameLoop::GameLoop()  : m_running( true ), 
@@ -26,8 +27,11 @@ int GameLoop::Run()
 	// but the logic should try to not freeze
 	int tmp_frameSkips = 0;
 
+	Tickmeter tmp_tickmeter("GameLoop");
 	while( m_running )
 	{
+		tmp_tickmeter.Measure();
+		
 		// while ticks should be done; but the maximum number of frame skips is not completely used up
 		// get input and udpate the logic
 		while( SDL_GetTicks() >= m_gameLogicTicksDelay + m_lastGameLogicTickTime && tmp_frameSkips < m_maxFrameSkips )
@@ -48,7 +52,7 @@ int GameLoop::Run()
 
 		VRender(tmp_interpolation);
 
-		if( m_lastGameLogicTickTime >= 5000 )
+		if( m_lastGameLogicTickTime >= 20000 )
 			m_running = false;
 	}
 

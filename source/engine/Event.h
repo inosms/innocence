@@ -46,6 +46,7 @@ class Event_RemoveObject : public Event
 {
 public:
 	unsigned int m_id;
+
 	Event_RemoveObject(unsigned int n_id);
 };
 

@@ -27,16 +27,16 @@ void GameLogic::RemoveObject( unsigned int n_id )
 
 GameObject* GameLogic::FindObject(unsigned int n_id)
 {
-	for( unsigned int i = 0; i < m_objects.size(); i++ )
+	for( GameObject* i_gameObject : m_objects )
 	{
-		if( m_objects[i]->GetID() == n_id )
-			return m_objects[i];
+		if( i_gameObject->GetID() == n_id )
+			return i_gameObject;
 	}
 	return NULL;
 }
 
 void GameLogic::VUpdate()
 {
-	for( unsigned int i = 0; i < m_objects.size(); i++ )
-		m_objects[i]->VUpdate();
+	for( GameObject* i_gameObject : m_objects )
+		i_gameObject->VUpdate();
 }

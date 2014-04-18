@@ -1,4 +1,5 @@
 #ifndef _VIDEOSYSTEM_H_
+
 #define _VIDEOSYSTEM_H_
 
 class VideoSystem
