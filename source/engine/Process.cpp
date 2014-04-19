@@ -1,4 +1,5 @@
 #include "Process.h"
+#include "Error.h"
 
 unsigned int Process::GetID()
 {
@@ -13,6 +14,16 @@ void Process::SetID(unsigned int n_id)
 bool Process::IsDead()
 {
 	return m_dead;
+}
+
+bool Process::IsInitialized()
+{
+	return m_initialized;
+}
+
+void Process::SetInitialized(bool n_init)
+{
+	m_initialized = n_init;
 }
 
 Process* Process::GetNext()
@@ -35,9 +46,21 @@ void Process::FindAndKill(unsigned int n_id)
 
 void Process::KillAll()
 {
-	VOnRequestKill();
+	if( IsInitialized() )
+		VOnRequestKill();
 	if( m_next != nullptr )
+	{
 		m_next->KillAll();	
+
+		// this removes all uninitialized children directly
+		// it assumes that after one uninitialized process
+		// only other uninit. processes follow (otherwise -> memory leak!)
+		if( m_next->IsInitialized() == false )
+		{
+			delete m_next;
+			SetNext(nullptr);
+		}
+	}
 }
 
 Process* Process::FindProcess(unsigned int n_id)
@@ -48,4 +71,36 @@ Process* Process::FindProcess(unsigned int n_id)
 		return m_next->FindProcess(n_id);
 
 	return nullptr;
+}
+
+void Thread_Process::VUpdate()
+{
+	// do nothing here
+}
+
+void Thread_Process::VInitialize()
+{
+	m_thread = new std::thread([&](){VThreadedMethod();});
+}
+
+void Thread_Process::VOnRequestKill()
+{
+	m_running=false;
+	try
+	{
+			m_thread->join();
+	}
+	catch(...)
+	{
+		// TODO 
+		ERROR_MESSAGE("Hey Exception! No catch block! y u no programm dis?");
+	}
+
+	m_dead=true;
+}
+
+
+Thread_Process::~Thread_Process()
+{
+	delete m_thread;
 }

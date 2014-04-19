@@ -1,4 +1,5 @@
 #include "inApplication.h"
+#include "inProcesses.h"
 
 void test_thread()
 {
@@ -20,8 +21,7 @@ void test_thread()
 
 GameLogic* inApplication::VCreateGameLogic()
 {
-	std::thread *t1 = new std::thread(test_thread);
-
+	GetProcessManager()->AddProcess( new test_thread_process() );
 	// TODO THIS IS A DUMMY LOGIC!! (Well it's the basic one Q.Q)
 	return new GameLogic();
 }

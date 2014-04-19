@@ -1,1 +1,1 @@
-add_library(game inApplication.cpp)
+add_library(game inApplication.cpp inProcesses.cpp)

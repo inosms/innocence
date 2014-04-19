@@ -23,6 +23,7 @@ void Application::VUpdate()
 			i_gameView->VUpdate();
 	}
 	
+	m_processManager.Update();
 	m_gameLogic->VUpdate();
 }
 
@@ -59,7 +60,9 @@ bool Application::VExit()
 	m_processManager.KillAllProcesses();
 	DEBUG_MESSAGE("Waiting for all processes to shut down");
 		while( m_processManager.AllProcessesDead() == false )
-			SDL_Delay(100);
+		{
+			m_processManager.Update();
+		}
 	DEBUG_MESSAGE("All processes shut down");
 
 	if( !m_videoSystem->VExit() ) return false;

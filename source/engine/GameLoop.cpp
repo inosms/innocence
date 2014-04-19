@@ -52,7 +52,7 @@ int GameLoop::Run()
 
 		VRender(tmp_interpolation);
 
-		if( m_lastGameLogicTickTime >= 20000 )
+		if( m_lastGameLogicTickTime >= 1000 )
 			m_running = false;
 	}
 

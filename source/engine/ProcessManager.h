@@ -15,6 +15,13 @@ class ProcessManager
 	// but still: FIXME 
 	unsigned int m_nextID = 1;
 
+	// deletes a process from internal process list
+	// doesn't care if killed/dead or not
+	// if the deleted process has some (non-dead) children
+	// those children are now allowed to run
+	// ONLY FOR INTERNAL USE
+	void DeleteProcess(unsigned int n_id);
+
 public:
 	// Adds a Process and returns a unique identifier by which the process can be killed again
 	unsigned int AddProcess( Process* n_process );

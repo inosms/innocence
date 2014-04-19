@@ -2,6 +2,8 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ../build/ )
 cmake_minimum_required (VERSION 2.6) 
 project(innocence)
 
+set(CMAKE_CXX_FLAGS "-std=c++11")  
+
 # http://stackoverflow.com/questions/9531637/cmake-command-line-for-c-define
 # if per command line -DPEDANTIC-DEBUG=true is typed; this code is executed and
 # pedantic debug is activated. YEAH!

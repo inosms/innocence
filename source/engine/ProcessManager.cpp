@@ -1,6 +1,33 @@
 #include "ProcessManager.h"
 #include "Error.h"
 
+void ProcessManager::DeleteProcess(unsigned int n_id)
+{
+	DEBUG_MESSAGE("Delete process " << n_id);
+	for( unsigned int i = 0; i < m_processes.size(); i++ )
+	{
+		if( m_processes[i]->GetID() == n_id )
+		{
+			Process* tmp_next = m_processes[i]->GetNext();
+
+			delete m_processes[i];
+			
+			// if there was a child attach the child to the process manager
+			// if not delete the entry
+			if( tmp_next != nullptr )
+			{
+				m_processes[i] = tmp_next;
+			}
+			else
+			{
+				m_processes.erase(m_processes.begin()+i);
+				// no need for further search
+				return;
+			}
+		}
+	}
+}
+
 unsigned int ProcessManager::AddProcess( Process* n_process )
 {
 	m_processes.push_back(n_process);
@@ -34,23 +61,14 @@ void ProcessManager::KillAllProcesses()
 
 bool ProcessManager::AllProcessesDead()
 {
-	if( m_processes.empty() ) return true;
-
-	// check if non dead processes are in list
-	for( Process* i_process : m_processes )
-	{
-		// if one is not dead, abort with return false
-		if( i_process->IsDead() == false )
-			return false;
-		// check if a chained process which is not dead is existing
-		else if( 	i_process->IsDead() == true &&
-					i_process->GetNext() != nullptr &&
-					i_process->GetNext()->IsDead() == false )
-			return false;
-	}
-
-	// everyting is DEEAAD
-	return true;
+	// idea: 
+	// if all processes are dead, the list is emptied;
+	// the list is filled with processes as long as they
+	// run or the list is not updated
+	// thus while waiting for all processes to die
+	// the processmanager should be updated until
+	// this method returns true
+	return m_processes.empty(); 
 }
 
 Process* ProcessManager::FindProcess( unsigned int n_id )
@@ -66,5 +84,32 @@ Process* ProcessManager::FindProcess( unsigned int n_id )
 
 void ProcessManager::Update()
 {
-	// TODO 
+	DEBUG_MESSAGE("ProcessManager Update");
+
+	std::vector<unsigned int> tmp_idsToDelete;
+
+	for( Process* i_process : m_processes )
+	{
+		// only execute living processes
+		if( i_process->IsDead() == false )
+		{
+			
+			if( i_process->IsInitialized() == false )
+			{
+				i_process->VInitialize();
+				i_process->SetInitialized(true);
+			}
+
+			i_process->VUpdate();
+		}
+		else
+			tmp_idsToDelete.push_back( i_process->GetID() );
+	}
+
+	DEBUG_MESSAGE("attempt deleting");
+	for( unsigned int i_id : tmp_idsToDelete )
+	{
+		DeleteProcess(i_id);
+	}
+	DEBUG_MESSAGE("success deleting");
 }
