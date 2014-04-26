@@ -28,12 +28,17 @@ public:
 	int Run();
 
 	virtual void VUpdate() = 0;
-	virtual void VRender(double n_interpolation) = 0;
+	//virtual void VRender(double n_interpolation) = 0;
 	virtual void VInput() = 0;
 
 	virtual bool VInit() = 0;
 	virtual bool VExit() = 0;
 
+	// sets running to false
+	void Kill();
+
+	unsigned int GetLastGameLogicTickTime();
+	unsigned int GetGameLogicTicksDelay();
 };
 
 #endif 

@@ -48,14 +48,29 @@ int GameLoop::Run()
 		tmp_frameSkips = 0;
 		
 		// interpolation is a value between 0 and 1 which interpolates between the gamelogic updates
-		double tmp_interpolation = (SDL_GetTicks() - m_lastGameLogicTickTime)/((double) m_gameLogicTicksDelay);
+		//double tmp_interpolation = (SDL_GetTicks() - m_lastGameLogicTickTime)/((double) m_gameLogicTicksDelay);
 
-		VRender(tmp_interpolation);
+		//VRender(tmp_interpolation);
 
-		if( m_lastGameLogicTickTime >= 1000 )
-			m_running = false;
+		//if( m_lastGameLogicTickTime >= 1000 )
+		//	m_running = false;
 	}
 
 	if( !VExit() ) return -1;
 	else return 0;
+}
+
+void GameLoop::Kill()
+{
+	m_running = false;
+}
+
+unsigned int GameLoop::GetLastGameLogicTickTime()
+{
+	return m_lastGameLogicTickTime;
+}
+
+unsigned int GameLoop::GetGameLogicTicksDelay()
+{
+	return m_gameLogicTicksDelay;
 }

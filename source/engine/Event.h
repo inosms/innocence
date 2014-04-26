@@ -19,6 +19,8 @@ enum Event_Type
 	Event_Type_CreateNewObject,
 	Event_Type_RemoveObject,
 
+	Event_Type_Input_Key_Down,
+
 	// yeah the name says it all...
 	// when declaring a game specific Event_Type_blablabla
 	// the first value should be this
@@ -48,6 +50,28 @@ public:
 	unsigned int m_id;
 
 	Event_RemoveObject(unsigned int n_id);
+};
+
+
+// this is just a parent class for all kinds of input events
+class Event_Input : public Event
+{
+public: 
+	Event_Input( unsigned int n_type );
+};
+
+enum Event_Input_Key
+{
+	A,
+	B,
+	C,
+};
+
+class Event_Input_Key_Down : public Event_Input
+{
+public:
+	Event_Input_Key m_key;
+	Event_Input_Key_Down(Event_Input_Key n_key);
 };
 
 #endif

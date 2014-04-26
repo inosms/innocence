@@ -32,7 +32,7 @@ GameObject* GameLogic::FindObject(unsigned int n_id)
 		if( i_gameObject->GetID() == n_id )
 			return i_gameObject;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void GameLogic::VUpdate()

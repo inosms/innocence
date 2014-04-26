@@ -27,20 +27,9 @@ void Application::VUpdate()
 	m_gameLogic->VUpdate();
 }
 
-void Application::VRender(double n_interpolation)
-{
-	PEDANTIC_DEBUG_MESSAGE("VRender(double) with " << n_interpolation << " as interpolation");
-
-	m_videoSystem->VClearScreen();
-
-	// TODO 
-
-	m_videoSystem->VUpdateScreen();
-}
-
 void Application::VInput()
 {
-	// TODO 
+	m_videoSystem->VTranslateInput();
 }
 
 bool Application::VInit()
@@ -75,6 +64,25 @@ bool Application::VExit()
 	return true;
 }
 
+void Application::AddGameView(GameView* n_gameView)
+{
+	assert(n_gameView!=nullptr);
+	n_gameView->VInit();
+	m_gameViews.push_back(n_gameView);
+}
+
+void Application::RemoveGameView( unsigned int n_id )
+{
+	for( unsigned int i = 0; i < m_gameViews.size(); i++ )
+	{
+		if( m_gameViews[i]->GetID() == n_id )
+		{
+			m_gameViews.erase( m_gameViews.begin() +i );
+			return;
+		}
+	}
+}
+
 UniqueNumberGenerator* GetUniqueNumberGenerator()
 {
 	return &(g_application->m_uniqueNumberGenerator);
@@ -93,4 +101,9 @@ GameLogic* GetGameLogic()
 ProcessManager* GetProcessManager()
 {
 	return &(g_application->m_processManager);
+}
+
+VideoSystem* GetVideoSystem()
+{
+	return g_application->m_videoSystem;
 }

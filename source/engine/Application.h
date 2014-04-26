@@ -7,6 +7,7 @@
 #include "GameLogic.h"
 #include "GameLoop.h"
 #include "GameView.h"
+#include "Math.h"
 #include "VideoSystem.h"
 #include "UniqueNumberGenerator.h"
 #include "EventManager.h"
@@ -31,11 +32,16 @@ public:
 	Application();
 
 	virtual void VUpdate();
-	virtual void VRender(double n_interpolation);
+	//virtual void VRender(double n_interpolation);
 	virtual void VInput();
 
 	virtual bool VInit();
 	virtual bool VExit();
+
+	void AddGameView(GameView* n_gameView);
+	
+	// remove game view by game view id
+	void RemoveGameView( unsigned int n_id );
 
 	// MUST be implemented by actual game to offer 
 	// the game's game logic (and not some dummy logic...)
@@ -47,6 +53,7 @@ extern UniqueNumberGenerator* GetUniqueNumberGenerator();
 extern EventManager* GetEventManager();
 extern GameLogic* GetGameLogic();
 extern ProcessManager* GetProcessManager();
+extern VideoSystem* GetVideoSystem();
 
 
 #endif 

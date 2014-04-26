@@ -85,10 +85,14 @@ void Thread_Process::VInitialize()
 
 void Thread_Process::VOnRequestKill()
 {
+	// this requests that the thread stops running
+	// of corse this requires the thread process to 
+	// actively use this variable to detect a kill request
 	m_running=false;
 	try
 	{
-			m_thread->join();
+		// wait for thread to really stop
+		m_thread->join();
 	}
 	catch(...)
 	{

@@ -78,8 +78,6 @@ public:
 	virtual ~Process(){}
 };
 
-
-
 class Thread_Process : public Process
 {
 private:

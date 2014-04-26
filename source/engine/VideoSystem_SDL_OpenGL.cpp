@@ -1,5 +1,7 @@
 #include "VideoSystem_SDL_OpenGL.h"
 #include "Error.h"
+#include "Event.h"
+#include "Application.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <OpenGL/gl.h>
@@ -62,4 +64,17 @@ void VideoSystem_SDL_OpenGL::VClearScreen()
 void VideoSystem_SDL_OpenGL::VUpdateScreen()
 {
 	SDL_GL_SwapWindow(m_window);
+}
+
+void VideoSystem_SDL_OpenGL::VTranslateInput()
+{
+	SDL_Event tmp_event;
+
+	while( SDL_PollEvent(&tmp_event) )
+	{
+		if( tmp_event.type == SDL_QUIT )
+		{
+			g_application->Kill();
+		}
+	}
 }

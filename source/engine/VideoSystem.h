@@ -12,6 +12,8 @@ public:
 
 	virtual void VClearScreen() = 0;
 	virtual void VUpdateScreen() = 0;
+
+	virtual void VTranslateInput() = 0;
 	
 	// TODO  
 };

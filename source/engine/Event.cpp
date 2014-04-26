@@ -26,3 +26,14 @@ Event_RemoveObject::Event_RemoveObject(unsigned int n_id) :
 	Event(Event_Type_RemoveObject),
 	m_id( n_id ) 
 	{}
+
+Event_Input::Event_Input( unsigned int n_type ) :
+	Event(n_type)
+{}
+
+Event_Input_Key_Down::Event_Input_Key_Down(Event_Input_Key n_key) :
+	Event_Input(Event_Type_Input_Key_Down),
+	m_key(n_key)
+{
+
+}
