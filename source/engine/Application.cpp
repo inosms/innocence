@@ -11,18 +11,23 @@ Application::Application()
 	g_application = this;
 }
 
+void Application::VRender(double n_interpolation)
+{
+	for( auto i_gameView : m_gameViews )
+		i_gameView->VRender(n_interpolation);
+}
+
 void Application::VUpdate()
 {
 	PEDANTIC_DEBUG_MESSAGE("VUpdate() called");
 
 	for( GameView* i_gameView : m_gameViews )
 	{
-		// only update the AI GameViews as the Human GameViews
-		// (should) have their own thread
-		if( i_gameView->GetGameViewType() == GameView_Type_AI )
-			i_gameView->VUpdate();
+
+		i_gameView->VUpdate();
 	}
 	
+	// todo: thread this!
 	m_processManager.Update();
 	m_gameLogic->VUpdate();
 }
@@ -34,9 +39,10 @@ void Application::VInput()
 
 bool Application::VInit()
 {
+	if( !m_videoSystem->VInit() ) return false;
+
 	m_gameLogic = VCreateGameLogic();	
 	if( !m_gameLogic ) return false;
-	if( !m_videoSystem->VInit() ) return false;
 
 	// TODO 
 	

@@ -32,7 +32,7 @@ public:
 	Application();
 
 	virtual void VUpdate();
-	//virtual void VRender(double n_interpolation);
+	virtual void VRender(double n_interpolation);
 	virtual void VInput();
 
 	virtual bool VInit();

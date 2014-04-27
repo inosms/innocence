@@ -23,7 +23,7 @@ bool VideoSystem_SDL_OpenGL::VInit()
 										SDL_WINDOWPOS_UNDEFINED,
 										640,
 										480,
-										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN );
 		if( !m_window ) 
 		{
 			ERROR_MESSAGE( "could not create SDL_Window ");
@@ -37,9 +37,18 @@ bool VideoSystem_SDL_OpenGL::VInit()
 			ERROR_MESSAGE( "could not create SDL_GL_Context" );
 			return false;
 		}
+
+		SDL_GL_MakeCurrent(m_window,m_glContext);
 	}
 
-	glClearColor(0,0,0.1,1);
+
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+
+	glClearColor(0.0f,0.0f,0.0f,1.0f);
 
 	DEBUG_MESSAGE( "SDL Init successful" );
 

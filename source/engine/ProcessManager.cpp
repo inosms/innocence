@@ -106,10 +106,10 @@ void ProcessManager::Update()
 			tmp_idsToDelete.push_back( i_process->GetID() );
 	}
 
-	DEBUG_MESSAGE("attempt deleting");
+	//DEBUG_MESSAGE("attempt deleting");
 	for( unsigned int i_id : tmp_idsToDelete )
 	{
 		DeleteProcess(i_id);
 	}
-	DEBUG_MESSAGE("success deleting");
+	//DEBUG_MESSAGE("success deleting");
 }

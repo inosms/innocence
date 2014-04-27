@@ -6,6 +6,7 @@
 class inApplication : public Application
 {
 public:
+	inApplication();
 	GameLogic* VCreateGameLogic();
 };
 

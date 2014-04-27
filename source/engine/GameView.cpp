@@ -29,12 +29,23 @@ unsigned int GameView::GetID()
 
 GameView_Human::GameView_Human() :
 	GameView(GameView_Type_Human)
-	{}
+	{
+	}
 
 void GameView_Human::VRender( double n_interpolation )
 {
+	GetVideoSystem()->VClearScreen();
+
+	glColor3f(1,1,1);
+	glBegin(GL_TRIANGLES);
+	    glVertex3f(0.0f, 1.0f, -3.0f);
+	    glVertex3f(-1.0f, -1.0f, -4.0f);
+	    glVertex3f(1.0f, -1.0f, 0.0f);
+	glEnd();
 	for( auto i_layer : m_screenLayers )
 		i_layer->VRender(n_interpolation);
+
+	GetVideoSystem()->VUpdateScreen();	
 }
 
 void GameView_Human::VUpdate()
@@ -45,7 +56,6 @@ void GameView_Human::VUpdate()
 
 void GameView_Human::VInit()
 {
-	GetProcessManager()->AddProcess( new HumanView_Process(this) );
 	m_scene = new ScreenLayer_Scene();
 	AddScreenLayer( m_scene );
 }

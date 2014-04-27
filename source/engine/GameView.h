@@ -5,6 +5,7 @@
 #include "ScreenLayer.h"
 #include "Process.h"
 #include "ScreenLayer_Scene.h"
+#include "VideoSystem.h"
 
 enum GameView_Type
 {
