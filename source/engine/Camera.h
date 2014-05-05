@@ -2,17 +2,18 @@
 #define _CAMERA_H_
 
 #include "Math.h"
+#include "glm/glm/glm.hpp"
 
 class Camera
 {
 private:
-	Matrix4x4 m_matrix;
+	glm::mat4x4 m_matrix;
 	
 public:
 
 	// TODO 
 
-	Matrix4x4 GetMatrix();
+	glm::mat4x4 GetMatrix();
 };
 
 #endif

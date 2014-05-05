@@ -10,6 +10,9 @@ bool VideoSystem_SDL_OpenGL::VInit()
 {
 	PEDANTIC_DEBUG_MESSAGE("start SDL VInit()");
 
+	const int TMP_SCREEN_WIDTH = 640;
+	const int TMP_SCREEN_HEIGHT = 480;
+
 	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )
 	{
 		ERROR_MESSAGE("SDL could not be initialized: " << SDL_GetError() );
@@ -21,8 +24,8 @@ bool VideoSystem_SDL_OpenGL::VInit()
 		m_window = SDL_CreateWindow( 	"window_test",
 										SDL_WINDOWPOS_UNDEFINED,
 										SDL_WINDOWPOS_UNDEFINED,
-										640,
-										480,
+										TMP_SCREEN_WIDTH,
+										TMP_SCREEN_HEIGHT,
 										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN );
 		if( !m_window ) 
 		{
@@ -41,9 +44,11 @@ bool VideoSystem_SDL_OpenGL::VInit()
 		SDL_GL_MakeCurrent(m_window,m_glContext);
 	}
 
+	glViewport( 0.f,0.f,TMP_SCREEN_WIDTH,TMP_SCREEN_HEIGHT );
 
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
+	glFrustum(-5.0,5.0,-5.0,5.0,1.0,200.0);
 
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();

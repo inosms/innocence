@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Matrix4x4 Camera::GetMatrix()
+glm::mat4x4 Camera::GetMatrix()
 {
 	return m_matrix;
 }

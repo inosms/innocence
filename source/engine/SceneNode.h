@@ -4,6 +4,7 @@
 #include <vector>
 #include "Math.h"
 #include "Camera.h"
+#include "glm/glm/glm.hpp"
 
 class SceneNode
 {
@@ -19,7 +20,7 @@ protected:
 	// and then finally rendering
 	bool m_hasAlpha = false;
 
-	Matrix4x4 m_matrix;
+	glm::mat4x4 m_matrix;
 
 	std::vector<SceneNode*> m_children;
 
@@ -28,11 +29,11 @@ protected:
 	// matrix holds the parents translation
 	// if a scene node has alpha it is added to the
 	// list with the parent transformation matrix
-	void RecursiveRenderCall_NonAlpha(double n_interpolation, Matrix4x4& n_matrix, std::vector<std::pair<SceneNode*,Matrix4x4> >& n_alphaNodes);
+	void RecursiveRenderCall_NonAlpha(double n_interpolation, glm::mat4x4& n_matrix, std::vector<std::pair<SceneNode*,glm::mat4x4> >& n_alphaNodes);
 
 	// renders this and children (also alphas)
 	// matrix holds the parents transformation
-	void RecursiveRenderCall_All(double n_interpolation, Matrix4x4& n_matrix);
+	void RecursiveRenderCall_All(double n_interpolation, glm::mat4x4& n_matrix);
 
 public:
 
@@ -45,7 +46,7 @@ public:
 	// parent transformation matrix * this matrix
 	// those two are not purely virtual as this class
 	// may serve as a root node
-	virtual void VRender( double n_interpolation, Matrix4x4& n_matrix ){};
+	virtual void VRender( double n_interpolation, glm::mat4x4& n_matrix ){};
 	virtual void VUpdate(){};
 
 	bool HasAlpha(); 

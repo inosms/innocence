@@ -37,11 +37,17 @@ void GameView_Human::VRender( double n_interpolation )
 	GetVideoSystem()->VClearScreen();
 
 	glColor3f(1,1,1);
+	static float tmp_rot = 0;
+	tmp_rot += 0.1;
+	glPushMatrix();
+	glTranslatef(0,0,-5.f);
+	glRotatef(0,1,0,tmp_rot);
 	glBegin(GL_TRIANGLES);
-	    glVertex3f(0.0f, 1.0f, -3.0f);
-	    glVertex3f(-1.0f, -1.0f, -4.0f);
-	    glVertex3f(1.0f, -1.0f, 0.0f);
+	    glVertex3f(-3.0f, 1.0f, 0.0f);
+	    glVertex3f(0.0f, 3.5f, 0.0f);
+	    glVertex3f(1.0f, 1.0f, 0.0f);
 	glEnd();
+	glPopMatrix();
 	for( auto i_layer : m_screenLayers )
 		i_layer->VRender(n_interpolation);
 

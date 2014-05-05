@@ -4,12 +4,12 @@ SceneNode::SceneNode(unsigned int n_id) :
 	m_id( n_id)
 	{}
 
-void SceneNode::RecursiveRenderCall_NonAlpha(double n_interpolation, Matrix4x4& n_matrix, std::vector<std::pair<SceneNode*,Matrix4x4> >& n_alphaNodes)
+void SceneNode::RecursiveRenderCall_NonAlpha(double n_interpolation, glm::mat4x4& n_matrix, std::vector<std::pair<SceneNode*,glm::mat4x4> >& n_alphaNodes)
 {
-	Matrix4x4 tmp_matrixApplied = n_matrix * m_matrix;
+	glm::mat4x4 tmp_matrixApplied = n_matrix * m_matrix;
 
 	if( HasAlpha() )
-		n_alphaNodes.push_back(std::pair<SceneNode*,Matrix4x4>(this,n_matrix));
+		n_alphaNodes.push_back(std::pair<SceneNode*,glm::mat4x4>(this,n_matrix));
 	else
 		VRender(n_interpolation,tmp_matrixApplied);
 
@@ -17,9 +17,9 @@ void SceneNode::RecursiveRenderCall_NonAlpha(double n_interpolation, Matrix4x4& 
 		i_node->RecursiveRenderCall_NonAlpha(n_interpolation,tmp_matrixApplied,n_alphaNodes);
 }
 
-void SceneNode::RecursiveRenderCall_All(double n_interpolation, Matrix4x4& n_matrix)
+void SceneNode::RecursiveRenderCall_All(double n_interpolation, glm::mat4x4& n_matrix)
 {
-	Matrix4x4 tmp_matrixApplied = n_matrix * m_matrix;
+	glm::mat4x4 tmp_matrixApplied = n_matrix * m_matrix;
 
 	VRender(n_interpolation, tmp_matrixApplied);
 
@@ -30,9 +30,9 @@ void SceneNode::RecursiveRenderCall_All(double n_interpolation, Matrix4x4& n_mat
 
 void SceneNode::RecursiveRenderCall_TopLevel(double n_interpolation,Camera& n_camera)
 {
-	Matrix4x4 tmp_cameraMatrix = n_camera.GetMatrix();
+	glm::mat4x4 tmp_cameraMatrix = n_camera.GetMatrix();
 
-	std::vector<std::pair<SceneNode*,Matrix4x4> > m_alphas;
+	std::vector<std::pair<SceneNode*,glm::mat4x4> > m_alphas;
 	RecursiveRenderCall_NonAlpha(n_interpolation,tmp_cameraMatrix,m_alphas);
 
 	// TODO sort m_alphas
