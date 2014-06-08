@@ -1,4 +1,5 @@
 #include "SceneNode.h"
+#include <iostream>
 
 SceneNode::SceneNode(unsigned int n_id) :
 	m_id( n_id)
@@ -8,7 +9,7 @@ void SceneNode::RecursiveRenderCall_NonAlpha(double n_interpolation, glm::mat4x4
 {
 	glm::mat4x4 tmp_matrixApplied = n_matrix * m_matrix;
 
-	if( HasAlpha() )
+	if( HasAlpha() == true )
 		n_alphaNodes.push_back(std::pair<SceneNode*,glm::mat4x4>(this,n_matrix));
 	else
 		VRender(n_interpolation,tmp_matrixApplied);
@@ -41,6 +42,12 @@ void SceneNode::RecursiveRenderCall_TopLevel(double n_interpolation,Camera& n_ca
 	{
 		i_node.first->RecursiveRenderCall_All(n_interpolation,i_node.second);
 	}
+}
+
+void SceneNode::SetNewMatrix( glm::mat4x4 n_mat )
+{
+	m_oldMat = m_matrix;
+	m_matrix = n_mat;
 }
 
 bool SceneNode::HasAlpha()

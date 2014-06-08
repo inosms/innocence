@@ -4,7 +4,6 @@
 #include <vector>
 #include "Math.h"
 #include "Camera.h"
-#include "glm/glm/glm.hpp"
 
 class SceneNode
 {
@@ -21,6 +20,11 @@ protected:
 	bool m_hasAlpha = false;
 
 	glm::mat4x4 m_matrix;
+
+	// this just saves the old matrix if 
+	// SetNewMatrix is called
+	// this is used for interpolation calculation
+	glm::mat4x4 m_oldMat;
 
 	std::vector<SceneNode*> m_children;
 
@@ -46,8 +50,10 @@ public:
 	// parent transformation matrix * this matrix
 	// those two are not purely virtual as this class
 	// may serve as a root node
-	virtual void VRender( double n_interpolation, glm::mat4x4& n_matrix ){};
-	virtual void VUpdate(){};
+	virtual void VRender( double n_interpolation, glm::mat4x4& n_matrix ){}
+	virtual void VUpdate(){}
+
+	void SetNewMatrix( glm::mat4x4 n_mat );
 
 	bool HasAlpha(); 
 	void SetAlpha( bool n_alpha );
@@ -65,6 +71,8 @@ public:
 
 	SceneNode* RecursiveSearch( unsigned int n_id);
 	void AddChild(SceneNode* n_node);
+
+	virtual ~SceneNode(){}
 
 };
 

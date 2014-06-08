@@ -2,6 +2,9 @@
 #define _MATH_H_
 
 #include <ostream>
+#include "glm/glm/glm.hpp"
+#include "glm/glm/gtc/type_ptr.hpp"
+#include "glm/glm/gtc/matrix_transform.hpp"
 
 enum Matrix_Init_Type
 {

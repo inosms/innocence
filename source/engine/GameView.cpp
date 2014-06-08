@@ -27,8 +27,9 @@ unsigned int GameView::GetID()
 }
 
 
-GameView_Human::GameView_Human() :
-	GameView(GameView_Type_Human)
+GameView_Human::GameView_Human(EventListener* n_listener) :
+	GameView(GameView_Type_Human),
+	m_listener( n_listener )
 	{
 	}
 
@@ -36,18 +37,6 @@ void GameView_Human::VRender( double n_interpolation )
 {
 	GetVideoSystem()->VClearScreen();
 
-	glColor3f(1,1,1);
-	static float tmp_rot = 0;
-	tmp_rot += 0.1;
-	glPushMatrix();
-	glTranslatef(0,0,-5.f);
-	glRotatef(0,1,0,tmp_rot);
-	glBegin(GL_TRIANGLES);
-	    glVertex3f(-3.0f, 1.0f, 0.0f);
-	    glVertex3f(0.0f, 3.5f, 0.0f);
-	    glVertex3f(1.0f, 1.0f, 0.0f);
-	glEnd();
-	glPopMatrix();
 	for( auto i_layer : m_screenLayers )
 		i_layer->VRender(n_interpolation);
 
@@ -58,6 +47,7 @@ void GameView_Human::VUpdate()
 {
 	for( auto i_layer : m_screenLayers )
 		i_layer->VUpdate();
+	m_listener->ProcessQueuedEvents();
 }
 
 void GameView_Human::VInit()

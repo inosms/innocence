@@ -30,6 +30,7 @@ public:
 	// finds not with given id returns nullptr if 
 	// not found
 	SceneNode* FindSceneNode( unsigned int n_id);
+	Camera& GetCamera();
 
 	virtual void VUpdate();
 	virtual void VRender( double n_interpolation );

@@ -2,7 +2,6 @@
 #define _CAMERA_H_
 
 #include "Math.h"
-#include "glm/glm/glm.hpp"
 
 class Camera
 {
@@ -11,7 +10,9 @@ private:
 	
 public:
 
-	// TODO 
+	Camera();
+
+	void SetPosition( glm::vec3 n_pos );
 
 	glm::mat4x4 GetMatrix();
 };

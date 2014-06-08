@@ -48,7 +48,7 @@ bool VideoSystem_SDL_OpenGL::VInit()
 
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glFrustum(-5.0,5.0,-5.0,5.0,1.0,200.0);
+	glFrustum(-5.0,5.0,-5.0,5.0,1.0,60.0);
 
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
@@ -89,6 +89,14 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 		if( tmp_event.type == SDL_QUIT )
 		{
 			g_application->Kill();
+		}
+		else if( tmp_event.type == SDL_KEYDOWN )
+		{
+			if( tmp_event.key.keysym.sym >= SDLK_a && tmp_event.key.keysym.sym <= SDLK_z )
+			{
+				GetEventManager()->SendEvent(std::shared_ptr<Event_Input_Key_Down>(new Event_Input_Key_Down((Event_Input_Key)(A+tmp_event.key.keysym.sym - SDLK_a))));
+			}
+
 		}
 	}
 }

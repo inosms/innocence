@@ -6,6 +6,7 @@
 #include "Process.h"
 #include "ScreenLayer_Scene.h"
 #include "VideoSystem.h"
+#include "EventListener.h"
 
 enum GameView_Type
 {
@@ -46,9 +47,10 @@ protected:
 	// for quick access
 	// the scene is also in the m_screenLayers List!
 	ScreenLayer_Scene* m_scene;
+	EventListener* m_listener;
 public:
 
-	GameView_Human();
+	GameView_Human(EventListener* n_listener);
 	virtual void VRender( double n_interpolation );
 	virtual void VUpdate();
 	virtual void VInit();
