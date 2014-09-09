@@ -3,7 +3,7 @@
 
 #include "../engine/engine.h"
 #include "inHumanView.h"
-class inHumanViewListener : public EventListener
+class inHumanViewListener : public HumanViewListener
 {
 	inHumanView* m_view;
 public:

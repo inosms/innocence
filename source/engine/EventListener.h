@@ -33,4 +33,16 @@ public:
 	void VProcessEvent( Event& n_event );
 };
 
+// this is a default implementation of a human view listener
+class GameView_Human;
+class HumanViewListener : public EventListener
+{
+protected:
+	GameView_Human* m_view;
+public:
+	HumanViewListener(GameView_Human* n_view);
+	virtual void VProcessEvent( Event& n_event );
+};
+
+// TODO default logic listener
 #endif

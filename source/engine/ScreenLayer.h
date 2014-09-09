@@ -9,6 +9,8 @@ enum ScreenLayer_Type
 	ScreenLayer_Type_Scene,
 	ScreenLayer_Type_CommandLine,
 
+	ScreenLayer_Type_Menu,
+
 	// Same as Event_Type_LIST_END:
 	// use this in game to extend the Type list
 	ScreenLayer_Type_LIST_END

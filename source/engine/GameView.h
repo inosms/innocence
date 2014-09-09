@@ -55,7 +55,15 @@ public:
 	virtual void VUpdate();
 	virtual void VInit();
 
+	// adds n_layer; if full screen menu type the old
+	// full screen menu is removed
 	void AddScreenLayer( ScreenLayer* n_layer );
+	ScreenLayer* GetScreenLayer( ScreenLayer_Type n_type );
+	void RemoveScreenLayer(ScreenLayer* n_layer );
+	
+	// forwards an input event to all the screen layers and the controller (TODO)
+	void ForwardInputEvent( Event_Input& n_event );
+
 	ScreenLayer_Scene* GetScene();
 };
 

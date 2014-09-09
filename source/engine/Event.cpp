@@ -1,5 +1,6 @@
 #include "Event.h"	
 #include "Creator.h"
+#include "ScreenLayer.h"
 #include <iostream>
 
 Event::Event( unsigned int n_type ) : 
@@ -32,6 +33,16 @@ Event_MoveSceneNode::Event_MoveSceneNode(glm::mat4x4 n_mat, unsigned int n_id) :
 	Event(Event_Type_MoveSceneNode),
 	m_mat(n_mat),
 	m_id(n_id)
+{}
+
+Event_AddScreenLayer::Event_AddScreenLayer(ScreenLayer* n_screenLayer)
+	: Event(Event_Type_AddScreenLayer),
+	m_screenLayer(n_screenLayer)
+{}
+
+Event_RemoveScreenLayer::Event_RemoveScreenLayer(ScreenLayer* n_screenLayer) :
+	Event(Event_Type_RemoveScreenLayer),
+	m_screenLayer(n_screenLayer)
 {}
 
 Event_Input::Event_Input( unsigned int n_type ) :

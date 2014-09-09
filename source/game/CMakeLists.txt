@@ -1,1 +1,1 @@
-add_library(game inApplication.cpp inGameLogic.cpp inGameLogicListener.cpp inGameObject.cpp inHumanView.cpp inHumanViewListener.cpp inProcesses.cpp inSceneNode.cpp)
+add_library(game inApplication.cpp inGameLogic.cpp inGameLogicListener.cpp inGameObject.cpp inHumanView.cpp inHumanViewListener.cpp inMenu.cpp inProcesses.cpp inSceneNode.cpp)

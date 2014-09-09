@@ -1,7 +1,7 @@
 #include "EventListener.h"
 #include "Error.h"
 #include <iostream>
-
+#include "engine.h"
 
 void EventListener::QueueEvent(std::shared_ptr<Event> n_event)
 {
@@ -37,4 +37,33 @@ void EventListener_DEBUG_OUTPUT::VProcessEvent( Event& n_event )
 	{
 		//std::cout << "REMOVAL OF " << dynamic_cast<Event_RemoveObject&>(n_event).m_id << std::endl;
 	}
+}
+
+HumanViewListener::HumanViewListener(GameView_Human* n_view) : m_view(n_view)
+{
+
+}
+
+void HumanViewListener::VProcessEvent( Event& n_event )
+{
+	if( n_event.GetType() == Event_Type_CreateNewObject )
+	{
+		Event_CreateNewObject& tmp_event = dynamic_cast<Event_CreateNewObject&>(n_event);
+		tmp_event.m_creator->CreateSceneNode(*m_view);
+	}
+	else if( n_event.GetType() == Event_Type_AddScreenLayer )
+	{
+		Event_AddScreenLayer& tmp_event = dynamic_cast<Event_AddScreenLayer&>(n_event);
+		m_view->AddScreenLayer(tmp_event.m_screenLayer);
+	}
+	else if( n_event.GetType() == Event_Type_RemoveScreenLayer )
+	{
+		Event_RemoveScreenLayer& tmp_event = dynamic_cast<Event_RemoveScreenLayer&>(n_event);
+		m_view->RemoveScreenLayer(tmp_event.m_screenLayer);
+	}
+	else if( dynamic_cast<Event_Input*>( &n_event ) )
+	{
+		Event_Input& tmp_event = dynamic_cast<Event_Input&>(n_event);
+		m_view->ForwardInputEvent(tmp_event);
+	} 
 }

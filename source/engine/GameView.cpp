@@ -31,6 +31,8 @@ GameView_Human::GameView_Human(EventListener* n_listener) :
 	GameView(GameView_Type_Human),
 	m_listener( n_listener )
 	{
+		// add all default event types
+		FORALLDEFAULTEVENTTYPES(GetEventManager()->AddEventListener(m_listener,event));
 	}
 
 void GameView_Human::VRender( double n_interpolation )
@@ -59,8 +61,32 @@ void GameView_Human::VInit()
 void GameView_Human::AddScreenLayer( ScreenLayer* n_layer )
 {
 	assert( n_layer != nullptr );
+
 	m_screenLayers.push_back( n_layer );
 	std::sort(m_screenLayers.begin(),m_screenLayers.end(),[](const ScreenLayer* a, const ScreenLayer* b){return a->GetType() < b->GetType();});
+}
+
+ScreenLayer* GameView_Human::GetScreenLayer( ScreenLayer_Type n_type )
+{
+	for( auto i_layer : m_screenLayers )
+		if( i_layer->GetType() == n_type )
+			return i_layer;
+	return nullptr; 
+}
+
+void GameView_Human::RemoveScreenLayer(ScreenLayer* n_layer )
+{
+	auto tmp_find = std::find(m_screenLayers.begin(), m_screenLayers.end(), n_layer);
+	if( tmp_find != m_screenLayers.end() )
+	m_screenLayers.erase(tmp_find);
+}
+
+void GameView_Human::ForwardInputEvent( Event_Input& n_event )
+{
+	for( auto i_layer : m_screenLayers )
+		if(i_layer->VOnEvent(n_event)) return;
+
+	// TODO: forward event to controller
 }
 
 ScreenLayer_Scene* GameView_Human::GetScene()

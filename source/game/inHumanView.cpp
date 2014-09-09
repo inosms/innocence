@@ -1,12 +1,11 @@
 #include "inHumanView.h"
 #include "inHumanViewListener.h"
 #include "inGameObject.h"
+#include "inMenu.h"
 
 inHumanView::inHumanView() : GameView_Human( new inHumanViewListener(this) )
 {
-	GetEventManager()->AddEventListener(m_listener,Event_Type_CreateNewObject);
-
-	GetEventManager()->SendEvent( std::shared_ptr<Event_CreateNewObject>(new Event_CreateNewObject(new Creator_Test())));
+	GetEventManager()->SendEvent( std::shared_ptr<Event_AddScreenLayer>(new Event_AddScreenLayer(new Menu_MainMenu())));
 }
 
 Shader* test = nullptr;

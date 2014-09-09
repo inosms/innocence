@@ -3,6 +3,8 @@
 
 #include "Math.h"
 
+#define FORALLDEFAULTEVENTTYPES(expr) for( int event = 0; event < Event_Type_LIST_END; event++ ) (expr);
+
 class Event
 {
 protected:
@@ -21,6 +23,8 @@ enum Event_Type
 	Event_Type_CreateNewObject,
 	Event_Type_RemoveObject,
 	Event_Type_MoveSceneNode,
+	Event_Type_AddScreenLayer,
+	Event_Type_RemoveScreenLayer,
 
 	Event_Type_Input_Key_Down,
 	Event_Type_Input_Mousebutton_Down,
@@ -63,6 +67,21 @@ public:
 	glm::mat4x4 m_mat;
 	unsigned int m_id;
 	Event_MoveSceneNode(glm::mat4x4 n_mat, unsigned int n_id);
+};
+
+class ScreenLayer;
+class Event_AddScreenLayer : public Event
+{
+public:
+	ScreenLayer* m_screenLayer;
+	Event_AddScreenLayer(ScreenLayer* n_screenLayer);
+};
+
+class Event_RemoveScreenLayer : public Event
+{
+public:
+	ScreenLayer* m_screenLayer;
+	Event_RemoveScreenLayer(ScreenLayer* n_screenLayer);
 };
 
 // this is just a parent class for all kinds of input events
