@@ -9,7 +9,6 @@ ScreenLayer_Scene::ScreenLayer_Scene() :
 void ScreenLayer_Scene::AddSceneNode(SceneNode* n_node)
 {
 	m_rootNode.AddChild( n_node );
-	std::cout << "ADD SCENE NODE" << std::endl;
 }
 
 void ScreenLayer_Scene::AddSceneNode( SceneNode* n_node, unsigned n_childToID)
@@ -36,7 +35,7 @@ SceneNode* ScreenLayer_Scene::FindSceneNode( unsigned int n_id)
 
 void ScreenLayer_Scene::VUpdate()
 {
-	m_rootNode.RecursiveUpdateCall(); 
+	m_rootNode.RecursiveUpdateCall();
 }
 
 void ScreenLayer_Scene::VRender( double n_interpolation )
@@ -51,7 +50,7 @@ Camera& ScreenLayer_Scene::GetCamera()
 
 bool ScreenLayer_Scene::VOnEvent(Event_Input& n_event)
 {
-	// TODO 
+	// TODO:
 
 	// not consumed...
 	return false;

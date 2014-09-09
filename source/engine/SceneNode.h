@@ -4,6 +4,7 @@
 #include <vector>
 #include "Math.h"
 #include "Camera.h"
+#include "Mesh.h"
 
 class SceneNode
 {
@@ -25,8 +26,11 @@ protected:
 	// SetNewMatrix is called
 	// this is used for interpolation calculation
 	glm::mat4x4 m_oldMat;
+	glm::mat4x4 m_interpolationMatrix;
 
 	std::vector<SceneNode*> m_children;
+
+	Mesh* m_mesh;
 
 	// renders this and children 
 	// BUT only if they are not marked as alpha nodes
@@ -55,6 +59,17 @@ public:
 
 	void SetNewMatrix( glm::mat4x4 n_mat );
 
+	// this sets the new matrix; but does NOT 
+	// calculate a new interpolation matrix
+	// this is usefull when setting the matrix
+	// for the first time, when not expecting
+	// a change the next time
+	// with normal SetNewMatrix this object would then 
+	// jump, as the interpolation matrix would point
+	// from 0 0 0 pos to the new one
+	// (which is not good)
+	void SetNewMatrixNoInterpolation( glm::mat4x4 n_mat);
+
 	bool HasAlpha(); 
 	void SetAlpha( bool n_alpha );
 
@@ -64,6 +79,10 @@ public:
 	// it requires a camera object which is applied 
 	// before rendering
 	void RecursiveRenderCall_TopLevel(double n_interpolation,Camera& n_camera);
+	
+	// Deletes the child node with the given id 
+	// while also deleting all children of this 
+	// node
 	void RecursiveDeleteCall(unsigned int n_id);
 
 	// recursively updates this node and all children
@@ -72,7 +91,7 @@ public:
 	SceneNode* RecursiveSearch( unsigned int n_id);
 	void AddChild(SceneNode* n_node);
 
-	virtual ~SceneNode(){}
+	virtual ~SceneNode();
 
 };
 

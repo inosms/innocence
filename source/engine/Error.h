@@ -20,6 +20,7 @@
 #define UNIMPLEMENTED std::cout << "[ERROR] Unimplemented!" << std::endl;
 #define ERROR_MESSAGE(message) std::cout << "[ERROR] " << message << " " << __FILE__ << " " << __LINE__ << std::endl
 
+#define INFO(message) std::cout << "[INFO] " << message << std::endl
 class Exception
 {
 	std::string m_message;

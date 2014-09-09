@@ -2,12 +2,17 @@
 #include <iostream>
 
 SceneNode::SceneNode(unsigned int n_id) :
-	m_id( n_id)
+	m_id( n_id),
+	m_matrix(1.f),
+	m_interpolationMatrix(0.f)
 	{}
 
 void SceneNode::RecursiveRenderCall_NonAlpha(double n_interpolation, glm::mat4x4& n_matrix, std::vector<std::pair<SceneNode*,glm::mat4x4> >& n_alphaNodes)
 {
 	glm::mat4x4 tmp_matrixApplied = n_matrix * m_matrix;
+	glm::mat4x4 tmp_interpolatedMatrixAdd = m_interpolationMatrix;
+	tmp_interpolatedMatrixAdd *= n_interpolation;
+	tmp_matrixApplied += tmp_interpolatedMatrixAdd; 
 
 	if( HasAlpha() == true )
 		n_alphaNodes.push_back(std::pair<SceneNode*,glm::mat4x4>(this,n_matrix));
@@ -21,6 +26,9 @@ void SceneNode::RecursiveRenderCall_NonAlpha(double n_interpolation, glm::mat4x4
 void SceneNode::RecursiveRenderCall_All(double n_interpolation, glm::mat4x4& n_matrix)
 {
 	glm::mat4x4 tmp_matrixApplied = n_matrix * m_matrix;
+	glm::mat4x4 tmp_interpolatedMatrixAdd = m_interpolationMatrix;
+	tmp_interpolatedMatrixAdd *= n_interpolation;
+	tmp_matrixApplied += tmp_interpolatedMatrixAdd; 
 
 	VRender(n_interpolation, tmp_matrixApplied);
 
@@ -48,7 +56,15 @@ void SceneNode::SetNewMatrix( glm::mat4x4 n_mat )
 {
 	m_oldMat = m_matrix;
 	m_matrix = n_mat;
+	m_interpolationMatrix = m_matrix - m_oldMat;
 }
+
+void SceneNode::SetNewMatrixNoInterpolation( glm::mat4x4 n_mat)
+{
+	m_oldMat = m_matrix = n_mat;
+	m_interpolationMatrix = glm::mat4x4(0.0f);
+}
+
 
 bool SceneNode::HasAlpha()
 {
@@ -62,7 +78,18 @@ void SceneNode::SetAlpha( bool n_alpha )
 
 void SceneNode::RecursiveDeleteCall(unsigned int n_id)
 {
-	// TODO
+	int i = 0;
+	for( auto i_child : m_children )
+	{
+		if( i_child->m_id == n_id )
+		{
+			m_children.erase(m_children.begin()+i);
+			return;
+		}
+		else
+			i_child->RecursiveDeleteCall(n_id);
+		i++;
+	}
 }
 
 void SceneNode::RecursiveUpdateCall()
@@ -94,4 +121,12 @@ SceneNode* SceneNode::RecursiveSearch( unsigned int n_id)
 void SceneNode::AddChild(SceneNode* n_node)
 {
 	m_children.push_back(n_node);
+}
+
+SceneNode::~SceneNode()
+{
+	for( SceneNode* i_child : m_children )
+	{
+		delete i_child;
+	}
 }

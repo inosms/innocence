@@ -1,8 +1,34 @@
 #ifndef _GAMELOOP_H_
 #define _GAMELOOP_H_
 
+#include "Process.h"
+
+/*
+This is a threaded game loop!
+
+So this main thread handles the rendering
+while the other thread handles the game logic;
+therefore there are TWO Update methods:
+ViewUpdate and LogicUdpate
+
+The m_lastGameLogicTickTime must be increased by the seperate
+game logic thread; this thread just uses the new variable and
+updates if the other updated and interpolates between the different
+frames
+*/
+
+
+class Thread_Process;
+class GameLogic_Thread : public Thread_Process
+{
+public:
+	void VThreadedMethod();
+};
+
+
 class GameLoop
 {
+	friend class GameLogic_Thread;
 protected:
 
 	bool m_running;
@@ -14,10 +40,8 @@ protected:
 	// when the game logic was updated the last time
 	unsigned int m_lastGameLogicTickTime;
 
-	// the maximum number of frames that can be skipped 
-	// if the computer can't keep up and the logic is 
-	// updated multiple times before rendering occurs
-	unsigned short m_maxFrameSkips;
+
+	GameLogic_Thread m_gameLogicThread;
 
 public:
 
@@ -27,7 +51,8 @@ public:
 	// return 0  if stable exit
 	int Run();
 
-	virtual void VUpdate() = 0;
+	virtual void VViewUpdate() = 0;
+	virtual void VLogicUpdate() = 0;
 	virtual void VRender(double n_interpolation) = 0;
 	virtual void VInput() = 0;
 
@@ -41,5 +66,6 @@ public:
 	unsigned int GetGameLogicTicksDelay();
 };
 
-#endif 
+
+#endif
 /* _GAMELOOP_H_ */

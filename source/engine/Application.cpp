@@ -17,17 +17,19 @@ void Application::VRender(double n_interpolation)
 		i_gameView->VRender(n_interpolation);
 }
 
-void Application::VUpdate()
+void Application::VViewUpdate()
 {
 	PEDANTIC_DEBUG_MESSAGE("VUpdate() called");
 
 	for( GameView* i_gameView : m_gameViews )
 	{
-
 		i_gameView->VUpdate();
 	}
-	
-	// todo: thread this!
+}
+
+
+void Application::VLogicUpdate()
+{
 	m_processManager.Update();
 	m_gameLogic->VUpdate();
 }
@@ -41,11 +43,9 @@ bool Application::VInit()
 {
 	if( !m_videoSystem->VInit() ) return false;
 
-	m_gameLogic = VCreateGameLogic();	
+	m_gameLogic = VCreateGameLogic();
 	if( !m_gameLogic ) return false;
 
-	// TODO 
-	
 	return true;
 }
 
@@ -61,9 +61,6 @@ bool Application::VExit()
 	DEBUG_MESSAGE("All processes shut down");
 
 	if( !m_videoSystem->VExit() ) return false;
-
-
-	// TODO 
 
 	DEBUG_MESSAGE("clean exit");
 

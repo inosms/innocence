@@ -1,6 +1,9 @@
 #include "GameLogic.h"
 #include "Error.h"
 
+GameLogic::GameLogic(EventListener* n_listener) :
+	m_listener(n_listener){}
+
 void GameLogic::AddObject( GameObject* n_object )
 {
 	m_objects.push_back(n_object);
@@ -16,7 +19,7 @@ void GameLogic::RemoveObject( unsigned int n_id )
 		{
 			delete m_objects[i];
 			m_objects.erase(m_objects.begin()+i);
-			DEBUG_MESSAGE("Removed object with ID " << n_id); 
+			DEBUG_MESSAGE("Removed object with ID " << n_id);
 
 			return;
 		}
@@ -39,4 +42,6 @@ void GameLogic::VUpdate()
 {
 	for( GameObject* i_gameObject : m_objects )
 		i_gameObject->VUpdate();
+
+	m_listener->ProcessQueuedEvents();
 }

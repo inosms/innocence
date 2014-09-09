@@ -2,7 +2,7 @@
 
 Camera::Camera()
 {
-	m_matrix = glm::translate(m_matrix, glm::vec3(0,-2,-52));
+	m_matrix = glm::translate(m_matrix, glm::vec3(0,-3,-80));
 }
 
 void Camera::SetPosition( glm::vec3 n_pos )

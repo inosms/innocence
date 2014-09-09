@@ -59,17 +59,4 @@ public:
 	ScreenLayer_Scene* GetScene();
 };
 
-// this is the process which is started alongside with
-// GameView_Human as it manages its game own game loop
-class HumanView_Process : public Thread_Process
-{
-	GameView_Human* m_view;
-	unsigned int m_lastTickTime;
-	unsigned int m_tickDelayTime;
-public:
-	HumanView_Process(GameView_Human* n_view);
-	virtual void VThreadedMethod();
-	virtual void VInitialize();
-};
-
 #endif

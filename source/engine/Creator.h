@@ -2,7 +2,7 @@
 #define _CREATOR_H_
 
 class GameLogic;
-class GameView;
+class GameView_Human;
 
 class Creator
 {
@@ -21,7 +21,7 @@ public:
 
 	// similar to CreateGameObject this must set up the SceneNode
 	// and add it to the GameView
-	virtual void CreateScenenNode(GameView& n_gameView) = 0;
+	virtual void CreateSceneNode(GameView_Human& n_gameView) = 0;
 
 	virtual ~Creator(){}
 };

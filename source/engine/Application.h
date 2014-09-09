@@ -31,7 +31,8 @@ public:
 
 	Application();
 
-	virtual void VUpdate();
+	virtual void VViewUpdate();
+	virtual void VLogicUpdate();
 	virtual void VRender(double n_interpolation);
 	virtual void VInput();
 
@@ -39,11 +40,11 @@ public:
 	virtual bool VExit();
 
 	void AddGameView(GameView* n_gameView);
-	
+
 	// remove game view by game view id
 	void RemoveGameView( unsigned int n_id );
 
-	// MUST be implemented by actual game to offer 
+	// MUST be implemented by actual game to offer
 	// the game's game logic (and not some dummy logic...)
 	virtual GameLogic* VCreateGameLogic() = 0;
 };
@@ -56,5 +57,5 @@ extern ProcessManager* GetProcessManager();
 extern VideoSystem* GetVideoSystem();
 
 
-#endif 
+#endif
 /* _APPLICATION_H_ */

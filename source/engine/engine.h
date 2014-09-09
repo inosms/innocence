@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "GameView.h"
 #include "Math.h"
+#include "Mesh.h"
 #include "Process.h"
 #include "ProcessManager.h"
 #include "SceneNode.h"
@@ -22,5 +23,6 @@
 #include "UniqueNumberGenerator.h"
 #include "VideoSystem.h"
 #include "VideoSystem_SDL_OpenGL.h"
+#include "Shader.h"
 
 #endif

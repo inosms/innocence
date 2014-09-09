@@ -1,5 +1,7 @@
 #include "inApplication.h"
 #include "inProcesses.h"
+#include "inGameLogic.h"
+#include "inHumanView.h"
 
 inApplication::inApplication() :
 	Application()
@@ -7,7 +9,8 @@ inApplication::inApplication() :
 
 GameLogic* inApplication::VCreateGameLogic()
 {
+	GameView_Human* tmp_newView= new inHumanView();
+	g_application->AddGameView(tmp_newView);
 
-	// TODO THIS IS A DUMMY LOGIC!! (Well it's the basic one Q.Q)
-	return new GameLogic();
+	return new inGameLogic();
 }

@@ -3,8 +3,9 @@
 #include "Event.h"
 #include "Application.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-#include <OpenGL/gl.h>
+#include <OpenGL/gl3.h>
+#include "Shader.h"
+#include "Math.h"
 
 bool VideoSystem_SDL_OpenGL::VInit()
 {
@@ -18,18 +19,29 @@ bool VideoSystem_SDL_OpenGL::VInit()
 		ERROR_MESSAGE("SDL could not be initialized: " << SDL_GetError() );
 		return false;
 	}
-	else 
+	else
 	{
 		DEBUG_MESSAGE("SDL_init OK");
+
+		// https://stackoverflow.com/questions/23630096/only-glsl-shader-version-120-works-on-mac-os-x
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+  		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+
 		m_window = SDL_CreateWindow( 	"window_test",
 										SDL_WINDOWPOS_UNDEFINED,
 										SDL_WINDOWPOS_UNDEFINED,
 										TMP_SCREEN_WIDTH,
 										TMP_SCREEN_HEIGHT,
-										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN );
-		if( !m_window ) 
+										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
+		// https://bugzilla.libsdl.org/show_bug.cgi?id=1934
+
+		// TODO: glew?
+
+		if( !m_window )
 		{
-			ERROR_MESSAGE( "could not create SDL_Window ");
+			ERROR_MESSAGE( "could not create SDL_Window");
 			return false;
 		}
 
@@ -42,21 +54,23 @@ bool VideoSystem_SDL_OpenGL::VInit()
 		}
 
 		SDL_GL_MakeCurrent(m_window,m_glContext);
+		SDL_GL_SetSwapInterval(1);
 	}
 
-	glViewport( 0.f,0.f,TMP_SCREEN_WIDTH,TMP_SCREEN_HEIGHT );
-
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-	glFrustum(-5.0,5.0,-5.0,5.0,1.0,60.0);
-
-	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();
 
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
+	glViewport( 0.f,0.f,TMP_SCREEN_WIDTH,TMP_SCREEN_HEIGHT );
+
+	// https://stackoverflow.com/questions/22561832/gl-depth-test-does-not-work-in-opengl-3-3
+	
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 
 	DEBUG_MESSAGE( "SDL Init successful" );
-
 
 	return true;
 }
@@ -72,7 +86,7 @@ bool VideoSystem_SDL_OpenGL::VExit()
 
 void VideoSystem_SDL_OpenGL::VClearScreen()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void VideoSystem_SDL_OpenGL::VUpdateScreen()
@@ -96,7 +110,23 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 			{
 				GetEventManager()->SendEvent(std::shared_ptr<Event_Input_Key_Down>(new Event_Input_Key_Down((Event_Input_Key)(A+tmp_event.key.keysym.sym - SDLK_a))));
 			}
+		}
+		else if( tmp_event.type == SDL_MOUSEBUTTONDOWN )
+		{
+			if( tmp_event.button.button == SDL_BUTTON_LEFT)
+			{
+				int tmp_height = 1; int tmp_width = 1;
+				SDL_GetWindowSize(m_window,&tmp_width,&tmp_height);
 
+				GetEventManager()->SendEvent( std::shared_ptr<Event_Input_Mousebutton_Down>(new Event_Input_Mousebutton_Down(LEFT,tmp_event.button.x,tmp_event.button.y,tmp_event.button.x/float(tmp_width),tmp_event.button.y/float(tmp_height))));
+			}
+		}
+		else if( tmp_event.type == SDL_MOUSEMOTION )
+		{
+			int tmp_height = 1; int tmp_width = 1;
+			SDL_GetWindowSize(m_window,&tmp_width,&tmp_height);
+
+			GetEventManager()->SendEvent( std::shared_ptr<Event_Input_Mousemotion> (new Event_Input_Mousemotion(tmp_event.motion.x, tmp_event.motion.y, tmp_event.motion.x/float(tmp_width), tmp_event.motion.y/float(tmp_height))));
 		}
 	}
 }

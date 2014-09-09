@@ -46,7 +46,7 @@ void ProcessManager::KillProcessWithChildren( unsigned int n_id )
 {
 	Process* tmp_toKill = FindProcess(n_id);
 
-	if( tmp_toKill = nullptr )
+	if( tmp_toKill == nullptr )
 		ERROR_MESSAGE("Process with ID " << n_id << " was not found");
 	else
 		// kills this process and all connected child processes

@@ -67,32 +67,3 @@ ScreenLayer_Scene* GameView_Human::GetScene()
 {
 	return m_scene;
 }
-
-
-HumanView_Process::HumanView_Process(GameView_Human* n_view):
-	m_view(n_view)
-	{}
-
-
-void HumanView_Process::VInitialize()
-{
-	m_lastTickTime = g_application->GetLastGameLogicTickTime();
-	m_tickDelayTime = g_application->GetGameLogicTicksDelay();
-
-	Thread_Process::VInitialize();
-}
-
-void HumanView_Process::VThreadedMethod()
-{
-	while( m_running )
-	{
-		while( SDL_GetTicks() >= m_lastTickTime + m_tickDelayTime )
-		{
-			m_view->VUpdate();
-			m_lastTickTime += m_tickDelayTime;
-		}
-
-		double tmp_interpolation = (SDL_GetTicks() - m_lastTickTime)/double(m_tickDelayTime);
-		m_view->VRender(tmp_interpolation);
-	}
-}

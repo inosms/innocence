@@ -3,7 +3,7 @@
 
 #include "VideoSystem.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+#include <OpenGL/gl3.h>
 
 class VideoSystem_SDL_OpenGL : public VideoSystem
 {

@@ -1,6 +1,8 @@
 #ifndef _EVENT_H_
 #define _EVENT_H_
 
+#include "Math.h"
+
 class Event
 {
 protected:
@@ -18,8 +20,11 @@ enum Event_Type
 {
 	Event_Type_CreateNewObject,
 	Event_Type_RemoveObject,
+	Event_Type_MoveSceneNode,
 
 	Event_Type_Input_Key_Down,
+	Event_Type_Input_Mousebutton_Down,
+	Event_Type_Input_Mousemotion,
 
 	// yeah the name says it all...
 	// when declaring a game specific Event_Type_blablabla
@@ -52,6 +57,13 @@ public:
 	Event_RemoveObject(unsigned int n_id);
 };
 
+class Event_MoveSceneNode : public Event
+{
+public:
+	glm::mat4x4 m_mat;
+	unsigned int m_id;
+	Event_MoveSceneNode(glm::mat4x4 n_mat, unsigned int n_id);
+};
 
 // this is just a parent class for all kinds of input events
 class Event_Input : public Event
@@ -70,6 +82,31 @@ class Event_Input_Key_Down : public Event_Input
 public:
 	Event_Input_Key m_key;
 	Event_Input_Key_Down(Event_Input_Key n_key);
+};
+
+enum Event_Input_Mousebutton
+{
+	LEFT,
+	RIGHT
+};
+
+class Event_Input_Mousebutton_Down : public Event_Input
+{
+public:
+	Event_Input_Mousebutton m_button;
+
+	// the click coordiantes
+	unsigned int x,y;
+	float percent_x, percent_y;
+	Event_Input_Mousebutton_Down( Event_Input_Mousebutton n_button, unsigned int n_x, unsigned int n_y, float n_percent_x = 0.f, float n_percent_y = 0.f );
+};
+
+class Event_Input_Mousemotion : public Event_Input
+{
+public:
+	int x,y;
+	float percent_x,percent_y;
+	Event_Input_Mousemotion(int n_x, int n_y, float n_percent_x, float n_percent_y);
 };
 
 #endif
