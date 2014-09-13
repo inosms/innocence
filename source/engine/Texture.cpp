@@ -2,6 +2,8 @@
 #include "SDL2/SDL.h"
 #include "engine.h"
 
+TextureManager g_textureManager;
+
 // https://stackoverflow.com/questions/18667178/opengl-texture-from-sdl-surface
 unsigned int LoadImage(std::string n_path) 
 {
@@ -61,4 +63,23 @@ Texture::Texture(std::string n_path)
 void Texture::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, m_texture);
+}
+
+void TextureManager::AddTexture(std::string n_name)
+{
+	AddTexture(n_name,new Texture(g_application->m_resourcePath+n_name));
+}
+
+void TextureManager::AddTexture(std::string n_name, Texture* n_texture)
+{
+	m_map[n_name] = n_texture;
+}
+
+
+Texture* TextureManager::GetTexture(std::string n_name)
+{
+	if( m_map.find(n_name) == m_map.end() )
+		return nullptr;
+	else
+		return m_map[n_name];
 }

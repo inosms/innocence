@@ -15,5 +15,5 @@ void main()
 	float spec = pow(diff,50);
 	float amb = 0.1;
 	//color = (spec+0.1*diff+amb) * vec3(1,1,1) + out_normal*0.1;
-	color = vec3(texture(tex,out_tex));
+	color = vec3(texture(tex,out_tex).zyx);
 }

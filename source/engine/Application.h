@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 #include "GameLogic.h"
 #include "GameLoop.h"
@@ -17,7 +18,6 @@
 class Application : public GameLoop
 {
 public:
-
 	/** IMPORTANT GAME SUBSYSTEMS */
 	VideoSystem* m_videoSystem;
 	GameLogic* m_gameLogic;
@@ -28,6 +28,9 @@ public:
 	EventManager m_eventManager;
 	ProcessManager m_processManager;
 	/**/
+
+	// the path to the resource folder
+	std::string m_resourcePath = "./";
 
 	Application();
 
