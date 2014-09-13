@@ -5,6 +5,7 @@
 
 class Menu_MainMenu : public Menu
 {
+	Mesh* m_textureMesh;
 public:
 	Menu_MainMenu();
 

@@ -14,6 +14,9 @@ public:
 	Texture(std::string n_path);
 
 	void Bind();
+	
+	// binds the texture to GL_TEXTURE0+n_toWhichActive
+	void Bind(int n_toWhichActive);
 };
 
 class TextureManager

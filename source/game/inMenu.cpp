@@ -4,20 +4,8 @@
 Menu_MainMenu::Menu_MainMenu() : Menu()
 {
 	g_textureManager.AddTexture("menu.png");
-}
 
-void Menu_MainMenu::VUpdate()
-{
-}
-
-void Menu_MainMenu::VRender( double n_interpolation )
-{
-	glActiveTexture( GL_TEXTURE0 );
-
-	Texture* tmp_menuTexture = g_textureManager.GetTexture("menu.png");
-
-	tmp_menuTexture->Bind();
-
+	// a fullscreen quadrat
 	float n_vert[] = {0.f,0.f,0.f,
 					  1.f,0.f,0.f,
 					  1.f,1.f,0.f,
@@ -31,15 +19,24 @@ void Menu_MainMenu::VRender( double n_interpolation )
 					 0.f,0,
 					 0.f,1.f};
 
-	static Mesh* tmp_mesh = new Mesh(n_vert,nullptr,nullptr,n_tex,18);
+	m_textureMesh = new Mesh(n_vert,nullptr,nullptr,n_tex,18);
+}
+
+void Menu_MainMenu::VUpdate()
+{
+}
+
+void Menu_MainMenu::VRender( double n_interpolation )
+{
+	Texture* tmp_menuTexture = g_textureManager.GetTexture("menu.png");
+	tmp_menuTexture->Bind(0);
+	test->SetTexture("tex",0);
 
 	test->SetMat("modelview",glm::mat4x4());
 	test->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
 	test->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
-	test->SetTexture("tex",0);
 
-
-	tmp_mesh->Render();
+	m_textureMesh->Render();
 }
 
 bool Menu_MainMenu::VOnEvent(Event_Input& n_event)
