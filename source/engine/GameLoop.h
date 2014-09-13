@@ -56,8 +56,8 @@ public:
 	virtual void VRender(double n_interpolation) = 0;
 	virtual void VInput() = 0;
 
-	virtual bool VInit() = 0;
-	virtual bool VExit() = 0;
+	virtual void VInit() = 0;
+	virtual void VExit() = 0;
 
 	// sets running to false
 	void Kill();

@@ -36,8 +36,8 @@ public:
 	virtual void VRender(double n_interpolation);
 	virtual void VInput();
 
-	virtual bool VInit();
-	virtual bool VExit();
+	virtual void VInit();
+	virtual void VExit();
 
 	void AddGameView(GameView* n_gameView);
 

@@ -39,17 +39,15 @@ void Application::VInput()
 	m_videoSystem->VTranslateInput();
 }
 
-bool Application::VInit()
+void Application::VInit()
 {
-	if( !m_videoSystem->VInit() ) return false;
+	m_videoSystem->VInit();
 
 	m_gameLogic = VCreateGameLogic();
-	if( !m_gameLogic ) return false;
-
-	return true;
+	if( !m_gameLogic ) throw Exception("game logic must not be null");
 }
 
-bool Application::VExit()
+void Application::VExit()
 {
 	// try to stop all processes
 	m_processManager.KillAllProcesses();
@@ -60,11 +58,9 @@ bool Application::VExit()
 		}
 	DEBUG_MESSAGE("All processes shut down");
 
-	if( !m_videoSystem->VExit() ) return false;
+	m_videoSystem->VExit();
 
 	DEBUG_MESSAGE("clean exit");
-
-	return true;
 }
 
 void Application::AddGameView(GameView* n_gameView)

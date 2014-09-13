@@ -12,8 +12,8 @@ class VideoSystem_SDL_OpenGL : public VideoSystem
 	SDL_GLContext m_glContext;
 
 public:
-	virtual bool VInit();
-	virtual bool VExit();
+	virtual void VInit();
+	virtual void VExit();
 
 	virtual void VClearScreen();
 	virtual void VUpdateScreen();

@@ -8,64 +8,43 @@
 #include "Shader.h"
 #include "Math.h"
 
-bool VideoSystem_SDL_OpenGL::VInit()
+void VideoSystem_SDL_OpenGL::VInit()
 {
 	PEDANTIC_DEBUG_MESSAGE("start SDL VInit()");
 
 	const int TMP_SCREEN_WIDTH = 640;
 	const int TMP_SCREEN_HEIGHT = 480;
 
-	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )
-	{
-		ERROR_MESSAGE("SDL could not be initialized: " << SDL_GetError() );
-		return false;
-	}
-	else
-	{
-		DEBUG_MESSAGE("SDL_init OK");
+	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 ) throw Exception( std::string("SDL could not be initialized: ") + SDL_GetError() );
 
-		int flags=IMG_INIT_JPG|IMG_INIT_PNG;
-		int initted=IMG_Init(flags);
-		if((initted&flags) != flags) {
-		printf("IMG_Init: Failed to init required jpg and png support!\n");
-		printf("IMG_Init: %s\n", IMG_GetError());
-		// handle error
-		}
+	DEBUG_MESSAGE("SDL_init OK");
 
-		SDL_CreateWindowAndRenderer(	TMP_SCREEN_WIDTH,
-										TMP_SCREEN_HEIGHT,
-										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI, &m_window,&m_renderer);
-		// https://bugzilla.libsdl.org/show_bug.cgi?id=1934
+	// Load SDL_image
+	int flags=IMG_INIT_JPG|IMG_INIT_PNG;
+	int initted=IMG_Init(flags);
+	if((initted&flags) != flags) throw Exception(std::string("Failed to load SDL_Image") + std::string(IMG_GetError()));
 
-		// https://stackoverflow.com/questions/23630096/only-glsl-shader-version-120-works-on-mac-os-x
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-  		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_CreateWindowAndRenderer(	TMP_SCREEN_WIDTH,
+									TMP_SCREEN_HEIGHT,
+									SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI, &m_window,&m_renderer);
+	// https://bugzilla.libsdl.org/show_bug.cgi?id=1934
 
-		// TODO: glew?
+	// https://stackoverflow.com/questions/23630096/only-glsl-shader-version-120-works-on-mac-os-x
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-		if( !m_window )
-		{
-			ERROR_MESSAGE( "could not create SDL_Window");
-			return false;
-		}
-		if( !m_renderer )
-		{
-			ERROR_MESSAGE( "could not create SDL_Renderer");
-			return false;
-		}
+	// TODO: glew?
 
-		m_glContext = SDL_GL_CreateContext(m_window);
+	if( !m_window ) throw Exception("could not create SDL_Window");
+	if( !m_renderer ) throw Exception("could not create SDL_Renderer");
+	
+	m_glContext = SDL_GL_CreateContext(m_window);
 
-		if( !m_glContext )
-		{
-			ERROR_MESSAGE( "could not create SDL_GL_Context" );
-			return false;
-		}
+	if( !m_glContext ) throw Exception( "could not create SDL_GL_Context" );
 
-		SDL_GL_MakeCurrent(m_window,m_glContext);
-		SDL_GL_SetSwapInterval(1);
-	}
+	SDL_GL_MakeCurrent(m_window,m_glContext);
+	SDL_GL_SetSwapInterval(1);
 
 
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
@@ -81,17 +60,13 @@ bool VideoSystem_SDL_OpenGL::VInit()
 	glFrontFace(GL_CCW);
 
 	DEBUG_MESSAGE( "SDL Init successful" );
-
-	return true;
 }
 
-bool VideoSystem_SDL_OpenGL::VExit()
+void VideoSystem_SDL_OpenGL::VExit()
 {
 	SDL_GL_DeleteContext( m_glContext );
 	SDL_DestroyWindow( m_window );
 	SDL_Quit();
-
-	return true;
 }
 
 void VideoSystem_SDL_OpenGL::VClearScreen()

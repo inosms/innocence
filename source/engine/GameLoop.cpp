@@ -14,11 +14,7 @@ GameLoop::GameLoop()  : m_running( true ),
 
 int GameLoop::Run()
 {
-	if( VInit() == false )
-	{
-		ERROR_MESSAGE("An Error occured during Init Q.Q");
-		return -1;
-	}
+	VInit();
 
 	// as the ticktime is always update by another thread; a simple !=
 	// checks if an update has occured and updates this thread then
@@ -50,8 +46,7 @@ int GameLoop::Run()
 	// end the main game logic thread
 	m_gameLogicThread.VOnRequestKill();
 
-	if( !VExit() ) return -1;
-	else return 0;
+	VExit();
 }
 
 void GameLoop::Kill()
