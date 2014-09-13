@@ -8,6 +8,7 @@
 class VideoSystem_SDL_OpenGL : public VideoSystem
 {
 	SDL_Window* m_window;
+	SDL_Renderer* m_renderer;
 	SDL_GLContext m_glContext;
 
 public:
@@ -18,6 +19,7 @@ public:
 	virtual void VUpdateScreen();
 
 	virtual void VTranslateInput();
+	SDL_Renderer* GetRenderer();
 };
 
 #endif

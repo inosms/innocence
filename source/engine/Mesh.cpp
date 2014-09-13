@@ -138,8 +138,8 @@ Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textu
 		{
 			glGenBuffers(1,&m_vbo[3]);
 			glBindBuffer(GL_ARRAY_BUFFER,m_vbo[3]);
-			glBufferData(GL_ARRAY_BUFFER,n_size*sizeof(GLfloat),n_textureCoords,GL_STATIC_DRAW);
-			glVertexAttribPointer((GLuint)3,3,GL_FLOAT,GL_FALSE,0,0);
+			glBufferData(GL_ARRAY_BUFFER,(n_size/3)*2*sizeof(GLfloat),n_textureCoords,GL_STATIC_DRAW);
+			glVertexAttribPointer((GLuint)3,2,GL_FLOAT,GL_FALSE,0,0);
 			glEnableVertexAttribArray(3);
 		}
 

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include <OpenGL/gl.h>
+#include <OpenGL/gl3.h>
 #include "Math.h"
 
 class Shader
@@ -16,7 +16,7 @@ class Shader
 
   GLuint m_program;
 
-  std::map<std::string,GLuint> m_variableToLocation;
+  std::map<std::string,GLint> m_variableToLocation;
 
 public:
   Shader( std::string n_vertexShaderFile, std::string n_geometryShaderFile, std::string n_fragmentShaderFile );
@@ -26,12 +26,13 @@ public:
   void Begin();
   void End();
 
-  GLuint Location(std::string n_variable);
+  GLint Location(std::string n_variable);
   GLuint ID();
 
 
   // easy setter for ultralazy peoplez
   void SetMat(std::string n_matVariable, glm::mat4x4 n_mat);
+  void SetTexture(std::string n_name, int loc);
 };
 
 #endif

@@ -20,10 +20,10 @@ void inHumanView::VInit()
 	}
 	g_meshManager.AddMesh( "monkey" , new Mesh("../source/game/untitled.obj"));
 }
+
 void inHumanView::VRender(double n_interpolation)
 {
 	test->Begin();
 		GameView_Human::VRender(n_interpolation);
-		g_meshManager.GetMesh("monkey")->Render();
 	test->End();
 }

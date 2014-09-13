@@ -134,11 +134,14 @@ void Shader::End()
   glUseProgram(0);
 }
 
-GLuint Shader::Location(std::string n_variable)
+GLint Shader::Location(std::string n_variable)
 {
   if( m_variableToLocation.find(n_variable) == m_variableToLocation.end() )
   {
-    m_variableToLocation[n_variable] = glGetUniformLocation(m_program,n_variable.c_str());
+    GLint tmp_newLoc = glGetUniformLocation(m_program,n_variable.c_str());
+    if( tmp_newLoc < 0 ) throw Exception("could not find variable " + n_variable + " in Shader");
+    
+    m_variableToLocation[n_variable] = tmp_newLoc;
   } 
 
   return m_variableToLocation[n_variable];
@@ -152,5 +155,10 @@ GLuint Shader::ID()
 void Shader::SetMat(std::string n_matVariable, glm::mat4x4 n_mat)
 {
   glUniformMatrix4fv(Location(n_matVariable),1,GL_FALSE,&n_mat[0][0]);
+}
+
+void Shader::SetTexture(std::string n_name, int loc)
+{
+  glUniform1i( Location(n_name), loc );
 }
 

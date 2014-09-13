@@ -3,6 +3,7 @@
 #include "Event.h"
 #include "Application.h"
 #include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
 #include <OpenGL/gl3.h>
 #include "Shader.h"
 #include "Math.h"
@@ -23,25 +24,34 @@ bool VideoSystem_SDL_OpenGL::VInit()
 	{
 		DEBUG_MESSAGE("SDL_init OK");
 
+		int flags=IMG_INIT_JPG|IMG_INIT_PNG;
+		int initted=IMG_Init(flags);
+		if((initted&flags) != flags) {
+		printf("IMG_Init: Failed to init required jpg and png support!\n");
+		printf("IMG_Init: %s\n", IMG_GetError());
+		// handle error
+		}
+
+		SDL_CreateWindowAndRenderer(	TMP_SCREEN_WIDTH,
+										TMP_SCREEN_HEIGHT,
+										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI, &m_window,&m_renderer);
+		// https://bugzilla.libsdl.org/show_bug.cgi?id=1934
+
 		// https://stackoverflow.com/questions/23630096/only-glsl-shader-version-120-works-on-mac-os-x
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
   		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-
-		m_window = SDL_CreateWindow( 	"window_test",
-										SDL_WINDOWPOS_UNDEFINED,
-										SDL_WINDOWPOS_UNDEFINED,
-										TMP_SCREEN_WIDTH,
-										TMP_SCREEN_HEIGHT,
-										SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
-		// https://bugzilla.libsdl.org/show_bug.cgi?id=1934
 
 		// TODO: glew?
 
 		if( !m_window )
 		{
 			ERROR_MESSAGE( "could not create SDL_Window");
+			return false;
+		}
+		if( !m_renderer )
+		{
+			ERROR_MESSAGE( "could not create SDL_Renderer");
 			return false;
 		}
 
@@ -129,4 +139,9 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 			GetEventManager()->SendEvent( std::shared_ptr<Event_Input_Mousemotion> (new Event_Input_Mousemotion(tmp_event.motion.x, tmp_event.motion.y, tmp_event.motion.x/float(tmp_width), tmp_event.motion.y/float(tmp_height))));
 		}
 	}
+}
+
+SDL_Renderer* VideoSystem_SDL_OpenGL::GetRenderer()
+{
+	return m_renderer;
 }
