@@ -8,15 +8,22 @@
 class Texture
 {
 	unsigned int m_texture;
+	unsigned int m_height, m_width;
+
+	void InitFromSurface(SDL_Surface* n_surface);
 
 public:
 
 	Texture(std::string n_path);
+	Texture(SDL_Surface* n_surface);
 
 	void Bind();
 	
 	// binds the texture to GL_TEXTURE0+n_toWhichActive
 	void Bind(int n_toWhichActive);
+
+	unsigned int GetHeight();
+	unsigned int GetWidth();
 };
 
 class TextureManager

@@ -4,6 +4,7 @@
 #include "Application.h"
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
+#include <SDL2_ttf/SDL_ttf.h>
 #include <OpenGL/gl3.h>
 #include "Shader.h"
 #include "Math.h"
@@ -21,8 +22,10 @@ void VideoSystem_SDL_OpenGL::VInit()
 
 	// Load SDL_image
 	int flags=IMG_INIT_JPG|IMG_INIT_PNG;
-	int initted=IMG_Init(flags);
-	if((initted&flags) != flags) throw Exception(std::string("Failed to load SDL_Image") + std::string(IMG_GetError()));
+	if((IMG_Init(flags)&flags) != flags) throw Exception(std::string("Failed to load SDL_Image") + std::string(IMG_GetError()));
+
+	// load ttf
+	if(TTF_Init()==-1) throw Exception(std::string("TTF_Init: ") + TTF_GetError());
 
 	SDL_CreateWindowAndRenderer(	TMP_SCREEN_WIDTH,
 									TMP_SCREEN_HEIGHT,
@@ -67,6 +70,8 @@ void VideoSystem_SDL_OpenGL::VExit()
 {
 	SDL_GL_DeleteContext( m_glContext );
 	SDL_DestroyWindow( m_window );
+	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 }
 

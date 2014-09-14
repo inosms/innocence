@@ -140,7 +140,7 @@ GLint Shader::Location(std::string n_variable)
   {
     GLint tmp_newLoc = glGetUniformLocation(m_program,n_variable.c_str());
     if( tmp_newLoc < 0 ) throw Exception("could not find variable " + n_variable + " in Shader");
-    
+
     m_variableToLocation[n_variable] = tmp_newLoc;
   } 
 
@@ -162,3 +162,7 @@ void Shader::SetTexture(std::string n_name, int loc)
   glUniform1i( Location(n_name), loc );
 }
 
+void Shader::SetFloat(std::string n_name, float n_float)
+{
+  glUniform1f(Location(n_name),n_float);
+}

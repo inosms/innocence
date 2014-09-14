@@ -33,6 +33,7 @@ public:
   // easy setter for ultralazy peoplez
   void SetMat(std::string n_matVariable, glm::mat4x4 n_mat);
   void SetTexture(std::string n_name, int loc);
+  void SetFloat(std::string n_name, float n_float);
 };
 
 #endif

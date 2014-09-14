@@ -1,11 +1,12 @@
 #version 330 core
 
 uniform sampler2D tex;
+uniform float texture_multiplier;
 
 in vec3 out_normal;
 in vec2 out_tex;
 
-out vec3 color;
+out vec4 color;
 
 
 void main()
@@ -15,5 +16,5 @@ void main()
 	float spec = pow(diff,50);
 	float amb = 0.1;
 	//color = (spec+0.1*diff+amb) * vec3(1,1,1) + out_normal*0.1;
-	color = vec3(texture(tex,out_tex).zyx);
+	color = texture(tex,out_tex).zyxw * texture_multiplier;
 }

@@ -5,7 +5,7 @@
 
 inHumanView::inHumanView() : GameView_Human( new inHumanViewListener(this) )
 {
-	GetEventManager()->SendEvent( std::shared_ptr<Event_AddScreenLayer>(new Event_AddScreenLayer(new Menu_MainMenu())));
+	GetEventManager()->SendEvent( std::shared_ptr<Event_AddScreenLayer>(new Event_AddScreenLayer(new Menu_Start())));
 }
 
 Shader* test = nullptr;

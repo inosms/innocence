@@ -9,6 +9,7 @@ Menu::Menu() : ScreenLayer(ScreenLayer_Type_Menu)
 
 void Menu::GoToNextScreenLayer(ScreenLayer* n_next)
 {
+	if( IsActive() == false ) return;
 	RemoveThis();
 	GetEventManager()->SendEvent( std::shared_ptr<Event_AddScreenLayer>( new Event_AddScreenLayer(n_next)));
 	}

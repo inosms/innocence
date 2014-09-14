@@ -30,7 +30,7 @@ public:
 	/**/
 
 	// the path to the resource folder
-	std::string m_resourcePath = "./";
+	std::string m_resourcePath = "../resources/";
 
 	Application();
 

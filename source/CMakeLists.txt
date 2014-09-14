@@ -19,6 +19,7 @@ ENDIF()
 IF( APPLE )
 	FIND_LIBRARY( SDL2_LIBRARY SDL2 )
 	FIND_LIBRARY( SDL2IMAGE_LIBRARY SDL2_image )
+	FIND_LIBRARY( SDL2TTF_LIBRARY SDL2_ttf )
 	FIND_LIBRARY( OPENGL_LIBRARY OpenGL )
 ENDIF()
 
@@ -28,4 +29,4 @@ add_subdirectory(engine)
 add_subdirectory(game)
 
 add_executable(innocence main.cpp)
-target_link_libraries( innocence engine game ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${OPENGL_LIBRARY} )
+target_link_libraries( innocence engine game ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_LIBRARY} )

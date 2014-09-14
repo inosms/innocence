@@ -8,6 +8,7 @@
 #include "Event.h"
 #include "EventListener.h"
 #include "EventManager.h"
+#include "Font.h"
 #include "GameLogic.h"
 #include "GameLoop.h"
 #include "GameObject.h"
