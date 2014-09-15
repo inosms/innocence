@@ -18,6 +18,9 @@ public:
 	virtual void VClearScreen();
 	virtual void VUpdateScreen();
 
+	virtual unsigned int VGetWidth();
+	virtual unsigned int VGetHeight();
+
 	virtual void VTranslateInput();
 	SDL_Renderer* GetRenderer();
 };

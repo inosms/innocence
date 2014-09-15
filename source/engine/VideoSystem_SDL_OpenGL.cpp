@@ -13,8 +13,8 @@ void VideoSystem_SDL_OpenGL::VInit()
 {
 	PEDANTIC_DEBUG_MESSAGE("start SDL VInit()");
 
-	const int TMP_SCREEN_WIDTH = 0;
-	const int TMP_SCREEN_HEIGHT = 0;
+	const int TMP_SCREEN_WIDTH = 1280;
+	const int TMP_SCREEN_HEIGHT = 720;
 
 	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 ) throw Exception( std::string("SDL could not be initialized: ") + SDL_GetError() );
 
@@ -29,8 +29,8 @@ void VideoSystem_SDL_OpenGL::VInit()
 
 	SDL_CreateWindowAndRenderer(	TMP_SCREEN_WIDTH,
 									TMP_SCREEN_HEIGHT,
-									SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI |
-										SDL_WINDOW_FULLSCREEN_DESKTOP, &m_window,&m_renderer);
+									SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI /*|
+										SDL_WINDOW_FULLSCREEN_DESKTOP*/, &m_window,&m_renderer);
 	// https://bugzilla.libsdl.org/show_bug.cgi?id=1934
 
 	// https://stackoverflow.com/questions/23630096/only-glsl-shader-version-120-works-on-mac-os-x
@@ -63,6 +63,9 @@ void VideoSystem_SDL_OpenGL::VInit()
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
 	DEBUG_MESSAGE( "SDL Init successful" );
 }
 
@@ -84,6 +87,21 @@ void VideoSystem_SDL_OpenGL::VUpdateScreen()
 {
 	SDL_GL_SwapWindow(m_window);
 }
+
+unsigned int VideoSystem_SDL_OpenGL::VGetWidth()
+{
+	int w,h;
+	SDL_GetWindowSize(m_window,&w,&h);
+	return w;
+}
+
+unsigned int VideoSystem_SDL_OpenGL::VGetHeight()
+{
+	int w,h;
+	SDL_GetWindowSize(m_window,&w,&h);
+	return h;
+}
+
 
 void VideoSystem_SDL_OpenGL::VTranslateInput()
 {

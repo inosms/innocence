@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include "Texture.h"
 
 class Mesh
 {
@@ -12,6 +13,8 @@ class Mesh
 	unsigned int m_vao;
 
 	unsigned int m_verticesCount;
+
+	Texture* m_texture = nullptr;
 public:
 
 	// init via obj file
@@ -21,6 +24,14 @@ public:
 	Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size );
 
 	void Render();
+
+	void SetTexture(Texture* n_texture);
+
+	static Mesh* GetTexturedRect(float n_width, float n_height, Texture* n_texture);
+	static Mesh* GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture);
+	static Mesh* GetTexturedRect(float n_width, float n_height, Texture* n_texture,float n_textureXScale, float n_textureYScale);
+	static Mesh* GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale);
+
 };
 
 class MeshManager

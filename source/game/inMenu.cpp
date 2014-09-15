@@ -6,32 +6,17 @@ Menu_Start::Menu_Start() : Menu()
 {
 	g_textureManager.AddTexture("start_menu.png");
 
-	// a fullscreen quadrat
-	float n_vert[] = {0.f,0.f,0.f,
-					  1.f,0.f,0.f,
-					  1.f,1.f,0.f,
-					  1.f,1.f,0.f,
-					  0.f,1.f,0.f,
-					  0.f,0.f,0.f};
-	float n_tex[] = {0.f,1.f,
-					 1,1.f,
-					 1,0,
-					 1,0,
-					 0.f,0,
-					 0.f,1.f};
-
-	m_textureMesh = new Mesh(n_vert,nullptr,nullptr,n_tex,18);
+	// a fullscreenRect
+	m_textureMesh = Mesh::GetTexturedRect(1,1,0.5,0.5,g_textureManager.GetTexture("start_menu.png"));
 }
 
 void Menu_Start::VUpdate()
 {
-	if( m_counter++ > m_maxCounter ) GoToNextScreenLayer(new Menu_MainMenu());
+	if( m_counter++ > m_maxCounter ) GoToNextScreenLayer(new Menu_Title());
 }
 
 void Menu_Start::VRender( double n_interpolation )
 {
-	Texture* tmp_menuTexture = g_textureManager.GetTexture("start_menu.png");
-	tmp_menuTexture->Bind(0);
 	test->SetTexture("tex",0);
 	if( m_counter >= 100 )
 	test->SetFloat("texture_multiplier",1.f-(float(m_counter-100)/(m_maxCounter-100)));
@@ -50,12 +35,75 @@ bool Menu_Start::VOnEvent(Event_Input& n_event)
 }
 
 
+Menu_Title::Menu_Title() : m_backgroundColor()
+{
+	g_textureManager.AddTexture("title_menu_0.png");
+	m_meshLayer0 = Mesh::GetTexturedRect(1,1,0.5,0.5,g_textureManager.GetTexture("title_menu_0.png"));
+	g_textureManager.AddTexture("title_menu_1.png");
+	m_meshLayer1 = Mesh::GetTexturedRect(1,1,0.5,0.5,g_textureManager.GetTexture("title_menu_1.png"));
+
+	m_interpolator.Push(glm::vec3(0,175/255.f,240/255.f));
+	m_interpolator.Push(glm::vec3(0,166/255.f,191/255.f));
+	m_interpolator.Push(glm::vec3(129/255,185/255.f,215/255.f));
+
+	g_fontManager.AddFont("TravelingTypewriter.ttf",255);
+	SDL_Color textColor = { 0, 0, 0 };
+	Texture* tmp_text = g_fontManager.GetFont("TravelingTypewriter.ttf")->GetTextureForText("PRESS ANY KEY +++ ",textColor);
+
+	// this should really be enough even for large screens
+	// furthermore this doesn't use up any more memory
+	// as the texture is only stored once
+	float tmp_width = 5; 
+	float tmp_segmentsCount = 8; // how often the text is repeated
+	float tmp_ratioHeightWidth = tmp_text->GetHeight()/float(tmp_text->GetWidth());
+	float tmp_height = tmp_ratioHeightWidth*(tmp_width/tmp_segmentsCount);
+	m_meshLayer3 = Mesh::GetTexturedRect(tmp_width,tmp_height,tmp_text,tmp_segmentsCount,1);
+	// TODO memory leak tmp_text
+}
+
+void Menu_Title::VUpdate()
+{
+	m_interpolator.Update(0.01);
+	m_textureOffset += 0.002;
+}
+void Menu_Title::VRender( double n_interpolation )
+{
+	test->SetTexture("tex",0);
+	test->SetMat("modelview",glm::mat4x4());
+	test->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
+	test->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));	
+	test->SetVec3("texture_color",1,1,1);
+	test->SetFloat("texture_u_offset",m_textureOffset*0.1);
+	m_meshLayer0->Render();
+	test->SetFloat("texture_u_offset",1);
+
+	test->SetVec3("texture_color",m_interpolator.Get());
+	m_meshLayer1->Render();
+	test->SetVec3("texture_color",1,1,1);
+
+	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
+	test->SetMat("projection",glm::ortho(0.f,tmp_ratio,0.f,1.f,-1.f,1.f));
+	glm::mat4x4 tmp_rotate = glm::rotate(glm::mat4x4(),float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
+	test->SetMat("modelview",tmp_rotate);
+	test->SetFloat("texture_u_offset",m_textureOffset);
+	m_meshLayer3->Render();
+	test->SetFloat("texture_u_offset",0);
+
+}
+bool Menu_Title::VOnEvent(Event_Input& n_event)
+{
+	if( n_event.GetType() == Event_Type_Input_Key_Down )
+	{
+		//GoToNextScreenLayer(new Menu_MainMenu());
+		return true;	
+	}
+	return false;
+}
+
+
 Menu_MainMenu::Menu_MainMenu() : Menu()
 {
 	g_textureManager.AddTexture("menu.png");
-	g_fontManager.AddFont("TravelingTypewriter.ttf",255);
-	SDL_Color textColor = { 255, 255, 255 };
-	m_text = g_fontManager.GetFont("TravelingTypewriter.ttf")->GetTextureForText("test123",textColor);
 
 	// a fullscreen quadrat
 	float n_vert[] = {0.f,0.f,0.f,
@@ -73,21 +121,6 @@ Menu_MainMenu::Menu_MainMenu() : Menu()
 
 	m_textureMesh = new Mesh(n_vert,nullptr,nullptr,n_tex,18);
 
-	float tmp_newHeight = m_text->GetHeight()/float(m_text->GetWidth());
-	float n_vert2[] = {0.f,0.f,0.f,
-					  1.f,0.f,0.f,
-					  1.f,tmp_newHeight,0.f,
-					  1.f,tmp_newHeight,0.f,
-					  0.f,tmp_newHeight,0.f,
-					  0.f,0.f,0.f};
-	float n_tex2[] = {0.f,1.f,
-					 2,1.f,
-					 2,0,
-					 2,0,
-					 0.f,0,
-					 0.f,1.f};
-
-	m_textMesh = new Mesh(n_vert2,nullptr,nullptr,n_tex2,18);
 }
 
 void Menu_MainMenu::VUpdate()
@@ -96,8 +129,7 @@ void Menu_MainMenu::VUpdate()
 
 void Menu_MainMenu::VRender( double n_interpolation )
 {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
 	Texture* tmp_menuTexture = g_textureManager.GetTexture("menu.png");
 	tmp_menuTexture->Bind(0);
 	test->SetTexture("tex",0);
@@ -105,9 +137,6 @@ void Menu_MainMenu::VRender( double n_interpolation )
 	test->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
 	test->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
 	m_textureMesh->Render();
-
-	m_text->Bind(0);
-	m_textMesh->Render();
 }
 
 bool Menu_MainMenu::VOnEvent(Event_Input& n_event)

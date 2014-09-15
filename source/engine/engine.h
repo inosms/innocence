@@ -3,6 +3,7 @@
 
 #include "Application.h"
 #include "Camera.h"
+#include "Color.h"
 #include "Creator.h"
 #include "Error.h"
 #include "Event.h"

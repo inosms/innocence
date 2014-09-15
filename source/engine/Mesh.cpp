@@ -148,9 +148,49 @@ Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textu
 
 void Mesh::Render()
 {
+	if( m_texture ) m_texture->Bind(0);
 	glBindVertexArray(m_vao);
 		glDrawArrays(GL_TRIANGLES,0,m_verticesCount);
 	glBindVertexArray(0);
+}
+
+void Mesh::SetTexture(Texture* n_texture)
+{
+	m_texture = n_texture;
+}
+
+Mesh* Mesh::GetTexturedRect(float n_width, float n_height, Texture* n_texture)
+{
+	return Mesh::GetTexturedRect(n_width,n_height,n_texture,1,1);
+}
+
+Mesh* Mesh::GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture)
+{
+	return Mesh::GetTexturedRect(n_width,n_height,n_centerX,n_centerY,n_texture,1,1);
+}
+
+Mesh* Mesh::GetTexturedRect(float n_width, float n_height,Texture* n_texture, float n_textureXScale, float n_textureYScale)
+{
+	return Mesh::GetTexturedRect(n_width,n_height,0,0,n_texture,n_textureXScale,n_textureYScale);
+}
+
+Mesh* Mesh::GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale)
+{
+	float n_vert[] = {-n_width/2+n_centerX,-n_height/2+n_centerY,0.f,
+					  n_width/2+n_centerX,-n_height/2+n_centerY,0.f,
+					  n_width/2+n_centerX,n_height/2+n_centerY,0.f,
+					  n_width/2+n_centerX,n_height/2+n_centerY,0.f,
+					  -n_width/2+n_centerX,n_height/2+n_centerY,0.f,
+					  -n_width/2+n_centerX,-n_height/2+n_centerY,0.f};
+	float n_tex[] = {0.f,n_textureYScale,
+					 n_textureXScale,n_textureYScale,
+					 n_textureXScale,0,
+					 n_textureXScale,0,
+					 0.f,0,
+					 0.f,n_textureYScale};
+	Mesh* tmp_new = new Mesh(n_vert,nullptr,nullptr,n_tex,18);
+	tmp_new->SetTexture(n_texture);
+	return tmp_new;
 }
 
 void MeshManager::AddMesh(std::string n_name, Mesh* n_mesh)

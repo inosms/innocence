@@ -166,3 +166,13 @@ void Shader::SetFloat(std::string n_name, float n_float)
 {
   glUniform1f(Location(n_name),n_float);
 }
+
+void Shader::SetVec3(std::string n_name,float n_r, float n_g, float n_b)
+{
+  glUniform3f(Location(n_name),n_r,n_g,n_b);
+}
+
+void Shader::SetVec3(std::string n_name,glm::vec3 n_vec)
+{
+  SetVec3(n_name,n_vec.x,n_vec.y,n_vec.z);
+}

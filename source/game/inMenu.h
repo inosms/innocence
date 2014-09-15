@@ -16,11 +16,26 @@ public:
 	virtual bool VOnEvent(Event_Input& n_event);
 };
 
+class Menu_Title : public Menu
+{
+	Mesh* m_meshLayer0;
+	Mesh* m_meshLayer1;
+	glm::vec3 m_backgroundColor;
+	ColorInterpolator m_interpolator;
+	float m_textureOffset = 0;
+	Mesh* m_meshLayer2;
+	Mesh* m_meshLayer3;
+public:
+	Menu_Title();
+
+	virtual void VUpdate();
+	virtual void VRender( double n_interpolation );
+	virtual bool VOnEvent(Event_Input& n_event);
+};
+
 class Menu_MainMenu : public Menu
 {
 	Mesh* m_textureMesh;
-	Texture* m_text;
-	Mesh* m_textMesh;
 public:
 	Menu_MainMenu();
 

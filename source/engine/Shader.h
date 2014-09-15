@@ -34,6 +34,8 @@ public:
   void SetMat(std::string n_matVariable, glm::mat4x4 n_mat);
   void SetTexture(std::string n_name, int loc);
   void SetFloat(std::string n_name, float n_float);
+  void SetVec3(std::string n_name,float n_r, float n_g, float n_b);
+  void SetVec3(std::string n_name,glm::vec3 n_vec);
 };
 
 #endif
