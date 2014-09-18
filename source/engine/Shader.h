@@ -38,4 +38,20 @@ public:
   void SetVec3(std::string n_name,glm::vec3 n_vec);
 };
 
+class ShaderManager
+{
+  std::map<std::string, Shader*> m_map;
+public:
+
+  // adds a shader by name and shader source by relative to resource folder path
+  // also returns newly created shader
+  Shader* AddShader(std::string n_name, std::string n_vs, std::string n_gs, std::string n_fs);
+
+  // the name must be relative to the resource path
+  void AddShader(std::string n_name, Shader* n_shader);
+  Shader* GetShader(std::string n_name);
+};
+
+extern ShaderManager g_shaderManager;
+
 #endif

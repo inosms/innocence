@@ -2,8 +2,16 @@
 #include "inHumanView.h"
 #include <cmath>
 
+
+Shader* g_menuShader = nullptr;
+
+
+
 Menu_Start::Menu_Start() : Menu()
 {
+	// first load the shader which will be used by all menus
+	g_menuShader = g_shaderManager.AddShader("menushader","menu_vertex.shader","","menu_fragment.shader");
+
 	g_textureManager.AddTexture("start_menu.png");
 
 	// a fullscreenRect
@@ -17,16 +25,18 @@ void Menu_Start::VUpdate()
 
 void Menu_Start::VRender( double n_interpolation )
 {
-	test->SetTexture("tex",0);
+	g_menuShader->Begin();
+	g_menuShader->SetTexture("tex",0);
 	if( m_counter >= 100 )
-	test->SetFloat("texture_multiplier",1.f-(float(m_counter-100)/(m_maxCounter-100)));
+	g_menuShader->SetFloat("texture_multiplier",1.f-(float(m_counter-100)/(m_maxCounter-100)));
 
-	test->SetMat("modelview",glm::mat4x4());
-	test->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-	test->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
+	g_menuShader->SetMat("modelview",glm::mat4x4());
+	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
+	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
 
 	m_textureMesh->Render();
-	test->SetFloat("texture_multiplier",1.f);
+	g_menuShader->SetFloat("texture_multiplier",1.f);
+	g_menuShader->End();
 }
 
 bool Menu_Start::VOnEvent(Event_Input& n_event)
@@ -68,26 +78,28 @@ void Menu_Title::VUpdate()
 }
 void Menu_Title::VRender( double n_interpolation )
 {
-	test->SetTexture("tex",0);
-	test->SetMat("modelview",glm::mat4x4());
-	test->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-	test->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));	
-	test->SetVec3("texture_color",1,1,1);
-	test->SetFloat("texture_u_offset",m_textureOffset*0.1);
-	m_meshLayer0->Render();
-	test->SetFloat("texture_u_offset",1);
+	g_menuShader->Begin();
+	g_menuShader->SetTexture("tex",0);
+	g_menuShader->SetMat("modelview",glm::mat4x4());
+	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
+	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));	
 
-	test->SetVec3("texture_color",m_interpolator.Get());
+	g_menuShader->SetFloat("texture_u_offset",m_textureOffset*0.1);
+	m_meshLayer0->Render();
+	g_menuShader->SetFloat("texture_u_offset",1);
+
+	g_menuShader->SetVec3("texture_color",m_interpolator.Get());
 	m_meshLayer1->Render();
-	test->SetVec3("texture_color",1,1,1);
+	g_menuShader->SetVec3("texture_color",1,1,1);
 
 	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
-	test->SetMat("projection",glm::ortho(0.f,tmp_ratio,0.f,1.f,-1.f,1.f));
+	g_menuShader->SetMat("projection",glm::ortho(0.f,tmp_ratio,0.f,1.f,-1.f,1.f));
 	glm::mat4x4 tmp_rotate = glm::rotate(glm::mat4x4(),float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
-	test->SetMat("modelview",tmp_rotate);
-	test->SetFloat("texture_u_offset",m_textureOffset);
+	g_menuShader->SetMat("modelview",tmp_rotate);
+	g_menuShader->SetFloat("texture_u_offset",m_textureOffset);
 	m_meshLayer3->Render();
-	test->SetFloat("texture_u_offset",0);
+	g_menuShader->SetFloat("texture_u_offset",0);
+	g_menuShader->End();
 
 }
 bool Menu_Title::VOnEvent(Event_Input& n_event)
@@ -132,10 +144,10 @@ void Menu_MainMenu::VRender( double n_interpolation )
 
 	Texture* tmp_menuTexture = g_textureManager.GetTexture("menu.png");
 	tmp_menuTexture->Bind(0);
-	test->SetTexture("tex",0);
-	test->SetMat("modelview",glm::mat4x4());
-	test->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-	test->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
+	g_menuShader->SetTexture("tex",0);
+	g_menuShader->SetMat("modelview",glm::mat4x4());
+	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
+	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
 	m_textureMesh->Render();
 }
 

@@ -47,6 +47,7 @@ int GameLoop::Run()
 	m_gameLogicThread.VOnRequestKill();
 
 	VExit();
+	return 0;
 }
 
 void GameLoop::Kill()
@@ -69,13 +70,17 @@ void GameLogic_Thread::VThreadedMethod()
 		// Set the tick start time to now
 		g_application->m_lastGameLogicTickTime = SDL_GetTicks() - g_application->m_gameLogicTicksDelay;
 
-		Tickmeter tmp_tickmeter("GameLoop Logic");
+		Tickmeter tmp_tickmeterInner("GameLoop Logic inner loop");
+		Tickmeter tmp_tickmeterOuter("GameLoop Logic outer loop");
+
 
 		while( m_running )
 		{
-			tmp_tickmeter.Measure();
+			tmp_tickmeterOuter.Measure();
 			while( g_application->m_lastGameLogicTickTime + g_application->m_gameLogicTicksDelay < SDL_GetTicks() )
 			{
+				tmp_tickmeterInner.Measure();
+
 				g_application->VLogicUpdate();
 				g_application->m_lastGameLogicTickTime += g_application->m_gameLogicTicksDelay;
 

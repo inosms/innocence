@@ -106,3 +106,8 @@ VideoSystem* GetVideoSystem()
 {
 	return g_application->m_videoSystem;
 }
+
+std::string GetResourcePath(std::string n_relative)
+{
+	return g_application->m_resourcePath + n_relative;
+}

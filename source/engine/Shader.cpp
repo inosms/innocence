@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 #include "Error.h"
+#include "Application.h"
 #include "Math.h"
 
 // http://content.gpwiki.org/index.php/OpenGL:Tutorials:Loading_and_using_GLSL_shaders
@@ -20,8 +21,9 @@ Shader::Shader( std::string n_vertexShaderFile, std::string n_geometryShaderFile
 
 std::string Shader::LoadFile(std::string n_path)
 {
+  std::cout << "loading " << n_path << std::endl;
   // then no file was specified
-  if( n_path.length() == 0 ) return "";
+  if( n_path == GetResourcePath("") ) return "";
 
   std::fstream tmp_inputFile(n_path,std::ios::in);
 
@@ -175,4 +177,28 @@ void Shader::SetVec3(std::string n_name,float n_r, float n_g, float n_b)
 void Shader::SetVec3(std::string n_name,glm::vec3 n_vec)
 {
   SetVec3(n_name,n_vec.x,n_vec.y,n_vec.z);
+}
+
+
+Shader* ShaderManager::AddShader(std::string n_name, std::string n_vs, std::string n_gs, std::string n_fs)
+{
+  Shader* tmp_newShader = new Shader(GetResourcePath(n_vs),GetResourcePath(n_gs),GetResourcePath(n_fs));
+  tmp_newShader->Init();
+  AddShader(n_name, tmp_newShader);
+  return tmp_newShader;
+}
+
+ShaderManager g_shaderManager;
+
+void ShaderManager::AddShader(std::string n_name, Shader* n_shader)
+{
+  m_map[n_name] = n_shader;
+}
+
+Shader* ShaderManager::GetShader(std::string n_name)
+{
+  if( m_map.find(n_name) == m_map.end() )
+    return nullptr;
+  else
+    return m_map[n_name];
 }

@@ -58,7 +58,8 @@ extern EventManager* GetEventManager();
 extern GameLogic* GetGameLogic();
 extern ProcessManager* GetProcessManager();
 extern VideoSystem* GetVideoSystem();
-
+// input relative path to resource path output path plus resourcepath
+extern std::string GetResourcePath(std::string n_relative);
 
 #endif
 /* _APPLICATION_H_ */

@@ -22,11 +22,11 @@
 #include "SceneNode.h"
 #include "ScreenLayer.h"
 #include "ScreenLayer_Scene.h"
+#include "Shader.h"
 #include "Texture.h"
 #include "Tickmeter.h"
 #include "UniqueNumberGenerator.h"
 #include "VideoSystem.h"
 #include "VideoSystem_SDL_OpenGL.h"
-#include "Shader.h"
 
 #endif

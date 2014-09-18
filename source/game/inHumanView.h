@@ -9,10 +9,6 @@ public:
 
 	inHumanView();
 	virtual void VInit();
-	virtual void VRender(double n_interpolation);
 };
-
-class Shader;
-extern Shader* test;
 
 #endif
