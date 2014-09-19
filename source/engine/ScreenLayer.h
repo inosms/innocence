@@ -39,7 +39,7 @@ public:
 	// if the event is consumed, thus not processed by following layers
 	// the method should return true
 	// otherwise if not consumed return false
-	virtual bool VOnEvent(Event_Input& n_event) = 0;
+	virtual bool VOnEvent(Event& n_event) = 0;
 
 };
 

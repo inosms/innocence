@@ -36,6 +36,8 @@ public:
   void SetFloat(std::string n_name, float n_float);
   void SetVec3(std::string n_name,float n_r, float n_g, float n_b);
   void SetVec3(std::string n_name,glm::vec3 n_vec);
+  void SetVec4(std::string n_name,glm::vec4 n_vec);
+  void SetVec4(std::string n_name,float n_r, float n_g, float n_b, float n_a);
 };
 
 class ShaderManager

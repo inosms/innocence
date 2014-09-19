@@ -137,6 +137,11 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 
 			GetEventManager()->SendEvent( std::shared_ptr<Event_Input_Mousemotion> (new Event_Input_Mousemotion(tmp_event.motion.x, tmp_event.motion.y, tmp_event.motion.x/float(tmp_width), tmp_event.motion.y/float(tmp_height))));
 		}
+		else if( tmp_event.type == SDL_WINDOWEVENT )
+		{
+			if( tmp_event.window.event == SDL_WINDOWEVENT_RESIZED)
+				GetEventManager()->SendEvent( std::shared_ptr<Event_WindowResize>(new Event_WindowResize()));
+		}
 	}
 }
 

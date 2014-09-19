@@ -5,6 +5,7 @@
 #include <map>
 #include "Texture.h"
 
+class MeshTexture;
 class Mesh
 {
 	// 4, because:
@@ -26,11 +27,27 @@ public:
 	void Render();
 
 	void SetTexture(Texture* n_texture);
+	Texture* GetTexture();
 
-	static Mesh* GetTexturedRect(float n_width, float n_height, Texture* n_texture);
-	static Mesh* GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture);
-	static Mesh* GetTexturedRect(float n_width, float n_height, Texture* n_texture,float n_textureXScale, float n_textureYScale);
-	static Mesh* GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale);
+	static MeshTexture* GetTexturedRect(float n_width, float n_height, Texture* n_texture);
+	static MeshTexture* GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture);
+	static MeshTexture* GetTexturedRect(float n_width, float n_height, Texture* n_texture,float n_textureXScale, float n_textureYScale);
+	static MeshTexture* GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale);
+	static MeshTexture* GetTexturedRectProportionalByWidth(float n_width,float n_centerX, float n_centerY, Texture* n_texture, float n_textureXScale, float n_textureYScale);
+	static MeshTexture* GetTexturedRectProportionalByHeight(float n_height,float n_centerX, float n_centerY, Texture* n_texture, float n_textureXScale, float n_textureYScale);
+
+};
+
+// a textured rec mesh for a texture
+class MeshTexture : public Mesh
+{
+	float m_centerX,m_centerY,m_width,m_height,m_textureXScale,m_textureYScale;
+public:
+
+	MeshTexture(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale,float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size);
+
+	float GetWidth() { return m_width; }
+	float GetHeight() { return m_height; }
 
 };
 

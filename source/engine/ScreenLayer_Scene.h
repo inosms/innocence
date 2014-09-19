@@ -34,7 +34,7 @@ public:
 
 	virtual void VUpdate();
 	virtual void VRender( double n_interpolation );
-	virtual bool VOnEvent(Event_Input& n_event);
+	virtual bool VOnEvent(Event& n_event);
 };
 
 #endif

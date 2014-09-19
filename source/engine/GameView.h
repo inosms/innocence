@@ -62,7 +62,8 @@ public:
 	void RemoveScreenLayer(ScreenLayer* n_layer );
 	
 	// forwards an input event to all the screen layers and the controller (TODO)
-	void ForwardInputEvent( Event_Input& n_event );
+	// also forward screen resize events (therefore Event& and not Event_Input)
+	void ForwardInputEvent( Event& n_event );
 
 	ScreenLayer_Scene* GetScene();
 };

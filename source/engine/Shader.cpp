@@ -179,6 +179,16 @@ void Shader::SetVec3(std::string n_name,glm::vec3 n_vec)
   SetVec3(n_name,n_vec.x,n_vec.y,n_vec.z);
 }
 
+void Shader::SetVec4(std::string n_name,glm::vec4 n_vec)
+{
+  SetVec4(n_name,n_vec.x,n_vec.y,n_vec.z,n_vec.w);
+}
+
+void Shader::SetVec4(std::string n_name,float n_r, float n_g, float n_b, float n_a)
+{
+  glUniform4f(Location(n_name),n_r,n_g,n_b,n_a);
+}
+
 
 Shader* ShaderManager::AddShader(std::string n_name, std::string n_vs, std::string n_gs, std::string n_fs)
 {

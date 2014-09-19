@@ -39,11 +39,97 @@ void Menu_Start::VRender( double n_interpolation )
 	g_menuShader->End();
 }
 
-bool Menu_Start::VOnEvent(Event_Input& n_event)
+bool Menu_Start::VOnEvent(Event& n_event)
 {
 	return false;
 }
 
+Stripe::Stripe() : 
+	m_firstPos(glm::mat4()),
+	m_lastPos(glm::mat4())
+{
+
+	// TODO backgroundMesh
+}
+
+
+void Stripe::SetStartPos(glm::mat4 n_mat)
+{
+	m_firstPos = n_mat;
+}
+
+void Stripe::SetEndPos(glm::mat4 n_mat)
+{
+	m_lastPos = n_mat;
+}
+
+void Stripe::Update()
+{
+	m_textureOffset += m_textureOffsetSpeed;
+	if( m_isAnimating ) m_interpolationValue += m_animationSpeed;
+	if( m_interpolationValue >= 1 && m_isAnimating )
+	{
+		m_interpolationValue = 1;
+
+		// delete the first element ( this should be the "PRESS ANY KEY" text)
+		if( m_texturedMeshes.size() >= 1)
+		{
+			Mesh* tmp_toDelete = m_texturedMeshes[0]; 
+			m_texturedMeshes.erase(m_texturedMeshes.begin());
+			delete tmp_toDelete;
+		}
+		m_isAnimating = false;
+
+		m_textureOffsetSpeed = 0;
+		m_textureOffset = 0;
+	}
+}
+
+void Stripe::Render(double n_interpolation)
+{
+	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
+	g_menuShader->SetMat("projection",glm::ortho(0.f,tmp_ratio,0.f,1.f,-1.f,1.f));
+
+	float tmp_interpolatedInterpolationValue = m_interpolationValue;
+	if( m_isAnimating ) tmp_interpolatedInterpolationValue += n_interpolation * m_animationSpeed;
+	glm::mat4 tmp_matDiff = m_lastPos - m_firstPos;
+	glm::mat4 tmp_nowPos = m_firstPos + tmp_interpolatedInterpolationValue*tmp_matDiff;
+
+	g_menuShader->SetMat("modelview",tmp_nowPos);
+	//m_backgroundMesh->Render();
+
+	g_menuShader->SetFloat("texture_u_offset",m_textureOffset+n_interpolation*m_textureOffsetSpeed);
+	float lastElementEndPos = 0.0f;
+	for( auto i_mesh : m_texturedMeshes )
+	{
+		float tmp_width = i_mesh->GetWidth();
+		float tmp_thisRenderXPos = lastElementEndPos + tmp_width/2.f;
+		lastElementEndPos += tmp_width;
+		glm::mat4 tmp_translate = glm::translate(glm::mat4(1.f),glm::vec3(tmp_thisRenderXPos,0.f,0.f));
+
+		if( m_isAnimating ) g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f-m_interpolationValue));
+		else g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f));
+
+		g_menuShader->SetMat("modelview", tmp_nowPos * tmp_translate);
+		i_mesh->Render();
+		g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f));
+	}
+	g_menuShader->SetFloat("texture_u_offset",0);
+	g_menuShader->End();
+
+	//m_backgroundMesh->Render();
+
+}
+
+void Stripe::AddTexturedMesh(MeshTexture* n_mesh)
+{
+	m_texturedMeshes.push_back(n_mesh);
+}
+
+void Stripe::StartAnimation()
+{
+	m_isAnimating = true;
+}
 
 Menu_Title::Menu_Title() : m_backgroundColor()
 {
@@ -52,29 +138,63 @@ Menu_Title::Menu_Title() : m_backgroundColor()
 	g_textureManager.AddTexture("title_menu_1.png");
 	m_meshLayer1 = Mesh::GetTexturedRect(1,1,0.5,0.5,g_textureManager.GetTexture("title_menu_1.png"));
 
-	m_interpolator.Push(glm::vec3(0,175/255.f,240/255.f));
-	m_interpolator.Push(glm::vec3(0,166/255.f,191/255.f));
-	m_interpolator.Push(glm::vec3(129/255,185/255.f,215/255.f));
+	m_interpolator.Push(glm::vec4(0,175/255.f,240/255.f,1.f));
+	m_interpolator.Push(glm::vec4(0,166/255.f,191/255.f,1.f));
+	m_interpolator.Push(glm::vec4(129/255,185/255.f,215/255.f,1.f));
+
 
 	g_fontManager.AddFont("TravelingTypewriter.ttf",255);
-	SDL_Color textColor = { 0, 0, 0 };
-	Texture* tmp_text = g_fontManager.GetFont("TravelingTypewriter.ttf")->GetTextureForText("PRESS ANY KEY +++ ",textColor);
+	
+	{
+		Texture* tmp_text = g_fontManager.GetFont("TravelingTypewriter.ttf")->GetTextureForText("PRESS ANY KEY +++ ",{ 0, 0, 0 });
+		// this should really be enough even for large screens
+		// furthermore this doesn't use up any more memory
+		// as the texture is only stored once
+		float tmp_width = 4; 
+		float tmp_segmentsCount = 6; // how often the text is repeated
+		float tmp_ratioHeightWidth = tmp_text->GetHeight()/float(tmp_text->GetWidth());
+		float tmp_height = tmp_ratioHeightWidth*(tmp_width/tmp_segmentsCount);
+		MeshTexture* tmp_textMesh = Mesh::GetTexturedRect(tmp_width,tmp_height,tmp_text,tmp_segmentsCount,1);
+		m_stripe1.AddTexturedMesh(tmp_textMesh);
+	}
 
-	// this should really be enough even for large screens
-	// furthermore this doesn't use up any more memory
-	// as the texture is only stored once
-	float tmp_width = 5; 
-	float tmp_segmentsCount = 8; // how often the text is repeated
-	float tmp_ratioHeightWidth = tmp_text->GetHeight()/float(tmp_text->GetWidth());
-	float tmp_height = tmp_ratioHeightWidth*(tmp_width/tmp_segmentsCount);
-	m_meshLayer3 = Mesh::GetTexturedRect(tmp_width,tmp_height,tmp_text,tmp_segmentsCount,1);
+	const float HEIGHT = 0.1f;
+	Font* tmp_font = g_fontManager.GetFont("TravelingTypewriter.ttf");
+	{
+		Texture* tmp_text = tmp_font->GetTextureForText("New Game + ",{ 0, 0, 0 });
+		MeshTexture* tmp_textMesh = Mesh::GetTexturedRectProportionalByHeight(HEIGHT,0,0,tmp_text,1,1);
+		m_stripe1.AddTexturedMesh(tmp_textMesh);
+
+		SetStripeMatrices();
+	}
+	{
+		Texture* tmp_text = tmp_font->GetTextureForText("Load Game + ",{ 0, 0, 0 });
+		MeshTexture* tmp_textMesh = Mesh::GetTexturedRectProportionalByHeight(HEIGHT,0,0,tmp_text,1,1);
+		m_stripe1.AddTexturedMesh(tmp_textMesh);
+
+		SetStripeMatrices();
+	}
+	{
+		Texture* tmp_text = tmp_font->GetTextureForText("Options + ",{ 0, 0, 0 });
+		MeshTexture* tmp_textMesh = Mesh::GetTexturedRectProportionalByHeight(HEIGHT,0,0,tmp_text,1,1);
+		m_stripe1.AddTexturedMesh(tmp_textMesh);
+
+		SetStripeMatrices();
+	}
+	{
+		Texture* tmp_text = tmp_font->GetTextureForText("Extras",{ 0, 0, 0 });
+		MeshTexture* tmp_textMesh = Mesh::GetTexturedRectProportionalByHeight(HEIGHT,0,0,tmp_text,1,1);
+		m_stripe1.AddTexturedMesh(tmp_textMesh);
+
+		SetStripeMatrices();
+	}
 	// TODO memory leak tmp_text
 }
 
 void Menu_Title::VUpdate()
 {
 	m_interpolator.Update(0.01);
-	m_textureOffset += 0.002;
+	m_stripe1.Update();
 }
 void Menu_Title::VRender( double n_interpolation )
 {
@@ -84,98 +204,36 @@ void Menu_Title::VRender( double n_interpolation )
 	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
 	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));	
 
-	g_menuShader->SetFloat("texture_u_offset",m_textureOffset*0.1);
 	m_meshLayer0->Render();
-	g_menuShader->SetFloat("texture_u_offset",1);
 
-	g_menuShader->SetVec3("texture_color",m_interpolator.Get());
+	g_menuShader->SetVec4("texture_color",m_interpolator.Get());
 	m_meshLayer1->Render();
-	g_menuShader->SetVec3("texture_color",1,1,1);
+	g_menuShader->SetVec4("texture_color",1,1,1,1);
 
-	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
-	g_menuShader->SetMat("projection",glm::ortho(0.f,tmp_ratio,0.f,1.f,-1.f,1.f));
-	glm::mat4x4 tmp_rotate = glm::rotate(glm::mat4x4(),float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
-	g_menuShader->SetMat("modelview",tmp_rotate);
-	g_menuShader->SetFloat("texture_u_offset",m_textureOffset);
-	m_meshLayer3->Render();
-	g_menuShader->SetFloat("texture_u_offset",0);
+	m_stripe1.Render(n_interpolation);
 	g_menuShader->End();
 
 }
-bool Menu_Title::VOnEvent(Event_Input& n_event)
+bool Menu_Title::VOnEvent(Event& n_event)
 {
 	if( n_event.GetType() == Event_Type_Input_Key_Down )
 	{
 		//GoToNextScreenLayer(new Menu_MainMenu());
+		m_stripe1.StartAnimation();
 		return true;	
 	}
-	return false;
-}
-
-
-Menu_MainMenu::Menu_MainMenu() : Menu()
-{
-	g_textureManager.AddTexture("menu.png");
-
-	// a fullscreen quadrat
-	float n_vert[] = {0.f,0.f,0.f,
-					  1.f,0.f,0.f,
-					  1.f,1.f,0.f,
-					  1.f,1.f,0.f,
-					  0.f,1.f,0.f,
-					  0.f,0.f,0.f};
-	float n_tex[] = {0.f,1.f,
-					 1,1.f,
-					 1,0,
-					 1,0,
-					 0.f,0,
-					 0.f,1.f};
-
-	m_textureMesh = new Mesh(n_vert,nullptr,nullptr,n_tex,18);
-
-}
-
-void Menu_MainMenu::VUpdate()
-{
-}
-
-void Menu_MainMenu::VRender( double n_interpolation )
-{
-
-	Texture* tmp_menuTexture = g_textureManager.GetTexture("menu.png");
-	tmp_menuTexture->Bind(0);
-	g_menuShader->SetTexture("tex",0);
-	g_menuShader->SetMat("modelview",glm::mat4x4());
-	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
-	m_textureMesh->Render();
-}
-
-bool Menu_MainMenu::VOnEvent(Event_Input& n_event)
-{
-	if( n_event.GetType() == Event_Type_Input_Mousebutton_Down )
+	else if( n_event.GetType() == Event_Type_WindowResize )
 	{
-		std::cout << "MOUSE BUTTON DOWN! GO TO NEXT SCREEN!" << std::endl;
-		//sGoToNextScreenLayer(new Menu_Test());	
+		SetStripeMatrices();
 	}
 	return false;
 }
 
-
-Menu_Test::Menu_Test() : Menu()
+void Menu_Title::SetStripeMatrices()
 {
-
-}
-
-void Menu_Test::VUpdate()
-{
-	std::cout << "testmenu" << std::endl;
-}
-void Menu_Test::VRender( double n_interpolation )
-{
-
-}
-bool Menu_Test::VOnEvent(Event_Input& n_event)
-{
-	return false;
+	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
+	glm::mat4 tmp_1translate = glm::translate(glm::mat4(),glm::vec3(0,1.f,0));
+	glm::mat4 tmp_1rotate = glm::rotate(glm::mat4x4(),-float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
+	m_stripe1.SetStartPos(tmp_1translate*tmp_1rotate);
+	m_stripe1.SetEndPos(glm::translate(glm::mat4(),glm::vec3(0.f,0.7f,0.f)));
 }

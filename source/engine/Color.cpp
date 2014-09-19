@@ -1,6 +1,6 @@
 #include "Color.h"
 
-void ColorInterpolator::Push(glm::vec3 n_color)
+void ColorInterpolator::Push(glm::vec4 n_color)
 {
 	m_colors.push_back(n_color);
 }
@@ -13,7 +13,7 @@ void ColorInterpolator::Update(float n_tickTime)
 		m_currentIndex -= m_colors.size();
 }
 
-glm::vec3 ColorInterpolator::Get()
+glm::vec4 ColorInterpolator::Get()
 {
 	if( m_colors.size() <= 1 ) m_colors[0];
 
@@ -22,8 +22,8 @@ glm::vec3 ColorInterpolator::Get()
 	if( tmp_color2Index >= m_colors.size() ) 
 		tmp_color2Index -= m_colors.size();
 
-	glm::vec3 tmp_1Color = m_colors[tmp_color1Index];
-	glm::vec3 tmp_2Color = m_colors[tmp_color2Index];
+	glm::vec4 tmp_1Color = m_colors[tmp_color1Index];
+	glm::vec4 tmp_2Color = m_colors[tmp_color2Index];
 
 	float tmp_color2Factor = m_currentIndex - int(m_currentIndex);
 	float tmp_color1Factor = 1-tmp_color2Factor;

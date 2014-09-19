@@ -81,7 +81,7 @@ void GameView_Human::RemoveScreenLayer(ScreenLayer* n_layer )
 	m_screenLayers.erase(tmp_find);
 }
 
-void GameView_Human::ForwardInputEvent( Event_Input& n_event )
+void GameView_Human::ForwardInputEvent( Event& n_event )
 {
 	for( auto i_layer : m_screenLayers )
 		if(i_layer->VOnEvent(n_event)) return;

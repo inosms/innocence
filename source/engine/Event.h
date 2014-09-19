@@ -26,9 +26,16 @@ enum Event_Type
 	Event_Type_AddScreenLayer,
 	Event_Type_RemoveScreenLayer,
 
+	// everything between this end ?_END is forwarded to all screen layers
+	EVENT_TYPE_FORWARD_TO_SCREEN_LAYER_START,
+
 	Event_Type_Input_Key_Down,
 	Event_Type_Input_Mousebutton_Down,
 	Event_Type_Input_Mousemotion,
+
+	Event_Type_WindowResize,
+
+	EVENT_TYPE_FORWARD_TO_SCREEN_LAYER_END,
 
 	// yeah the name says it all...
 	// when declaring a game specific Event_Type_blablabla
@@ -126,6 +133,13 @@ public:
 	int x,y;
 	float percent_x,percent_y;
 	Event_Input_Mousemotion(int n_x, int n_y, float n_percent_x, float n_percent_y);
+};
+
+// TODO: new w/h
+class Event_WindowResize : public Event
+{
+public:
+	Event_WindowResize();
 };
 
 #endif

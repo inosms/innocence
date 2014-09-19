@@ -61,9 +61,8 @@ void HumanViewListener::VProcessEvent( Event& n_event )
 		Event_RemoveScreenLayer& tmp_event = dynamic_cast<Event_RemoveScreenLayer&>(n_event);
 		m_view->RemoveScreenLayer(tmp_event.m_screenLayer);
 	}
-	else if( dynamic_cast<Event_Input*>( &n_event ) )
+	else if( n_event.GetType() > EVENT_TYPE_FORWARD_TO_SCREEN_LAYER_START  && n_event.GetType() < EVENT_TYPE_FORWARD_TO_SCREEN_LAYER_END )
 	{
-		Event_Input& tmp_event = dynamic_cast<Event_Input&>(n_event);
-		m_view->ForwardInputEvent(tmp_event);
+		m_view->ForwardInputEvent(n_event);
 	} 
 }

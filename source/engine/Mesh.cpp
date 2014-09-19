@@ -159,22 +159,41 @@ void Mesh::SetTexture(Texture* n_texture)
 	m_texture = n_texture;
 }
 
-Mesh* Mesh::GetTexturedRect(float n_width, float n_height, Texture* n_texture)
+Texture* Mesh::GetTexture()
+{
+	return m_texture;
+}
+
+MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height, Texture* n_texture)
 {
 	return Mesh::GetTexturedRect(n_width,n_height,n_texture,1,1);
 }
 
-Mesh* Mesh::GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture)
+MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture)
 {
 	return Mesh::GetTexturedRect(n_width,n_height,n_centerX,n_centerY,n_texture,1,1);
 }
 
-Mesh* Mesh::GetTexturedRect(float n_width, float n_height,Texture* n_texture, float n_textureXScale, float n_textureYScale)
+MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height,Texture* n_texture, float n_textureXScale, float n_textureYScale)
 {
 	return Mesh::GetTexturedRect(n_width,n_height,0,0,n_texture,n_textureXScale,n_textureYScale);
 }
 
-Mesh* Mesh::GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale)
+MeshTexture* Mesh::GetTexturedRectProportionalByWidth(float n_width,float n_centerX, float n_centerY, Texture* n_texture, float n_textureXScale, float n_textureYScale)
+{
+	float tmp_ratio = n_texture->GetHeight()/float(n_texture->GetWidth());
+	float tmp_proportionalHeight = tmp_ratio * n_width;
+	return Mesh::GetTexturedRect(n_width,tmp_proportionalHeight,n_centerX,n_centerY,n_texture,n_textureXScale,n_textureYScale);
+}
+
+MeshTexture* Mesh::GetTexturedRectProportionalByHeight(float n_height,float n_centerX, float n_centerY, Texture* n_texture, float n_textureXScale, float n_textureYScale)
+{
+	float tmp_ratio = n_texture->GetWidth()/float(n_texture->GetHeight());
+	float tmp_proportionalWidth = tmp_ratio * n_height;
+	return Mesh::GetTexturedRect(tmp_proportionalWidth,n_height,n_centerX,n_centerY,n_texture,n_textureXScale,n_textureYScale);
+}
+
+MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale)
 {
 	float n_vert[] = {-n_width/2+n_centerX,-n_height/2+n_centerY,0.f,
 					  n_width/2+n_centerX,-n_height/2+n_centerY,0.f,
@@ -188,9 +207,20 @@ Mesh* Mesh::GetTexturedRect(float n_width, float n_height, float n_centerX, floa
 					 n_textureXScale,0,
 					 0.f,0,
 					 0.f,n_textureYScale};
-	Mesh* tmp_new = new Mesh(n_vert,nullptr,nullptr,n_tex,18);
+	MeshTexture* tmp_new = new MeshTexture(n_width, n_height, n_centerX,n_centerY,n_texture,n_textureXScale,n_textureYScale, n_vert,nullptr,nullptr,n_tex,18);
 	tmp_new->SetTexture(n_texture);
 	return tmp_new;
+}
+
+MeshTexture::MeshTexture(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale,float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size) : Mesh(n_vertices,n_colors,n_normals,n_textureCoords,n_size),
+	m_width(n_width),
+	m_height(n_height),
+	m_centerX(n_centerX),
+	m_centerY(n_centerY),
+	m_textureXScale(n_textureXScale),
+	m_textureYScale(n_textureYScale)
+{
+
 }
 
 void MeshManager::AddMesh(std::string n_name, Mesh* n_mesh)

@@ -6,17 +6,17 @@
 
 class ColorInterpolator
 {
-	std::vector<glm::vec3> m_colors;
+	std::vector<glm::vec4> m_colors;
 	// internal ticker
 	float m_currentIndex = 0;
 public:
-	void Push(glm::vec3);
+	void Push(glm::vec4);
 
 	// the smaller the slower the color changes
 	void Update(float n_tickTime);
 
 	// get the current color
-	glm::vec3 Get();
+	glm::vec4 Get();
 };
 
 #endif

@@ -72,3 +72,7 @@ Event_Input_Mousemotion::Event_Input_Mousemotion(int n_x, int n_y, float n_perce
 	percent_x(n_percent_x),
 	percent_y(n_percent_y)
 	{}
+
+Event_WindowResize::Event_WindowResize() :
+	Event(Event_Type_WindowResize)
+	{}

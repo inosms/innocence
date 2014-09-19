@@ -48,7 +48,7 @@ Camera& ScreenLayer_Scene::GetCamera()
 	return m_camera;
 }
 
-bool ScreenLayer_Scene::VOnEvent(Event_Input& n_event)
+bool ScreenLayer_Scene::VOnEvent(Event& n_event)
 {
 	// TODO:
 
