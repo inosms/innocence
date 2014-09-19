@@ -17,15 +17,15 @@ Menu_Start::Menu_Start() : Menu()
 
 void Menu_Start::VUpdate()
 {
-	if( m_counter++ > m_maxCounter ) GoToNextScreenLayer(new Menu_Title());
+	if( m_counter++ > m_shownTime + m_fadeOutTime) GoToNextScreenLayer(new Menu_Title());
 }
 
 void Menu_Start::VRender( double n_interpolation )
 {
 	g_menuShader->Begin();
 	g_menuShader->SetTexture("tex",0);
-	if( m_counter >= 100 )
-	g_menuShader->SetFloat("texture_multiplier",1.f-(float(m_counter-100)/(m_maxCounter-100)));
+	if( m_counter >= m_shownTime )
+	g_menuShader->SetFloat("texture_multiplier",1.f-(float(m_counter-m_shownTime)/(m_fadeOutTime)));
 
 	g_menuShader->SetMat("modelview",glm::mat4x4());
 	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));

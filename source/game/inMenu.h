@@ -7,7 +7,8 @@ class Menu_Start : public Menu
 {
 	Mesh* m_textureMesh;
 	int m_counter = 0;
-	int m_maxCounter = 110;
+	int m_shownTime = 1000;
+	int m_fadeOutTime = 30;
 public:
 	Menu_Start();
 
