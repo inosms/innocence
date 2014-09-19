@@ -331,7 +331,6 @@ bool Menu_Title::VOnEvent(Event& n_event)
 		{
 			m_stripe1.OnKeyLeft();
 		}
-		std::cout << m_stripe1.GetActive() << std::endl;
 		return true;	
 	}
 	else if( n_event.GetType() == Event_Type_Input_Mousebutton_Down )
