@@ -102,6 +102,11 @@ Mesh::Mesh(std::string n_filename)
 	m_verticesCount = tmp_verticesInCorrectOrder.size();
 }
 
+Mesh::~Mesh()
+{
+	if( m_texture ) delete m_texture;
+}
+
 Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size ) :
 	m_verticesCount(n_size/3)
 {

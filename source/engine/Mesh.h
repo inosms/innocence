@@ -20,6 +20,7 @@ public:
 
 	// init via obj file
 	Mesh(std::string n_filename);
+	virtual ~Mesh();
 
 	// init via arrays
 	Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size );

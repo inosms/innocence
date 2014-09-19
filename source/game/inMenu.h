@@ -16,6 +16,32 @@ public:
 	virtual bool VOnEvent(Event& n_event);
 };
 
+class MenuItem
+{
+	std::string m_name;
+
+	MeshTexture* m_texture;	
+
+	// x position;
+	float m_x = 0;
+
+	bool m_active = false;
+public:
+	MenuItem(std::string n_name);
+	MenuItem(MeshTexture* n_mesh, std::string n_name);
+	~MenuItem();
+	float GetWidth();
+	float GetXPos();
+	void SetXPos(float n_x);
+	std::string GetName();
+	void Render();
+	// x and y not in pixel but in this ratio thingy
+	bool CheckForCollision(float n_x, float n_y);
+
+	bool IsActive();
+	void SetActive(bool n_active);
+};
+
 class Stripe
 {
 	glm::mat4 m_firstPos;
@@ -23,12 +49,15 @@ class Stripe
 	// 0 = first pos; 1 = last pos
 	float m_interpolationValue = 0;
 	bool m_isAnimating = false;
+	bool m_hasAnimated = false;
 	const float m_animationSpeed = 0.2;
 
-	std::vector<MeshTexture*> m_texturedMeshes;
-	Mesh* m_backgroundMesh;
+	std::vector<MenuItem*> m_menuItems;
+	MeshTexture* m_backgroundMesh;
 	float m_textureOffset = 0.0f;
 	float m_textureOffsetSpeed = 0.002;
+
+	const std::string m_seperator = " + ";
 
 public:
 	void SetStartPos(glm::mat4 n_mat);
@@ -36,8 +65,19 @@ public:
 	Stripe();
 	void Render(double n_interpolation);
 	void Update();
-	void AddTexturedMesh(MeshTexture* n_mesh);
+
+	void AddMenuItem(std::string n_menuItem);
+	void AddMenuItem(MenuItem* n_item);
+	void AddMenuSeperator();
+	// call this whenever a new pos is added/removed/ect
+	// this will update all the positions
+	void RefreshMenuItemPositions();
 	void StartAnimation();
+//	void CheckForCollision();
+
+	std::string GetActive();
+	void OnKeyRight();
+	void OnKeyLeft();
 };
 
 class Menu_Title : public Menu
@@ -48,6 +88,7 @@ class Menu_Title : public Menu
 	ColorInterpolator m_interpolator;
 
 	Stripe m_stripe1;
+	Stripe m_stripe2;
 public:
 	Menu_Title();
 
