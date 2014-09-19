@@ -7,7 +7,7 @@ class Menu_Start : public Menu
 {
 	Mesh* m_textureMesh;
 	int m_counter = 0;
-	int m_shownTime = 1000;
+	int m_shownTime = 10;
 	int m_fadeOutTime = 30;
 public:
 	Menu_Start();
@@ -56,7 +56,7 @@ class Stripe
 	std::vector<MenuItem*> m_menuItems;
 	MeshTexture* m_backgroundMesh;
 	float m_textureOffset = 0.0f;
-	float m_textureOffsetSpeed = 0.002;
+	float m_textureOffsetSpeed = 0.0008;
 
 	const std::string m_seperator = " + ";
 

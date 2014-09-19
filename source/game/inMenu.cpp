@@ -354,9 +354,11 @@ void Menu_Title::SetStripeMatrices()
 	glm::mat4 tmp_1translate = glm::translate(glm::mat4(),glm::vec3(0,1.f,0));
 	glm::mat4 tmp_1rotate = glm::rotate(glm::mat4x4(),-float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
 	m_stripe1.SetStartPos(tmp_1translate*tmp_1rotate);
-	m_stripe1.SetEndPos(glm::translate(glm::mat4(),glm::vec3(0.f,0.7f,0.f)));
+	glm::mat4 tmp_1endRotate = glm::rotate(glm::mat4(),float(2*PI)*5.f/360,glm::vec3(0,0,1));
+	m_stripe1.SetEndPos(glm::translate(glm::mat4(),glm::vec3(0.f,0.5f,0.f))*tmp_1endRotate);
 
 	glm::mat4 tmp_2rotate = glm::rotate(glm::mat4x4(),float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
 	m_stripe2.SetStartPos(tmp_2rotate);
-	m_stripe2.SetEndPos(glm::translate(glm::mat4(),glm::vec3(0.f,0.3f,0.f)));
+	glm::mat4 tmp_2endRotate = glm::rotate(glm::mat4(),float(2*PI)*-5.f/360,glm::vec3(0,0,1));
+	m_stripe2.SetEndPos(glm::translate(glm::mat4(),glm::vec3(0.f,0.3f,0.f))*tmp_2endRotate);
 }
