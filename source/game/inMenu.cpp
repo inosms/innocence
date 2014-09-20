@@ -88,6 +88,7 @@ void MenuItem::SetActive(bool n_active)
 bool MenuItem::CheckForCollision(float n_x, float n_y)
 {
 	// TODO
+	return false;
 }
 
 MenuItem::~MenuItem()

@@ -1,2 +1,4 @@
+add_subdirectory(pugixml)
+
 add_library( engine Application.cpp Camera.cpp Color.cpp Creator.cpp Error.cpp Event.cpp EventListener.cpp EventManager.cpp Font.cpp GameLogic.cpp GameLoop.cpp GameObject.cpp GameView.cpp Math.cpp Menu.cpp Mesh.cpp Process.cpp ProcessManager.cpp SceneNode.cpp ScreenLayer.cpp ScreenLayer_Scene.cpp Shader.cpp Texture.cpp Tickmeter.cpp UniqueNumberGenerator.cpp VideoSystem_SDL_OpenGL.cpp)
 

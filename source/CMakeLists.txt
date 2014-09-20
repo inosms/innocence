@@ -31,4 +31,4 @@ add_subdirectory(engine/Box2D/Box2D)
 add_subdirectory(game)
 
 add_executable(innocence main.cpp)
-target_link_libraries( innocence engine game Box2D ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_LIBRARY} )
+target_link_libraries( innocence engine game Box2D pugixml ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_LIBRARY} )
