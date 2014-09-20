@@ -16,6 +16,7 @@ public:
 
 	Texture(std::string n_path);
 	Texture(SDL_Surface* n_surface);
+	~Texture();
 
 	void Bind();
 	
@@ -37,6 +38,10 @@ public:
 	// the name must be relative to the resource path
 	void AddTexture(std::string n_name, Texture* n_texture);
 	Texture* GetTexture(std::string n_name);
+
+	// returns true if deleted
+	// returns false if this texture was not found
+	bool RemoveTexture(std::string n_name);
 };
 
 extern TextureManager g_textureManager;

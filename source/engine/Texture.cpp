@@ -70,6 +70,11 @@ unsigned int Texture::GetWidth()
 	return m_width;
 }
 
+Texture::~Texture()
+{
+	glDeleteTextures(1,&m_texture);
+}
+
 void TextureManager::AddTexture(std::string n_name)
 {
 	AddTexture(n_name,new Texture(g_application->m_resourcePath+n_name));
@@ -87,4 +92,15 @@ Texture* TextureManager::GetTexture(std::string n_name)
 		return nullptr;
 	else
 		return m_map[n_name];
+}
+
+bool TextureManager::RemoveTexture(std::string n_name)
+{
+	auto tmp_find = m_map.find(n_name);
+	if( tmp_find == m_map.end() ) return false;
+
+	Texture* tmp_texture = tmp_find->second;
+	m_map.erase(tmp_find);
+	delete tmp_texture;
+	return true;
 }

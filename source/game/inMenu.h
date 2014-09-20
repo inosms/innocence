@@ -17,9 +17,18 @@ public:
 	virtual bool VOnEvent(Event& n_event);
 };
 
+class Stripe;
 class MenuItem
 {
 	std::string m_name;
+
+	// the hint is shown if this is active 
+	// whith the m_hintDisplayer Menu Item 
+	// (the first item of this is removed (it assumes only one item)
+	// and this hint is shown)
+	std::string m_hint = "";
+	MeshTexture* m_hintTexture = nullptr;
+	Stripe* m_hintDisplayer = nullptr;
 
 	MeshTexture* m_texture;	
 
@@ -29,6 +38,7 @@ class MenuItem
 	bool m_active = false;
 public:
 	MenuItem(std::string n_name);
+	MenuItem(std::string n_name, std::string n_hint, Stripe* n_hintDisplayer);
 	MenuItem(MeshTexture* n_mesh, std::string n_name);
 	~MenuItem();
 	float GetWidth();
@@ -68,8 +78,12 @@ public:
 	void Update();
 
 	void AddMenuItem(std::string n_menuItem);
+	void AddMenuItem(std::string n_name, std::string n_hint, Stripe* n_displayer);
 	void AddMenuItem(MenuItem* n_item);
 	void AddMenuSeperator();
+
+	void RemoveFirst();
+
 	// call this whenever a new pos is added/removed/ect
 	// this will update all the positions
 	void RefreshMenuItemPositions();

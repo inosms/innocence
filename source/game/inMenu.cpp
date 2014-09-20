@@ -48,6 +48,7 @@ MenuItem::MenuItem(std::string n_name)
 	Font* tmp_font = g_fontManager.GetFont("TravelingTypewriter.ttf");
 	Texture* tmp_text = tmp_font->GetTextureForText(n_name,{ 255, 255, 255 });
 	m_texture = Mesh::GetTexturedRectProportionalByHeight(HEIGHT,0,0,tmp_text,1,1);
+	g_textureManager.AddTexture(n_name,tmp_text);
 }
 
 MenuItem::MenuItem(MeshTexture* n_mesh, std::string n_name)
@@ -56,10 +57,16 @@ MenuItem::MenuItem(MeshTexture* n_mesh, std::string n_name)
 	m_texture = n_mesh;
 }
 
-
-MenuItem::~MenuItem()
+MenuItem::MenuItem(std::string n_name, std::string n_hint, Stripe* n_hintDisplayer) : MenuItem(n_name)
 {
-	delete m_texture;
+	m_hint = n_hint;
+	m_hintDisplayer = n_hintDisplayer;
+	const float HEIGHT = 0.05f;
+	Font* tmp_font = g_fontManager.GetFont("TravelingTypewriter.ttf");
+	Texture* tmp_text = tmp_font->GetTextureForText(n_hint,{ 255, 255, 255 });
+	m_hintTexture = Mesh::GetTexturedRectProportionalByHeight(HEIGHT,0,0,tmp_text,1,1);
+	g_textureManager.AddTexture(n_hint,tmp_text);
+
 }
 
 float MenuItem::GetWidth(){return m_texture->GetWidth();}
@@ -67,13 +74,32 @@ float MenuItem::GetXPos(){return m_x;}
 void MenuItem::SetXPos(float n_x){m_x = n_x;}
 std::string MenuItem::GetName(){return m_name;}
 bool MenuItem::IsActive(){return m_active;}
-void MenuItem::SetActive(bool n_active){m_active = n_active;}
+void MenuItem::SetActive(bool n_active)
+{
+	m_active = n_active;
+
+	if(IsActive() && m_hintDisplayer && m_hint != "" )
+	{
+		m_hintDisplayer->RemoveFirst();
+		m_hintDisplayer->AddMenuItem( new MenuItem(m_hintTexture,m_hint) );
+	}
+}
 
 bool MenuItem::CheckForCollision(float n_x, float n_y)
 {
 	// TODO
 }
 
+MenuItem::~MenuItem()
+{
+	// if this holds all the textures remove them
+	if( m_hintDisplayer )
+	{
+		g_textureManager.RemoveTexture(m_hint);
+		g_textureManager.RemoveTexture(m_name);
+	}
+
+}
 
 
 Stripe::Stripe() : 
@@ -105,12 +131,8 @@ void Stripe::Update()
 		m_interpolationValue = 1;
 
 		// delete the first element ( this should be the "PRESS ANY KEY" text)
-		if( m_menuItems.size() >= 1)
-		{
-			auto tmp_toDelete = m_menuItems[0]; 
-			m_menuItems.erase(m_menuItems.begin());
-			delete tmp_toDelete;
-		}
+		RemoveFirst();
+		
 		m_isAnimating = false;
 		m_hasAnimated = true;
 
@@ -120,6 +142,16 @@ void Stripe::Update()
 		RefreshMenuItemPositions();
 	}
 }
+
+void Stripe::RemoveFirst()
+{
+	if( m_menuItems.size() >= 1)
+	{
+		delete m_menuItems[0]; 
+		m_menuItems.erase(m_menuItems.begin());
+	}	
+}
+
 
 void MenuItem::Render()
 {
@@ -182,6 +214,11 @@ void Stripe::AddMenuItem(MenuItem* n_item)
 {
 	m_menuItems.push_back(n_item);
 	RefreshMenuItemPositions();
+}
+
+void Stripe::AddMenuItem(std::string n_name, std::string n_hint, Stripe* n_displayer)
+{
+	AddMenuItem(new MenuItem(n_name,n_hint,n_displayer));
 }
 
 void Stripe::AddMenuSeperator()
@@ -279,13 +316,13 @@ Menu_Title::Menu_Title() : m_backgroundColor()
 	m_stripe2.AddMenuItem(tmp_text);
 
 	// add these right away as tmp_text is large enough no cover these up (ok hopefully...)
-	m_stripe1.AddMenuItem("New Game");
+	m_stripe1.AddMenuItem("New Game","Starten Sie ein neues Spiel und klären Sie den Ayanokouji-Zwischenfall auf.",&m_stripe2);
 	m_stripe1.AddMenuSeperator();	
-	m_stripe1.AddMenuItem("Load Game");
+	m_stripe1.AddMenuItem("Load Game","Setzten Sie ein bereits begonnenes Spiel fort.",&m_stripe2);
 	m_stripe1.AddMenuSeperator();	
-	m_stripe1.AddMenuItem("Options");
+	m_stripe1.AddMenuItem("Options","Passen Sie Steuerung, Ton und Co. Ihren Bedürfnissen an.",&m_stripe2);
 	m_stripe1.AddMenuSeperator();	
-	m_stripe1.AddMenuItem("Extras");
+	m_stripe1.AddMenuItem("Extras","Entdecken Sie Geheimnisse abseits der Handlung von Innocence.",&m_stripe2);
 
 	SetStripeMatrices();
 }
