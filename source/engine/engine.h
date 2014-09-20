@@ -29,4 +29,6 @@
 #include "VideoSystem.h"
 #include "VideoSystem_SDL_OpenGL.h"
 
+#include "Box2D/Box2D/Box2D.h"
+
 #endif
