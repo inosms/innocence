@@ -98,6 +98,8 @@ public:
 class Menu_Title : public Menu
 {
 	Mesh* m_meshLayer0;
+	float m_backgroundOffset = 0;
+
 	Mesh* m_meshLayer1;
 	glm::vec3 m_backgroundColor;
 	ColorInterpolator m_interpolator;

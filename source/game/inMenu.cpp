@@ -44,7 +44,7 @@ bool Menu_Start::VOnEvent(Event& n_event)
 MenuItem::MenuItem(std::string n_name)
 {
 	m_name = n_name;
-	const float HEIGHT = 0.1f;
+	const float HEIGHT = 0.09f;
 	Font* tmp_font = g_fontManager.GetFont("TravelingTypewriter.ttf");
 	Texture* tmp_text = tmp_font->GetTextureForText(n_name,{ 255, 255, 255 });
 	m_texture = Mesh::GetTexturedRectProportionalByHeight(HEIGHT,0,0,tmp_text,1,1);
@@ -161,8 +161,6 @@ void MenuItem::Render()
 
 void Stripe::Render(double n_interpolation)
 {
-	g_menuShader->Begin();
-
 	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
 	g_menuShader->SetMat("projection",glm::ortho(0.f,tmp_ratio,0.f,1.f,-1.f,1.f));
 
@@ -184,9 +182,9 @@ void Stripe::Render(double n_interpolation)
 		if( m_isAnimating ) g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f-m_interpolationValue));
 		else g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f));
 		
-		// red if active 
+		// white if active 
 		if( i_item->IsActive() ) 
-			g_menuShader->SetVec4("texture_color",0.5f,0.f,0.f,1.f);
+			g_menuShader->SetVec4("texture_color",1.f,1.f,1.f,1.f);
 		// black otherwise
 		else
 			g_menuShader->SetVec4("texture_color",0.f,0.f,0.f,1.f);
@@ -198,10 +196,6 @@ void Stripe::Render(double n_interpolation)
 		g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f));
 	}
 	g_menuShader->SetFloat("texture_u_offset",0);
-	g_menuShader->End();
-
-	//m_backgroundMesh->Render();
-
 }
 
 void Stripe::AddMenuItem(std::string n_menuItem)
@@ -332,6 +326,7 @@ void Menu_Title::VUpdate()
 	m_interpolator.Update(0.01);
 	m_stripe1.Update();
 	m_stripe2.Update();
+	m_backgroundOffset+= 0.0001;
 }
 void Menu_Title::VRender( double n_interpolation )
 {
@@ -341,7 +336,10 @@ void Menu_Title::VRender( double n_interpolation )
 	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
 	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));	
 
+	g_menuShader->SetFloat("texture_u_offset",m_backgroundOffset);
 	m_meshLayer0->Render();
+	g_menuShader->SetFloat("texture_u_offset",0);
+
 
 	g_menuShader->SetVec4("texture_color",m_interpolator.Get());
 	m_meshLayer1->Render();
