@@ -367,8 +367,10 @@ bool Menu_Title::VOnEvent(Event& n_event)
 		{
 			m_stripe1.OnKeyLeft();
 		}
+		// TODO NOT L BUT ENTER AND NEW GAME
 		else if( tmp_event.m_key == L )
 		{
+			RemoveThis();
 			GetEventManager()->SendEvent(std::shared_ptr<Event_LoadLevel>(new Event_LoadLevel("test.xml")));
 		}
 		return true;	

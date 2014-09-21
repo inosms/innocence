@@ -159,6 +159,12 @@ void Shader::SetMat(std::string n_matVariable, glm::mat4x4 n_mat)
   glUniformMatrix4fv(Location(n_matVariable),1,GL_FALSE,&n_mat[0][0]);
 }
 
+void Shader::SetMat(std::string n_matVariable, glm::dmat4x4 n_mat)
+{
+  glUniformMatrix4dv(Location(n_matVariable),1,GL_FALSE,&n_mat[0][0]);
+}
+
+
 void Shader::SetTexture(std::string n_name, int loc)
 {
   glUniform1i( Location(n_name), loc );

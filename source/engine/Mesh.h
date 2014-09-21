@@ -5,6 +5,8 @@
 #include <map>
 #include "Texture.h"
 
+extern int toInt(std::string);
+
 class MeshTexture;
 class Mesh
 {

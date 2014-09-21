@@ -8,6 +8,12 @@ enum inGameObject_Type
 	inGameObject_Type_Test
 };
 
+/*
+
+TODO: this maybe later?
+for now: load all objects with begin
+load all resources whith the objects
+-> keep levels small
 enum inCreatorResourceType
 {
 	inCreatorResourceType_Texture,
@@ -23,9 +29,11 @@ public:
 	virtual std::vector< std::pair<inCreatorResourceType, std::string> > VGetNeededResources() = 0;
 };
 
+*/
+
 // used for loading: given a type it resturns the correct inCreator
 // MUST BE EXTENDED FOR EVERY NEW CREATOR!!!!
-extern inCreator* TypeToCreator(inGameObject_Type n_type);
+extern /*in*/Creator* TypeToCreator(int n_type);
 
 class GameObject_Test : public GameObject
 {

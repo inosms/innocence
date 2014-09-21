@@ -2,9 +2,13 @@
 #include "inSceneNode.h"
 
 
-inCreator* TypeToCreator(inGameObject_Type n_type)
+Creator* TypeToCreator(int n_type)
 {
-	// TODO!!!!!
+	if( n_type == inGameObject_Type_Test )
+		return new Creator_Test();
+	// always TODO
+	else 
+		return nullptr;
 }
 
 
