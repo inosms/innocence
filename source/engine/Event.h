@@ -26,6 +26,7 @@ enum Event_Type
 	Event_Type_AddScreenLayer,
 	Event_Type_RemoveScreenLayer,
 	Event_Type_LoadLevel,
+	Event_Type_SetGameState,
 
 	// everything between this end ?_END is forwarded to all screen layers
 	EVENT_TYPE_FORWARD_TO_SCREEN_LAYER_START,
@@ -97,6 +98,13 @@ class Event_LoadLevel : public Event
 public:
 	std::string m_levelXMLName;
 	Event_LoadLevel(std::string n_levelXMLName );
+};
+
+class Event_SetGameState : public Event
+{
+public:
+	int m_state;
+	Event_SetGameState(int n_state);
 };
 
 // this is just a parent class for all kinds of input events

@@ -72,10 +72,14 @@ GameLogicListener::GameLogicListener(GameLogic* n_logic) : m_logic(n_logic)
 
 void GameLogicListener::VProcessEvent( Event& n_event )
 {
-	if( n_event.GetType() == Event_Type_LoadLevel )
+	if( n_event.GetType() == Event_Type_SetGameState )
 	{
-		Event_LoadLevel& tmp_event = dynamic_cast<Event_LoadLevel&>(n_event);
-
-		std::cout << "Game logic add  " << tmp_event.m_levelXMLName << std::endl;
+		Event_SetGameState& tmp_event = dynamic_cast<Event_SetGameState&>(n_event);
+		m_logic->SetState(tmp_event.m_state);
+	}
+	else if( n_event.GetType() == Event_Type_CreateNewObject )
+	{
+		Event_CreateNewObject& tmp_event = dynamic_cast<Event_CreateNewObject&>(n_event);
+		tmp_event.m_creator->CreateGameObject(*m_logic);
 	}
 }

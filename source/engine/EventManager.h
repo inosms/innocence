@@ -8,6 +8,8 @@
 #include <mutex>
 #include <thread>
 
+#define SEND_EVENT(type,parameter) GetEventManager()->SendEvent( std::shared_ptr<type>(new type(parameter)))
+
 class EventManager
 {
 private:

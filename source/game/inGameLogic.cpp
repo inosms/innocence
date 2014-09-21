@@ -28,8 +28,10 @@ void inGameLogic::Load(std::string n_levelXML)
 			continue;
 		}
 
-		GetEventManager()->SendEvent( std::shared_ptr<Event_CreateNewObject>(new Event_CreateNewObject(tmp_creator)));
+		SEND_EVENT(Event_CreateNewObject,tmp_creator);
 	}
 
-	m_state = GameLogicState_Running;
+	// send this as an event, as a result this is processed
+	// after all the Create Events
+	SEND_EVENT(Event_SetGameState,GameLogicState_Running);
 }

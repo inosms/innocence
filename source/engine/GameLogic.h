@@ -30,6 +30,8 @@ public:
 	// return NULL if not found
 	GameObject* FindObject(unsigned int n_id);
 
+	void SetState(int n_state);
+
 	virtual void VUpdate();
 };
 

@@ -43,6 +43,12 @@ GameObject* GameLogic::FindObject(unsigned int n_id)
 	return nullptr;
 }
 
+void GameLogic::SetState(int n_state)
+{
+	m_state = (GameLogicState)n_state;
+}
+
+
 void GameLogic::VUpdate()
 {
 	// if loading do not update the game objects

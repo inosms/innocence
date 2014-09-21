@@ -50,6 +50,12 @@ Event_LoadLevel::Event_LoadLevel(std::string n_levelXMLName ) :
 	m_levelXMLName(n_levelXMLName)
 {}
 
+Event_SetGameState::Event_SetGameState(int n_state) :
+	Event(Event_Type_SetGameState),
+	m_state(n_state)
+{}
+
+
 Event_Input::Event_Input( unsigned int n_type ) :
 	Event(n_type)
 {}

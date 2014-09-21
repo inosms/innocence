@@ -24,7 +24,8 @@ void GameObject_Test::VUpdate()
 
 void Creator_Test::CreateGameObject(GameLogic& n_gameLogic)
 {
-	// TODO 
+	GameObject_Test* tmp_test = new GameObject_Test(m_id);
+	n_gameLogic.AddObject(tmp_test);
 }
 
 void Creator_Test::CreateSceneNode(GameView_Human& n_gameView)
