@@ -44,5 +44,14 @@ public:
 	virtual void VProcessEvent( Event& n_event );
 };
 
-// TODO default logic listener
+class GameLogic;
+class GameLogicListener : public EventListener
+{
+protected:
+	GameLogic* m_logic;
+public:
+	GameLogicListener(GameLogic* n_logic);
+	virtual void VProcessEvent( Event& n_event );
+};
+
 #endif

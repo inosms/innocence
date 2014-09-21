@@ -1,6 +1,13 @@
 #include "inGameObject.h"
 #include "inSceneNode.h"
 
+
+inCreator* TypeToCreator(inGameObject_Type n_type)
+{
+	// TODO!!!!!
+}
+
+
 GameObject_Test::GameObject_Test(unsigned int n_id) : GameObject(n_id,inGameObject_Type_Test)
 {
 

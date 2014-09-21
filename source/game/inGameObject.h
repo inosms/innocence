@@ -8,6 +8,25 @@ enum inGameObject_Type
 	inGameObject_Type_Test
 };
 
+enum inCreatorResourceType
+{
+	inCreatorResourceType_Texture,
+	inCreatorResourceType_Mesh,
+	// todo: fragment? vertex? there is only one std::string!
+	inCreatorResourceType_Shader 
+};
+
+class inCreator : public Creator
+{
+public:
+
+	virtual std::vector< std::pair<inCreatorResourceType, std::string> > VGetNeededResources() = 0;
+};
+
+// used for loading: given a type it resturns the correct inCreator
+// MUST BE EXTENDED FOR EVERY NEW CREATOR!!!!
+extern inCreator* TypeToCreator(inGameObject_Type n_type);
+
 class GameObject_Test : public GameObject
 {
 public:

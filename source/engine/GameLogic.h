@@ -6,6 +6,11 @@
 #include "Process.h"
 #include <vector>
 
+enum GameLogicState
+{
+	GameLogicState_Running,
+	GameLogicState_Loading
+};
 
 class GameLogic
 {
@@ -13,6 +18,7 @@ protected:
 	std::vector<GameObject*> m_objects;
 	EventListener* m_listener;
 
+	GameLogicState m_state = GameLogicState_Running;
 public:
 
 	GameLogic( EventListener* n_listener );

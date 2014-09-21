@@ -1,8 +1,13 @@
 #include "GameLogic.h"
 #include "Error.h"
+#include "engine.h"
 
 GameLogic::GameLogic(EventListener* n_listener) :
-	m_listener(n_listener){}
+	m_listener(n_listener)
+	{
+		// add all default event types
+		FORALLDEFAULTEVENTTYPES(GetEventManager()->AddEventListener(m_listener,event));
+	}
 
 void GameLogic::AddObject( GameObject* n_object )
 {
@@ -40,8 +45,11 @@ GameObject* GameLogic::FindObject(unsigned int n_id)
 
 void GameLogic::VUpdate()
 {
-	for( GameObject* i_gameObject : m_objects )
-		i_gameObject->VUpdate();
+	// if loading do not update the game objects
+	if( m_state == GameLogicState_Running )
+		for( GameObject* i_gameObject : m_objects )
+			i_gameObject->VUpdate();
 
+	// always process events in every state
 	m_listener->ProcessQueuedEvents();
 }

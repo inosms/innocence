@@ -45,6 +45,11 @@ Event_RemoveScreenLayer::Event_RemoveScreenLayer(ScreenLayer* n_screenLayer) :
 	m_screenLayer(n_screenLayer)
 {}
 
+Event_LoadLevel::Event_LoadLevel(std::string n_levelXMLName ) :
+	Event(Event_Type_LoadLevel),
+	m_levelXMLName(n_levelXMLName)
+{}
+
 Event_Input::Event_Input( unsigned int n_type ) :
 	Event(n_type)
 {}

@@ -30,5 +30,6 @@
 #include "VideoSystem_SDL_OpenGL.h"
 
 #include "Box2D/Box2D/Box2D.h"
+#include "pugixml/pugixml.hpp"
 
 #endif

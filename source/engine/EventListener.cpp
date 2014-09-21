@@ -66,3 +66,16 @@ void HumanViewListener::VProcessEvent( Event& n_event )
 		m_view->ForwardInputEvent(n_event);
 	} 
 }
+
+GameLogicListener::GameLogicListener(GameLogic* n_logic) : m_logic(n_logic)
+{}
+
+void GameLogicListener::VProcessEvent( Event& n_event )
+{
+	if( n_event.GetType() == Event_Type_LoadLevel )
+	{
+		Event_LoadLevel& tmp_event = dynamic_cast<Event_LoadLevel&>(n_event);
+
+		std::cout << "Game logic add  " << tmp_event.m_levelXMLName << std::endl;
+	}
+}

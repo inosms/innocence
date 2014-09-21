@@ -4,9 +4,8 @@
 #include "../engine/engine.h"
 #include "inGameLogic.h"
 
-class inGameLogicListener : public EventListener
+class inGameLogicListener : public GameLogicListener
 {
-	inGameLogic* m_logic;
 public:
 	inGameLogicListener(inGameLogic* n_logic);
 	virtual void VProcessEvent( Event& n_event );

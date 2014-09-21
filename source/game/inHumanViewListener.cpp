@@ -10,4 +10,6 @@ void inHumanViewListener::VProcessEvent( Event& n_event )
 	// default handling
 	HumanViewListener::VProcessEvent(n_event);
 
+	inHumanView* tmp_view = dynamic_cast<inHumanView*>(m_view);
+
 }

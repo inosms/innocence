@@ -25,6 +25,7 @@ enum Event_Type
 	Event_Type_MoveSceneNode,
 	Event_Type_AddScreenLayer,
 	Event_Type_RemoveScreenLayer,
+	Event_Type_LoadLevel,
 
 	// everything between this end ?_END is forwarded to all screen layers
 	EVENT_TYPE_FORWARD_TO_SCREEN_LAYER_START,
@@ -89,6 +90,13 @@ class Event_RemoveScreenLayer : public Event
 public:
 	ScreenLayer* m_screenLayer;
 	Event_RemoveScreenLayer(ScreenLayer* n_screenLayer);
+};
+
+class Event_LoadLevel : public Event
+{
+public:
+	std::string m_levelXMLName;
+	Event_LoadLevel(std::string n_levelXMLName );
 };
 
 // this is just a parent class for all kinds of input events

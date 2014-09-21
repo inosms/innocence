@@ -367,6 +367,10 @@ bool Menu_Title::VOnEvent(Event& n_event)
 		{
 			m_stripe1.OnKeyLeft();
 		}
+		else if( tmp_event.m_key == L )
+		{
+			GetEventManager()->SendEvent(std::shared_ptr<Event_LoadLevel>(new Event_LoadLevel("test.xml")));
+		}
 		return true;	
 	}
 	else if( n_event.GetType() == Event_Type_Input_Mousebutton_Down )

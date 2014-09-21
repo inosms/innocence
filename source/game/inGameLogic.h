@@ -8,7 +8,9 @@ class inGameLogic : public GameLogic
 public:
 	inGameLogic();
 
-	virtual void VUpdate(){}
+	//virtual void VUpdate(){GameLogic::VUpdate();}
+
+	void Load(std::string n_levelXML);
 };
 
 #endif
