@@ -14,15 +14,15 @@ protected:
 	unsigned int m_id;
 
 	// marks if this node has alpha
-	// if it has renderering this node requires 
+	// if it has renderering this node requires
 	// renderering everything else before this node
-	// and then sorting with other alpha nodes 
+	// and then sorting with other alpha nodes
 	// and then finally rendering
 	bool m_hasAlpha = false;
 
 	glm::mat4x4 m_matrix;
 
-	// this just saves the old matrix if 
+	// this just saves the old matrix if
 	// SetNewMatrix is called
 	// this is used for interpolation calculation
 	glm::mat4x4 m_oldMat;
@@ -32,7 +32,7 @@ protected:
 
 	Mesh* m_mesh;
 
-	// renders this and children 
+	// renders this and children
 	// BUT only if they are not marked as alpha nodes
 	// matrix holds the parents translation
 	// if a scene node has alpha it is added to the
@@ -59,29 +59,29 @@ public:
 
 	void SetNewMatrix( glm::mat4x4 n_mat );
 
-	// this sets the new matrix; but does NOT 
+	// this sets the new matrix; but does NOT
 	// calculate a new interpolation matrix
-	// this is usefull when setting the matrix
+	// this is useful when setting the matrix
 	// for the first time, when not expecting
 	// a change the next time
-	// with normal SetNewMatrix this object would then 
+	// with normal SetNewMatrix this object would then
 	// jump, as the interpolation matrix would point
 	// from 0 0 0 pos to the new one
 	// (which is not good)
 	void SetNewMatrixNoInterpolation( glm::mat4x4 n_mat);
 
-	bool HasAlpha(); 
+	bool HasAlpha();
 	void SetAlpha( bool n_alpha );
 
-	// renders this and non alpha children first; 
+	// renders this and non alpha children first;
 	// then renders all alpha children sorted
 	// therefore it should only be called by root node
-	// it requires a camera object which is applied 
+	// it requires a camera object which is applied
 	// before rendering
 	void RecursiveRenderCall_TopLevel(double n_interpolation,Camera& n_camera);
-	
-	// Deletes the child node with the given id 
-	// while also deleting all children of this 
+
+	// Deletes the child node with the given id
+	// while also deleting all children of this
 	// node
 	void RecursiveDeleteCall(unsigned int n_id);
 

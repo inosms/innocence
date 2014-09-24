@@ -1,4 +1,5 @@
 #include "Math.h"
+#include <sstream>
 
 void print(glm::mat4x4& n_mat)
 {
@@ -10,4 +11,17 @@ void print(glm::mat4x4& n_mat)
 		}
 		std::cout << std::endl;
 	}
+}
+
+void print(glm::vec3& n_vec)
+{
+	std::cout << n_vec.x << ", " << n_vec.y << ", " << n_vec.z << std::endl;
+}
+
+float toFloat(std::string n_string)
+{
+	std::stringstream s(n_string);
+	float tmp_float;
+	s >> tmp_float;
+	return tmp_float;
 }

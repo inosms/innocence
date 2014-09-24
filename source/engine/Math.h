@@ -2,6 +2,7 @@
 #define _MATH_H_
 
 #include <iostream>
+#include <string>
 
 // this is required to remove a lot of
 // warning messages of glm....
@@ -16,5 +17,7 @@
 #define PI 3.1415f
 
 extern void print(glm::mat4x4& n_mat);
+extern void print(glm::vec3& n_vec);
+extern float toFloat(std::string n_string);
 
 #endif

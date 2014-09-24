@@ -1,4 +1,22 @@
 <object>
 	<type>0</type>
 	<width>2</width>
+	<height>1</height>
+	<position>
+		<x>0</x>
+		<y>0</y>
+		<z>0</z>
+	</position>
+</object>
+
+
+<object>
+	<type>0</type>
+	<width>1</width>
+	<height>1</height>
+	<position>
+		<x>1.5</x>
+		<y>1</y>
+		<z>0</z>
+	</position>
 </object>

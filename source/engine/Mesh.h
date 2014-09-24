@@ -32,6 +32,8 @@ public:
 	void SetTexture(Texture* n_texture);
 	Texture* GetTexture();
 
+	// returns just a rect width w&h=1 center=0,0,0 and white
+	static Mesh* GetRect();
 	static MeshTexture* GetTexturedRect(float n_width, float n_height, Texture* n_texture);
 	static MeshTexture* GetTexturedRect(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture);
 	static MeshTexture* GetTexturedRect(float n_width, float n_height, Texture* n_texture,float n_textureXScale, float n_textureYScale);

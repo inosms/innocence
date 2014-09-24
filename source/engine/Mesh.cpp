@@ -74,14 +74,14 @@ Mesh::Mesh(std::string n_filename)
 					std::vector<std::string> tmp_indices = split(tmp_vert,'/');
 					tmp_verticesInCorrectOrder.push_back(tmp_vertices[toInt(tmp_indices[0])-1]);
 					tmp_normalsInCorrectOrder.push_back(tmp_normals[toInt(tmp_indices[2])-1]);
-				}				
+				}
 			}
 		}
 	}
-	else throw std::string("file not found");   
+	else throw std::string("file not found");
 
 	glGenVertexArrays(1,&m_vao);
-	glBindVertexArray(m_vao); 
+	glBindVertexArray(m_vao);
 
 	// generate vertices buffer
 	// there must at least be given vertices
@@ -169,6 +169,29 @@ Texture* Mesh::GetTexture()
 	return m_texture;
 }
 
+Mesh* Mesh::GetRect()
+{
+	float n_width = 1;
+	float n_height = 1;
+	float n_centerY = 0;
+	float n_centerX = 0;
+	float n_vert[] = {-n_width/2+n_centerX,-n_height/2+n_centerY,0.f,
+					n_width/2+n_centerX,-n_height/2+n_centerY,0.f,
+					n_width/2+n_centerX,n_height/2+n_centerY,0.f,
+					n_width/2+n_centerX,n_height/2+n_centerY,0.f,
+					-n_width/2+n_centerX,n_height/2+n_centerY,0.f,
+					-n_width/2+n_centerX,-n_height/2+n_centerY,0.f};
+	float n_color[] = { 1,1,1,
+						1,1,1,
+						1,1,1,
+						1,1,1,
+						1,1,1,
+						1,1,1};
+	Mesh* tmp_new = new Mesh(n_vert,n_color,nullptr,nullptr,18);
+	return tmp_new;
+}
+
+
 MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height, Texture* n_texture)
 {
 	return Mesh::GetTexturedRect(n_width,n_height,n_texture,1,1);
@@ -237,6 +260,6 @@ Mesh* MeshManager::GetMesh(std::string n_name)
 {
 	if( m_map.find(n_name) == m_map.end() )
 		return nullptr;
-	else 
+	else
 		return m_map[n_name];
 }

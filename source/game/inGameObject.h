@@ -25,13 +25,18 @@ enum inCreatorResourceType
 
 class inCreator : public Creator
 {
+protected:
+	// some default values
+	glm::vec3 m_position;
+
 public:
 	inCreator();
 //	virtual std::vector< std::pair<inCreatorResourceType, std::string> > VGetNeededResources() = 0;
 
 	// called when level is loaded with the
 	// node which causes this Creator to be created
-	virtual void VLoad(pugi::xml_node n_node){}
+	// this is just a default implementation
+	virtual void VLoad(pugi::xml_node n_node);
 };
 
 
@@ -50,7 +55,7 @@ public:
 
 class Creator_Test : public inCreator
 {
-	int m_width = 10;
+	float m_width = 1, m_height = 1;
 public:
 	virtual void CreateGameObject(GameLogic& n_gameLogic);
 	virtual void CreateSceneNode(GameView_Human& n_gameView);
