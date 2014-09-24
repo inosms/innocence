@@ -20,7 +20,8 @@ void inGameLogic::Load(std::string n_levelXML)
 	for( pugi::xml_node i : tmp_doc.children() )
 	{
 		int tmp_type = toInt(i.child_value("type"));
-		Creator* tmp_creator = TypeToCreator(tmp_type);
+		inCreator* tmp_creator = TypeToCreator(tmp_type);
+		tmp_creator->VLoad(i);
 
 		if( !tmp_creator )
 		{

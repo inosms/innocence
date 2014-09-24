@@ -5,8 +5,9 @@
 
 class SceneNode_Test : public SceneNode
 {
+	int m_width;
 public:
-	SceneNode_Test(unsigned int n_id);
+	SceneNode_Test(unsigned int n_id, int n_width);
 	virtual void VRender( double n_interpolation, glm::mat4x4& n_matrix );
 };
 
