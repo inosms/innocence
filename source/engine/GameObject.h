@@ -20,6 +20,12 @@ public:
 	unsigned int GetID();
 	unsigned int GetType();
 
+	glm::mat4x4 GetPos();
+	void SetPos(glm::mat4x4 n_pos);
+
+	b2Body* GetBody();
+	void SetBody(b2Body* n_body);
+
 	virtual void VUpdate() = 0;
 
 	virtual ~GameObject();

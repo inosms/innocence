@@ -16,6 +16,26 @@ unsigned int GameObject::GetType()
 	return m_type;
 }
 
+glm::mat4x4 GameObject::GetPos()
+{
+	return m_pos;
+}
+
+void GameObject::SetPos(glm::mat4x4 n_pos)
+{
+	m_pos = n_pos;
+}
+
+b2Body* GameObject::GetBody()
+{
+	return m_body;
+}
+
+void GameObject::SetBody(b2Body* n_body)
+{
+	m_body = n_body;
+}
+
 GameObject::~GameObject()
 {
 	if( m_body )

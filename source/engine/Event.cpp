@@ -1,9 +1,9 @@
-#include "Event.h"	
+#include "Event.h"
 #include "Creator.h"
 #include "ScreenLayer.h"
 #include <iostream>
 
-Event::Event( unsigned int n_type ) : 
+Event::Event( unsigned int n_type ) :
 	m_type( n_type )
 	{}
 
@@ -13,7 +13,7 @@ unsigned int Event::GetType()
 }
 
 
-Event_CreateNewObject::Event_CreateNewObject(Creator* n_creator) : 
+Event_CreateNewObject::Event_CreateNewObject(Creator* n_creator) :
 	Event(Event_Type_CreateNewObject),
 	m_creator(n_creator)
 	{}
@@ -24,13 +24,19 @@ Event_CreateNewObject::~Event_CreateNewObject()
 }
 
 
-Event_RemoveObject::Event_RemoveObject(unsigned int n_id) : 
+Event_RemoveObject::Event_RemoveObject(unsigned int n_id) :
 	Event(Event_Type_RemoveObject),
-	m_id( n_id ) 
+	m_id( n_id )
 	{}
 
 Event_MoveSceneNode::Event_MoveSceneNode(glm::mat4x4 n_mat, unsigned int n_id) :
 	Event(Event_Type_MoveSceneNode),
+	m_mat(n_mat),
+	m_id(n_id)
+{}
+
+Event_MoveObject::Event_MoveObject(glm::mat4x4 n_mat, unsigned int n_id) :
+	Event(Event_Type_MoveObject),
 	m_mat(n_mat),
 	m_id(n_id)
 {}
@@ -67,7 +73,7 @@ Event_Input_Key_Down::Event_Input_Key_Down(Event_Input_Key n_key) :
 
 }
 
-Event_Input_Mousebutton_Down::Event_Input_Mousebutton_Down( Event_Input_Mousebutton n_button , unsigned int n_x, unsigned int n_y , float n_percent_x, float n_percent_y ): 
+Event_Input_Mousebutton_Down::Event_Input_Mousebutton_Down( Event_Input_Mousebutton n_button , unsigned int n_x, unsigned int n_y , float n_percent_x, float n_percent_y ):
 	Event_Input(Event_Type_Input_Mousebutton_Down),
 	m_button(n_button),
 	x(n_x),

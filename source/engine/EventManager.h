@@ -8,13 +8,14 @@
 #include <mutex>
 #include <thread>
 
-#define SEND_EVENT(type,parameter) GetEventManager()->SendEvent( std::shared_ptr<type>(new type(parameter)))
+// https://stackoverflow.com/questions/679979/how-to-make-a-variadic-macro-variable-number-of-arguments
+#define SEND_EVENT(type, ...) GetEventManager()->SendEvent( std::shared_ptr<type>(new type( __VA_ARGS__ )))
 
 class EventManager
 {
 private:
 
-	// to ensure the EventManager is thread safe  
+	// to ensure the EventManager is thread safe
 	std::mutex m_mutex;
 
 	// unsigned int is the EventType
@@ -25,7 +26,7 @@ public:
 	// the shared_ptr is neccessary as the threaded
 	// event listeners process the event at different times
 	// and so deleting the event at the end of send event is not possible
-	// this directly send the event to the event queue of all the registered 
+	// this directly send the event to the event queue of all the registered
 	// eventlistener
 	void SendEvent( std::shared_ptr<Event> n_event );
 

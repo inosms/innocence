@@ -21,7 +21,8 @@ public:
     // create and destroy body; the bodies must be
     // saved in the game object and destroyed with the
     // game object (thats the job of the game object!)
-    b2Body* CreateBody(b2BodyDef& n_def);
+    // also the id is stored along with the body
+    b2Body* CreateBody(b2BodyDef& n_def, unsigned int n_id);
     void DestroyBody(b2Body* n_body);
 
     ~Physics();

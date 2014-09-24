@@ -58,8 +58,13 @@ void GameLogic::VUpdate()
 {
 	// if loading do not update the game objects
 	if( m_state == GameLogicState_Running )
+	{
 		for( GameObject* i_gameObject : m_objects )
 			i_gameObject->VUpdate();
+
+		m_physics.Update();
+		m_physics.SendPositionUpdateEvents();
+	}
 
 	// always process events in every state
 	m_listener->ProcessQueuedEvents();

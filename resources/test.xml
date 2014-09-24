@@ -13,10 +13,82 @@
 <object>
 	<type>0</type>
 	<width>1</width>
-	<height>1</height>
+	<height>0.1</height>
 	<position>
 		<x>1.5</x>
-		<y>1</y>
+		<y>0</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.5</x>
+		<y>2</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.5</x>
+		<y>2.1</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.5</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.8</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.8</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.8</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.8</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>1.8</x>
+		<y>2.2</y>
 		<z>0</z>
 	</position>
 </object>

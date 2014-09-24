@@ -5,7 +5,8 @@
 
 enum inGameObject_Type
 {
-	inGameObject_Type_Test
+	inGameObject_Type_Test,
+	inGameObject_Type_DynamicTest
 };
 
 /*
@@ -28,6 +29,10 @@ class inCreator : public Creator
 protected:
 	// some default values
 	glm::vec3 m_position;
+
+	// sets the default values which are parsed with VLoad
+	void SetDefaultValues(GameObject& n_obj);
+	void SetDefaultValues(SceneNode& n_node);
 
 public:
 	inCreator();
@@ -60,6 +65,21 @@ public:
 	virtual void CreateGameObject(GameLogic& n_gameLogic);
 	virtual void CreateSceneNode(GameView_Human& n_gameView);
 	virtual void VLoad(pugi::xml_node n_node);
+};
+
+class GameObject_DynamicTest : public GameObject
+{
+public:
+	GameObject_DynamicTest(unsigned int n_id);
+	virtual void VUpdate();
+
+};
+
+class Creator_DynamicTest : public inCreator
+{
+public:
+	virtual void CreateGameObject(GameLogic& n_gameLogic);
+	virtual void CreateSceneNode(GameView_Human& n_gameView);
 };
 
 #endif

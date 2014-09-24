@@ -23,6 +23,7 @@ enum Event_Type
 	Event_Type_CreateNewObject,
 	Event_Type_RemoveObject,
 	Event_Type_MoveSceneNode,
+	Event_Type_MoveObject,
 	Event_Type_AddScreenLayer,
 	Event_Type_RemoveScreenLayer,
 	Event_Type_LoadLevel,
@@ -78,6 +79,14 @@ public:
 	Event_MoveSceneNode(glm::mat4x4 n_mat, unsigned int n_id);
 };
 
+class Event_MoveObject : public Event
+{
+public:
+	glm::mat4x4 m_mat;
+	unsigned int m_id;
+	Event_MoveObject(glm::mat4x4 n_mat, unsigned int n_id);	
+};
+
 class ScreenLayer;
 class Event_AddScreenLayer : public Event
 {
@@ -110,7 +119,7 @@ public:
 // this is just a parent class for all kinds of input events
 class Event_Input : public Event
 {
-public: 
+public:
 	Event_Input( unsigned int n_type );
 };
 
