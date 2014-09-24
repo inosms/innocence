@@ -48,6 +48,11 @@ void GameLogic::SetState(int n_state)
 	m_state = (GameLogicState)n_state;
 }
 
+Physics* GameLogic::GetPhysics()
+{
+	return &m_physics;
+}
+
 
 void GameLogic::VUpdate()
 {

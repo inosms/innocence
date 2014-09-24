@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "EventListener.h"
 #include "Process.h"
+#include "Physics.h"
 #include <vector>
 
 enum GameLogicState
@@ -17,6 +18,7 @@ class GameLogic
 protected:
 	std::vector<GameObject*> m_objects;
 	EventListener* m_listener;
+	Physics m_physics;
 
 	GameLogicState m_state = GameLogicState_Running;
 public:
@@ -31,6 +33,8 @@ public:
 	GameObject* FindObject(unsigned int n_id);
 
 	void SetState(int n_state);
+
+	Physics* GetPhysics();
 
 	virtual void VUpdate();
 };

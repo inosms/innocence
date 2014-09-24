@@ -17,6 +17,7 @@
 #include "Math.h"
 #include "Mesh.h"
 #include "Menu.h"
+#include "Physics.h"
 #include "Process.h"
 #include "ProcessManager.h"
 #include "SceneNode.h"
