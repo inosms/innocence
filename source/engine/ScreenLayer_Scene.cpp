@@ -36,6 +36,7 @@ SceneNode* ScreenLayer_Scene::FindSceneNode( unsigned int n_id)
 void ScreenLayer_Scene::VUpdate()
 {
 	m_rootNode.RecursiveUpdateCall();
+	m_camera.Update();
 }
 
 void ScreenLayer_Scene::VRender( double n_interpolation )

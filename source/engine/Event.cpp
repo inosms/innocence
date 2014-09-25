@@ -41,6 +41,11 @@ Event_MoveObject::Event_MoveObject(glm::mat4x4 n_mat, unsigned int n_id) :
 	m_id(n_id)
 {}
 
+Event_MoveCamera::Event_MoveCamera(glm::mat4x4 n_mat) :
+	Event(Event_Type_MoveCamera),
+	m_goto(n_mat)
+{}
+
 Event_AddScreenLayer::Event_AddScreenLayer(ScreenLayer* n_screenLayer)
 	: Event(Event_Type_AddScreenLayer),
 	m_screenLayer(n_screenLayer)

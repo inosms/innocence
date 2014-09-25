@@ -1,6 +1,6 @@
 <object>
 	<type>0</type>
-	<width>20</width>
+	<width>100</width>
 	<height>1</height>
 	<position>
 		<x>0</x>
@@ -301,7 +301,224 @@
 </object><object>
 	<type>1</type>
 	<position>
-		<x>1.4</x>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
+		<y>2.2</y>
+		<z>0</z>
+	</position>
+</object>
+<object>
+	<type>1</type>
+	<position>
+		<x>0</x>
 		<y>2.2</y>
 		<z>0</z>
 	</position>

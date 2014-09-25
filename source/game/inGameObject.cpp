@@ -127,7 +127,10 @@ void Creator_DynamicTest::CreateSceneNode(GameView_Human& n_gameView)
 GameObject_PlayerTest::GameObject_PlayerTest(unsigned int n_id) : GameObject(inGameObject_Type_PlayerTest,n_id)
 {}
 
-void GameObject_PlayerTest::VUpdate(){}
+void GameObject_PlayerTest::VUpdate()
+{
+	SEND_EVENT(Event_MoveCamera,glm::inverse(m_pos));
+}
 
 void GameObject_PlayerTest::OnRequestPlayerMove(glm::vec2 n_direction)
 {

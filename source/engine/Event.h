@@ -24,6 +24,7 @@ enum Event_Type
 	Event_Type_RemoveObject,
 	Event_Type_MoveSceneNode,
 	Event_Type_MoveObject,
+	Event_Type_MoveCamera,
 	Event_Type_AddScreenLayer,
 	Event_Type_RemoveScreenLayer,
 	Event_Type_LoadLevel,
@@ -86,6 +87,13 @@ public:
 	glm::mat4x4 m_mat;
 	unsigned int m_id;
 	Event_MoveObject(glm::mat4x4 n_mat, unsigned int n_id);
+};
+
+class Event_MoveCamera : public Event
+{
+public:
+	glm::mat4x4 m_goto;
+	Event_MoveCamera(glm::mat4x4 n_mat);
 };
 
 class ScreenLayer;

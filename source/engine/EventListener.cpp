@@ -70,6 +70,11 @@ void HumanViewListener::VProcessEvent( Event& n_event )
 		Event_MoveObject& tmp_event = dynamic_cast<Event_MoveObject&>(n_event);
 		m_view->GetScene()->FindSceneNode(tmp_event.m_id)->SetNewMatrix(tmp_event.m_mat);
 	}
+	else if( n_event.GetType() == Event_Type_MoveCamera )
+	{
+		Event_MoveCamera& tmp_event = dynamic_cast<Event_MoveCamera&>(n_event);
+		m_view->GetScene()->GetCamera().GoToPosition(tmp_event.m_goto);
+	}
 }
 
 GameLogicListener::GameLogicListener(GameLogic* n_logic) : m_logic(n_logic)
