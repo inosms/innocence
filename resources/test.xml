@@ -1,10 +1,21 @@
 <object>
 	<type>0</type>
+	<width>5</width>
+	<height>0.05</height>
+	<position>
+		<x>0</x>
+		<y>-1</y>
+		<z>0</z>
+	</position>
+</object>
+
+<object>
+	<type>2</type>
 	<width>2</width>
 	<height>1</height>
 	<position>
 		<x>0</x>
-		<y>0</y>
+		<y>2</y>
 		<z>0</z>
 	</position>
 </object>
@@ -51,7 +62,7 @@
 <object>
 	<type>1</type>
 	<position>
-		<x>1.8</x>
+		<x>1.0</x>
 		<y>2.2</y>
 		<z>0</z>
 	</position>
@@ -60,7 +71,7 @@
 <object>
 	<type>1</type>
 	<position>
-		<x>1.8</x>
+		<x>1.2</x>
 		<y>2.2</y>
 		<z>0</z>
 	</position>
@@ -69,7 +80,7 @@
 <object>
 	<type>1</type>
 	<position>
-		<x>1.8</x>
+		<x>1.4</x>
 		<y>2.2</y>
 		<z>0</z>
 	</position>
@@ -78,7 +89,7 @@
 <object>
 	<type>1</type>
 	<position>
-		<x>1.8</x>
+		<x>1.6</x>
 		<y>2.2</y>
 		<z>0</z>
 	</position>
@@ -87,7 +98,7 @@
 <object>
 	<type>1</type>
 	<position>
-		<x>1.8</x>
+		<x>1.7</x>
 		<y>2.2</y>
 		<z>0</z>
 	</position>

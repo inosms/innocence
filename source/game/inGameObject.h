@@ -6,7 +6,8 @@
 enum inGameObject_Type
 {
 	inGameObject_Type_Test,
-	inGameObject_Type_DynamicTest
+	inGameObject_Type_DynamicTest,
+	inGameObject_Type_PlayerTest
 };
 
 /*
@@ -81,5 +82,21 @@ public:
 	virtual void CreateGameObject(GameLogic& n_gameLogic);
 	virtual void CreateSceneNode(GameView_Human& n_gameView);
 };
+
+class GameObject_PlayerTest : public GameObject
+{
+public:
+	GameObject_PlayerTest(unsigned int n_id);
+	virtual void VUpdate();
+
+};
+
+class Creator_PlayerTest : public inCreator
+{
+public:
+	virtual void CreateGameObject(GameLogic& n_gameLogic);
+	virtual void CreateSceneNode(GameView_Human& n_gameView);
+};
+
 
 #endif

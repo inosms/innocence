@@ -84,7 +84,7 @@ class Event_MoveObject : public Event
 public:
 	glm::mat4x4 m_mat;
 	unsigned int m_id;
-	Event_MoveObject(glm::mat4x4 n_mat, unsigned int n_id);	
+	Event_MoveObject(glm::mat4x4 n_mat, unsigned int n_id);
 };
 
 class ScreenLayer;
@@ -123,9 +123,11 @@ public:
 	Event_Input( unsigned int n_type );
 };
 
-enum Event_Input_Key
+enum class Event_Input_Key
 {
-	A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z
+	A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
+	SPACE, RETURN,
+	RIGHT,LEFT,UP,DOWN
 };
 
 class Event_Input_Key_Down : public Event_Input
@@ -135,7 +137,7 @@ public:
 	Event_Input_Key_Down(Event_Input_Key n_key);
 };
 
-enum Event_Input_Mousebutton
+enum class Event_Input_Mousebutton
 {
 	LEFT,
 	RIGHT

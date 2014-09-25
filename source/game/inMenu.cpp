@@ -103,7 +103,7 @@ MenuItem::~MenuItem()
 }
 
 
-Stripe::Stripe() : 
+Stripe::Stripe() :
 	m_firstPos(glm::mat4()),
 	m_lastPos(glm::mat4())
 {
@@ -133,7 +133,7 @@ void Stripe::Update()
 
 		// delete the first element ( this should be the "PRESS ANY KEY" text)
 		RemoveFirst();
-		
+
 		m_isAnimating = false;
 		m_hasAnimated = true;
 
@@ -148,9 +148,9 @@ void Stripe::RemoveFirst()
 {
 	if( m_menuItems.size() >= 1)
 	{
-		delete m_menuItems[0]; 
+		delete m_menuItems[0];
 		m_menuItems.erase(m_menuItems.begin());
-	}	
+	}
 }
 
 
@@ -182,9 +182,9 @@ void Stripe::Render(double n_interpolation)
 
 		if( m_isAnimating ) g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f-m_interpolationValue));
 		else g_menuShader->SetVec4("texture_color",glm::vec4(1.f,1.f,1.f,1.f));
-		
-		// white if active 
-		if( i_item->IsActive() ) 
+
+		// white if active
+		if( i_item->IsActive() )
 			g_menuShader->SetVec4("texture_color",1.f,1.f,1.f,1.f);
 		// black otherwise
 		else
@@ -253,7 +253,7 @@ void Stripe::OnKeyRight()
 
 	// none is active
 	if(GetActive() == "" && m_menuItems.size() != 0)
-	{ 
+	{
 		m_menuItems[0]->SetActive(true);
 	}
 	else
@@ -274,7 +274,7 @@ void Stripe::OnKeyLeft()
 {
 	if(!m_hasAnimated) return;
 	if(GetActive() == "" && m_menuItems.size() != 0)
-	{ 
+	{
 		m_menuItems[m_menuItems.size()-1]->SetActive(true);
 	}
 	else
@@ -306,17 +306,17 @@ Menu_Title::Menu_Title() : m_backgroundColor()
 
 	std::string tmp_text = "";
 	for( int i = 0; i < 4; i++ ) tmp_text += "PRESS ANY KEY +++ ";
-	
+
 	m_stripe1.AddMenuItem(tmp_text);
 	m_stripe2.AddMenuItem(tmp_text);
 
 	// add these right away as tmp_text is large enough no cover these up (ok hopefully...)
 	m_stripe1.AddMenuItem("New Game","Starten Sie ein neues Spiel und klären Sie den Ayanokouji-Zwischenfall auf.",&m_stripe2);
-	m_stripe1.AddMenuSeperator();	
+	m_stripe1.AddMenuSeperator();
 	m_stripe1.AddMenuItem("Load Game","Setzten Sie ein bereits begonnenes Spiel fort.",&m_stripe2);
-	m_stripe1.AddMenuSeperator();	
+	m_stripe1.AddMenuSeperator();
 	m_stripe1.AddMenuItem("Options","Passen Sie Steuerung, Ton und Co. Ihren Bedürfnissen an.",&m_stripe2);
-	m_stripe1.AddMenuSeperator();	
+	m_stripe1.AddMenuSeperator();
 	m_stripe1.AddMenuItem("Extras","Entdecken Sie Geheimnisse abseits der Handlung von Innocence.",&m_stripe2);
 
 	SetStripeMatrices();
@@ -335,7 +335,7 @@ void Menu_Title::VRender( double n_interpolation )
 	g_menuShader->SetTexture("tex",0);
 	g_menuShader->SetMat("modelview",glm::mat4x4());
 	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));	
+	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
 
 	g_menuShader->SetFloat("texture_u_offset",m_backgroundOffset);
 	m_meshLayer0->Render();
@@ -359,21 +359,20 @@ bool Menu_Title::VOnEvent(Event& n_event)
 		m_stripe2.StartAnimation();
 
 		Event_Input_Key_Down& tmp_event = dynamic_cast<Event_Input_Key_Down&>(n_event);
-		if( tmp_event.m_key == D )
+		if( tmp_event.m_key == Event_Input_Key::D || tmp_event.m_key == Event_Input_Key::RIGHT )
 		{
 			m_stripe1.OnKeyRight();
 		}
-		else if( tmp_event.m_key == A )
+		else if( tmp_event.m_key == Event_Input_Key::A || tmp_event.m_key == Event_Input_Key::LEFT )
 		{
 			m_stripe1.OnKeyLeft();
 		}
-		// TODO NOT L BUT ENTER AND NEW GAME
-		else if( tmp_event.m_key == L )
+		else if( tmp_event.m_key == Event_Input_Key::RETURN && m_stripe1.GetActive() == "New Game")
 		{
 			RemoveThis();
-			GetEventManager()->SendEvent(std::shared_ptr<Event_LoadLevel>(new Event_LoadLevel("test.xml")));
+			SEND_EVENT(Event_LoadLevel,"test.xml");
 		}
-		return true;	
+		return true;
 	}
 	else if( n_event.GetType() == Event_Type_Input_Mousebutton_Down )
 	{

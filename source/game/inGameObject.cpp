@@ -32,6 +32,8 @@ inCreator* TypeToCreator(int n_type)
 		return new Creator_Test();
 	else if( n_type == inGameObject_Type_DynamicTest )
 		return new Creator_DynamicTest();
+	else if( n_type == inGameObject_Type_PlayerTest )
+		return new Creator_PlayerTest();
 	// always TODO
 	else
 	{
@@ -115,6 +117,43 @@ void Creator_DynamicTest::CreateGameObject(GameLogic& n_gameLogic)
 void Creator_DynamicTest::CreateSceneNode(GameView_Human& n_gameView)
 {
 	SceneNode_Test* tmp_test = new SceneNode_Test(m_id,0.2,0.2);
+	SetDefaultValues(*tmp_test);
+	n_gameView.GetScene()->AddSceneNode(tmp_test);
+}
+
+
+
+GameObject_PlayerTest::GameObject_PlayerTest(unsigned int n_id) : GameObject(inGameObject_Type_PlayerTest,n_id)
+{}
+
+void GameObject_PlayerTest::VUpdate(){}
+
+
+void Creator_PlayerTest::CreateGameObject(GameLogic& n_gameLogic)
+{
+	GameObject_PlayerTest* tmp_test = new GameObject_PlayerTest(m_id);
+	SetDefaultValues(*tmp_test);
+
+	b2BodyDef tmp_def;
+	tmp_def.type = b2_dynamicBody;
+	tmp_def.position.Set(m_position.x,m_position.y);
+	b2Body* tmp_body = n_gameLogic.GetPhysics()->CreateBody(tmp_def,m_id);
+	tmp_test->SetBody(tmp_body);
+
+	b2PolygonShape tmp_polygon;
+	tmp_polygon.SetAsBox(0.1,0.2);
+	b2FixtureDef tmp_fixture;
+	tmp_fixture.shape = &tmp_polygon;
+	tmp_fixture.density = 1.0f;
+	tmp_fixture.friction = 0.3f;
+
+	tmp_body->CreateFixture(&tmp_fixture);
+
+	n_gameLogic.AddObject(tmp_test);
+}
+void Creator_PlayerTest::CreateSceneNode(GameView_Human& n_gameView)
+{
+	SceneNode_Test* tmp_test = new SceneNode_Test(m_id,0.2,0.4);
 	SetDefaultValues(*tmp_test);
 	n_gameView.GetScene()->AddSceneNode(tmp_test);
 }

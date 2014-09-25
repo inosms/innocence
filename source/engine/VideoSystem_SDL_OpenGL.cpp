@@ -42,7 +42,7 @@ void VideoSystem_SDL_OpenGL::VInit()
 
 	if( !m_window ) throw Exception("could not create SDL_Window");
 	if( !m_renderer ) throw Exception("could not create SDL_Renderer");
-	
+
 	m_glContext = SDL_GL_CreateContext(m_window);
 
 	if( !m_glContext ) throw Exception( "could not create SDL_GL_Context" );
@@ -55,16 +55,16 @@ void VideoSystem_SDL_OpenGL::VInit()
 	glViewport( 0.f,0.f,TMP_SCREEN_WIDTH,TMP_SCREEN_HEIGHT );
 
 	// https://stackoverflow.com/questions/22561832/gl-depth-test-does-not-work-in-opengl-3-3
-	
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	
+
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	DEBUG_MESSAGE( "SDL Init successful" );
 }
@@ -117,8 +117,20 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 		{
 			if( tmp_event.key.keysym.sym >= SDLK_a && tmp_event.key.keysym.sym <= SDLK_z )
 			{
-				GetEventManager()->SendEvent(std::shared_ptr<Event_Input_Key_Down>(new Event_Input_Key_Down((Event_Input_Key)(A+tmp_event.key.keysym.sym - SDLK_a))));
+				GetEventManager()->SendEvent(std::shared_ptr<Event_Input_Key_Down>(new Event_Input_Key_Down((Event_Input_Key)(int(Event_Input_Key::A)+tmp_event.key.keysym.sym - SDLK_a))));
 			}
+			else if( tmp_event.key.keysym.sym == SDLK_RETURN )
+				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::RETURN);
+			else if( tmp_event.key.keysym.sym == SDLK_SPACE)
+				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::SPACE);
+			else if( tmp_event.key.keysym.sym == SDLK_RIGHT)
+				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::RIGHT);
+			else if( tmp_event.key.keysym.sym == SDLK_LEFT)
+				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::LEFT);
+			else if( tmp_event.key.keysym.sym == SDLK_UP)
+				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::UP);
+			else if( tmp_event.key.keysym.sym == SDLK_DOWN)
+				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::DOWN);
 		}
 		else if( tmp_event.type == SDL_MOUSEBUTTONDOWN )
 		{
@@ -127,7 +139,7 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 				int tmp_height = 1; int tmp_width = 1;
 				SDL_GetWindowSize(m_window,&tmp_width,&tmp_height);
 
-				GetEventManager()->SendEvent( std::shared_ptr<Event_Input_Mousebutton_Down>(new Event_Input_Mousebutton_Down(LEFT,tmp_event.button.x,tmp_event.button.y,tmp_event.button.x/float(tmp_width),tmp_event.button.y/float(tmp_height))));
+				SEND_EVENT(Event_Input_Mousebutton_Down,Event_Input_Mousebutton::LEFT,tmp_event.button.x,tmp_event.button.y,tmp_event.button.x/float(tmp_width),tmp_event.button.y/float(tmp_height));
 			}
 		}
 		else if( tmp_event.type == SDL_MOUSEMOTION )
