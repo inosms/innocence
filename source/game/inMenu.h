@@ -6,8 +6,13 @@
 class Menu_Start : public Menu
 {
 	Mesh* m_textureMesh;
+	// interal counter used for fading out
 	int m_counter = 0;
+
+	// how long the menu is visible
 	int m_shownTime = 10;
+
+	// fading out duration
 	int m_fadeOutTime = 30;
 public:
 	Menu_Start();
@@ -22,19 +27,20 @@ class MenuItem
 {
 	std::string m_name;
 
-	// the hint is shown if this is active 
-	// whith the m_hintDisplayer Menu Item 
+	// the hint is shown if this is active
+	// whith the m_hintDisplayer Menu Item
 	// (the first item of this is removed (it assumes only one item)
 	// and this hint is shown)
 	std::string m_hint = "";
 	MeshTexture* m_hintTexture = nullptr;
 	Stripe* m_hintDisplayer = nullptr;
 
-	MeshTexture* m_texture;	
+	MeshTexture* m_texture;
 
 	// x position;
 	float m_x = 0;
 
+	// if currently selected
 	bool m_active = false;
 public:
 	MenuItem(std::string n_name);
@@ -113,7 +119,7 @@ public:
 	virtual void VRender( double n_interpolation );
 	virtual bool VOnEvent(Event& n_event);
 	// called at the beginning and everytime the screen ratio
-	// changes as the rotation angles depend 
+	// changes as the rotation angles depend
 	void SetStripeMatrices();
 };
 

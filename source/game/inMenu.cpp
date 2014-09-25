@@ -307,10 +307,11 @@ Menu_Title::Menu_Title() : m_backgroundColor()
 	std::string tmp_text = "";
 	for( int i = 0; i < 4; i++ ) tmp_text += "PRESS ANY KEY +++ ";
 
+	// add these right away as tmp_text is large enough no cover these up (ok hopefully...)
 	m_stripe1.AddMenuItem(tmp_text);
 	m_stripe2.AddMenuItem(tmp_text);
 
-	// add these right away as tmp_text is large enough no cover these up (ok hopefully...)
+
 	m_stripe1.AddMenuItem("New Game","Starten Sie ein neues Spiel und klären Sie den Ayanokouji-Zwischenfall auf.",&m_stripe2);
 	m_stripe1.AddMenuSeperator();
 	m_stripe1.AddMenuItem("Load Game","Setzten Sie ein bereits begonnenes Spiel fort.",&m_stripe2);
@@ -355,9 +356,11 @@ bool Menu_Title::VOnEvent(Event& n_event)
 {
 	if( n_event.GetType() == Event_Type_Input_Key_Down )
 	{
+		// start animation; if already animated this will do nothing
 		m_stripe1.StartAnimation();
 		m_stripe2.StartAnimation();
 
+		// handle specific keys:
 		Event_Input_Key_Down& tmp_event = dynamic_cast<Event_Input_Key_Down&>(n_event);
 		if( tmp_event.m_key == Event_Input_Key::D || tmp_event.m_key == Event_Input_Key::RIGHT )
 		{
@@ -376,11 +379,7 @@ bool Menu_Title::VOnEvent(Event& n_event)
 	}
 	else if( n_event.GetType() == Event_Type_Input_Mousebutton_Down )
 	{
-
-	}
-	else if( n_event.GetType() == Event_Type_Input_Key_Down )
-	{
-
+		// TODO: mouse input?
 	}
 	else if( n_event.GetType() == Event_Type_WindowResize )
 	{
@@ -391,13 +390,18 @@ bool Menu_Title::VOnEvent(Event& n_event)
 
 void Menu_Title::SetStripeMatrices()
 {
+	// the ratio is important in order to compute the angle
+	// ( as the stripe should go from one corner to the other)
 	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
+
+	// set first stripe
 	glm::mat4 tmp_1translate = glm::translate(glm::mat4(),glm::vec3(0,1.f,0));
 	glm::mat4 tmp_1rotate = glm::rotate(glm::mat4x4(),-float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
 	m_stripe1.SetStartPos(tmp_1translate*tmp_1rotate);
 	glm::mat4 tmp_1endRotate = glm::rotate(glm::mat4(),float(2*PI)*5.f/360,glm::vec3(0,0,1));
 	m_stripe1.SetEndPos(glm::translate(glm::mat4(),glm::vec3(0.f,0.5f,0.f))*tmp_1endRotate);
 
+	// set second stripe
 	glm::mat4 tmp_2rotate = glm::rotate(glm::mat4x4(),float(atan2(1,tmp_ratio)),glm::vec3(0,0,1));
 	m_stripe2.SetStartPos(tmp_2rotate);
 	glm::mat4 tmp_2endRotate = glm::rotate(glm::mat4(),float(2*PI)*-5.f/360,glm::vec3(0,0,1));
