@@ -90,7 +90,7 @@ public:
 
 	void RemoveFirst();
 
-	// call this whenever a new pos is added/removed/ect
+	// call this whenever a new pos is added/removed/etc
 	// this will update all the positions
 	void RefreshMenuItemPositions();
 	void StartAnimation();

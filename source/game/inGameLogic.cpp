@@ -1,10 +1,12 @@
 #include "inGameLogic.h"
 #include "inGameLogicListener.h"
 #include "inGameObject.h"
+#include "inEvent.h"
 
 inGameLogic::inGameLogic() : GameLogic( new inGameLogicListener(this) )
 {
-
+	GetEventManager()->AddEventListener(m_listener,inEvent_Type_RequestPlayerMove);
+	GetEventManager()->AddEventListener(m_listener,inEvent_Type_RequestPlayerJump);
 }
 
 void inGameLogic::Load(std::string n_levelXML)
@@ -35,4 +37,19 @@ void inGameLogic::Load(std::string n_levelXML)
 	// send this as an event, as a result this is processed
 	// after all the Create Events
 	SEND_EVENT(Event_SetGameState,GameLogicState_Running);
+
+	// TODO: extra state and event! otherwise its not in order...
+	m_levelStarted = true;
+}
+
+
+GameObject* inGameLogic::GetPlayer()
+{
+	for( auto i : m_objects )
+	{
+		// FIXME: this only for testing
+		if( dynamic_cast<GameObject_PlayerTest*>(i) )
+			return i;
+	}
+	return nullptr;
 }

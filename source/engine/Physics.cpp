@@ -28,7 +28,9 @@ void Physics::SendPositionUpdateEvents()
         unsigned int tmp_id = *((unsigned int*) b->GetUserData());
         b2Vec2 tmp_pos = b->GetPosition();
         glm::mat4x4 tmp_newPos = glm::translate(glm::mat4(1.f),glm::vec3(tmp_pos.x,tmp_pos.y,0.f));
-        SEND_EVENT(Event_MoveObject,tmp_newPos,tmp_id);
+        float tmp_angle = b->GetAngle();
+        glm::mat4x4 tmp_rotate = glm::rotate(glm::mat4(1.f),tmp_angle,glm::vec3(0,0,1.f));
+        SEND_EVENT(Event_MoveObject,tmp_newPos * tmp_rotate ,tmp_id);
     }
 }
 

@@ -7,6 +7,7 @@
 #include "ScreenLayer_Scene.h"
 #include "VideoSystem.h"
 #include "EventListener.h"
+#include "Controller.h"
 
 enum GameView_Type
 {
@@ -32,7 +33,7 @@ public:
 	unsigned int GetID();
 
 	virtual void VRender(double n_interpolation) = 0;
-	virtual void VUpdate() = 0;	
+	virtual void VUpdate() = 0;
 
 	// this is called when being attached
 	virtual void VInit() = 0;
@@ -48,6 +49,11 @@ protected:
 	// the scene is also in the m_screenLayers List!
 	ScreenLayer_Scene* m_scene;
 	EventListener* m_listener;
+
+	// the controller: by default it is null;
+	// but when set, the events are automatically
+	// forwarded to the controller
+	Controller* m_controller = nullptr;
 public:
 
 	GameView_Human(EventListener* n_listener);
@@ -60,7 +66,7 @@ public:
 	void AddScreenLayer( ScreenLayer* n_layer );
 	ScreenLayer* GetScreenLayer( ScreenLayer_Type n_type );
 	void RemoveScreenLayer(ScreenLayer* n_layer );
-	
+
 	// forwards an input event to all the screen layers and the controller (TODO)
 	// also forward screen resize events (therefore Event& and not Event_Input)
 	void ForwardInputEvent( Event& n_event );

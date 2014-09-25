@@ -58,6 +58,7 @@ void Creator_Test::CreateGameObject(GameLogic& n_gameLogic)
 	SetDefaultValues(*tmp_test);
 
 	b2BodyDef tmp_def;
+	tmp_def.type = b2_staticBody;
 	tmp_def.position.Set(m_position.x,m_position.y);
 	b2Body* tmp_body = n_gameLogic.GetPhysics()->CreateBody(tmp_def,m_id);
 	tmp_test->SetBody(tmp_body);
@@ -103,7 +104,7 @@ void Creator_DynamicTest::CreateGameObject(GameLogic& n_gameLogic)
 	tmp_test->SetBody(tmp_body);
 
 	b2PolygonShape tmp_polygon;
-	tmp_polygon.SetAsBox(0.1,0.1);
+	tmp_polygon.SetAsBox(0.2,0.2);
 	b2FixtureDef tmp_fixture;
 	tmp_fixture.shape = &tmp_polygon;
 	tmp_fixture.density = 1.0f;
@@ -116,7 +117,7 @@ void Creator_DynamicTest::CreateGameObject(GameLogic& n_gameLogic)
 
 void Creator_DynamicTest::CreateSceneNode(GameView_Human& n_gameView)
 {
-	SceneNode_Test* tmp_test = new SceneNode_Test(m_id,0.2,0.2);
+	SceneNode_Test* tmp_test = new SceneNode_Test(m_id,0.4,0.4);
 	SetDefaultValues(*tmp_test);
 	n_gameView.GetScene()->AddSceneNode(tmp_test);
 }
@@ -128,6 +129,16 @@ GameObject_PlayerTest::GameObject_PlayerTest(unsigned int n_id) : GameObject(inG
 
 void GameObject_PlayerTest::VUpdate(){}
 
+void GameObject_PlayerTest::OnRequestPlayerMove(glm::vec2 n_direction)
+{
+	b2Vec2 tmp_dir(n_direction.x,n_direction.y);
+	m_body->ApplyForce(100.f*tmp_dir,m_body->GetWorldCenter(),true);
+}
+
+void GameObject_PlayerTest::OnRequestPlayerJump()
+{
+	m_body->ApplyLinearImpulse(b2Vec2(0.f,20.f),m_body->GetWorldCenter(),true);
+}
 
 void Creator_PlayerTest::CreateGameObject(GameLogic& n_gameLogic)
 {
@@ -141,7 +152,7 @@ void Creator_PlayerTest::CreateGameObject(GameLogic& n_gameLogic)
 	tmp_test->SetBody(tmp_body);
 
 	b2PolygonShape tmp_polygon;
-	tmp_polygon.SetAsBox(0.1,0.2);
+	tmp_polygon.SetAsBox(0.5,1.8);
 	b2FixtureDef tmp_fixture;
 	tmp_fixture.shape = &tmp_polygon;
 	tmp_fixture.density = 1.0f;
@@ -153,7 +164,7 @@ void Creator_PlayerTest::CreateGameObject(GameLogic& n_gameLogic)
 }
 void Creator_PlayerTest::CreateSceneNode(GameView_Human& n_gameView)
 {
-	SceneNode_Test* tmp_test = new SceneNode_Test(m_id,0.2,0.4);
+	SceneNode_Test* tmp_test = new SceneNode_Test(m_id,1,1.8*2);
 	SetDefaultValues(*tmp_test);
 	n_gameView.GetScene()->AddSceneNode(tmp_test);
 }

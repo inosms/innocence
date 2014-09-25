@@ -88,7 +88,8 @@ class GameObject_PlayerTest : public GameObject
 public:
 	GameObject_PlayerTest(unsigned int n_id);
 	virtual void VUpdate();
-
+	void OnRequestPlayerMove(glm::vec2 n_direction);
+	void OnRequestPlayerJump();
 };
 
 class Creator_PlayerTest : public inCreator

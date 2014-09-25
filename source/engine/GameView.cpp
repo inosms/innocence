@@ -42,7 +42,7 @@ void GameView_Human::VRender( double n_interpolation )
 	for( auto i_layer : m_screenLayers )
 		i_layer->VRender(n_interpolation);
 
-	GetVideoSystem()->VUpdateScreen();	
+	GetVideoSystem()->VUpdateScreen();
 }
 
 void GameView_Human::VUpdate()
@@ -71,7 +71,7 @@ ScreenLayer* GameView_Human::GetScreenLayer( ScreenLayer_Type n_type )
 	for( auto i_layer : m_screenLayers )
 		if( i_layer->GetType() == n_type )
 			return i_layer;
-	return nullptr; 
+	return nullptr;
 }
 
 void GameView_Human::RemoveScreenLayer(ScreenLayer* n_layer )
@@ -86,7 +86,7 @@ void GameView_Human::ForwardInputEvent( Event& n_event )
 	for( auto i_layer : m_screenLayers )
 		if(i_layer->VOnEvent(n_event)) return;
 
-	// TODO: forward event to controller
+	if(m_controller) m_controller->OnEvent(n_event);
 }
 
 ScreenLayer_Scene* GameView_Human::GetScene()

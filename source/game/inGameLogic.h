@@ -11,6 +11,12 @@ public:
 	//virtual void VUpdate(){GameLogic::VUpdate();}
 
 	void Load(std::string n_levelXML);
+
+	// returns the player
+	GameObject* GetPlayer();
+
+	// whether there is an active level running
+	bool m_levelStarted = false;
 };
 
 #endif
