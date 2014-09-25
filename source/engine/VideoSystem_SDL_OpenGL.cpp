@@ -116,9 +116,7 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 		else if( tmp_event.type == SDL_KEYDOWN )
 		{
 			if( tmp_event.key.keysym.sym >= SDLK_a && tmp_event.key.keysym.sym <= SDLK_z )
-			{
-				GetEventManager()->SendEvent(std::shared_ptr<Event_Input_Key_Down>(new Event_Input_Key_Down((Event_Input_Key)(int(Event_Input_Key::A)+tmp_event.key.keysym.sym - SDLK_a))));
-			}
+				SEND_EVENT(Event_Input_Key_Down,(Event_Input_Key)(int(Event_Input_Key::A)+tmp_event.key.keysym.sym - SDLK_a));
 			else if( tmp_event.key.keysym.sym == SDLK_RETURN )
 				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::RETURN);
 			else if( tmp_event.key.keysym.sym == SDLK_SPACE)
@@ -131,6 +129,23 @@ void VideoSystem_SDL_OpenGL::VTranslateInput()
 				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::UP);
 			else if( tmp_event.key.keysym.sym == SDLK_DOWN)
 				SEND_EVENT(Event_Input_Key_Down,Event_Input_Key::DOWN);
+		}
+		else if( tmp_event.type == SDL_KEYUP )
+		{
+			if( tmp_event.key.keysym.sym >= SDLK_a && tmp_event.key.keysym.sym <= SDLK_z )
+				SEND_EVENT(Event_Input_Key_Up,(Event_Input_Key)(int(Event_Input_Key::A)+tmp_event.key.keysym.sym - SDLK_a));
+			else if( tmp_event.key.keysym.sym == SDLK_RETURN )
+				SEND_EVENT(Event_Input_Key_Up,Event_Input_Key::RETURN);
+			else if( tmp_event.key.keysym.sym == SDLK_SPACE)
+				SEND_EVENT(Event_Input_Key_Up,Event_Input_Key::SPACE);
+			else if( tmp_event.key.keysym.sym == SDLK_RIGHT)
+				SEND_EVENT(Event_Input_Key_Up,Event_Input_Key::RIGHT);
+			else if( tmp_event.key.keysym.sym == SDLK_LEFT)
+				SEND_EVENT(Event_Input_Key_Up,Event_Input_Key::LEFT);
+			else if( tmp_event.key.keysym.sym == SDLK_UP)
+				SEND_EVENT(Event_Input_Key_Up,Event_Input_Key::UP);
+			else if( tmp_event.key.keysym.sym == SDLK_DOWN)
+				SEND_EVENT(Event_Input_Key_Up,Event_Input_Key::DOWN);
 		}
 		else if( tmp_event.type == SDL_MOUSEBUTTONDOWN )
 		{

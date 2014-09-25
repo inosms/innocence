@@ -8,3 +8,7 @@ Event_RequestPlayerMove::Event_RequestPlayerMove(glm::vec2 n_direction) :
 Event_RequestPlayerJump::Event_RequestPlayerJump() :
     Event(inEvent_Type_RequestPlayerJump)
 {}
+
+Event_RequestPlayerStop::Event_RequestPlayerStop() :
+    Event(inEvent_Type_RequestPlayerStop)
+{}

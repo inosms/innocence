@@ -10,3 +10,9 @@ void inController::VOnKeyDown(Event_Input_Key n_key)
     else if( n_key == Event_Input_Key::SPACE )
         SEND_EVENT(Event_RequestPlayerJump);
 }
+
+void inController::VOnKeyUp(Event_Input_Key n_key)
+{
+    if( n_key == Event_Input_Key::RIGHT || n_key == Event_Input_Key::LEFT )
+        SEND_EVENT(Event_RequestPlayerStop);
+}

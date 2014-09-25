@@ -90,6 +90,8 @@ public:
 	virtual void VUpdate();
 	void OnRequestPlayerMove(glm::vec2 n_direction);
 	void OnRequestPlayerJump();
+	// call this on button up to stop movement
+	void OnRequestPlayerStop();
 };
 
 class Creator_PlayerTest : public inCreator

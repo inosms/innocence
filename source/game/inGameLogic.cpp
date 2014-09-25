@@ -7,6 +7,7 @@ inGameLogic::inGameLogic() : GameLogic( new inGameLogicListener(this) )
 {
 	GetEventManager()->AddEventListener(m_listener,inEvent_Type_RequestPlayerMove);
 	GetEventManager()->AddEventListener(m_listener,inEvent_Type_RequestPlayerJump);
+	GetEventManager()->AddEventListener(m_listener,inEvent_Type_RequestPlayerStop);
 }
 
 void inGameLogic::Load(std::string n_levelXML)

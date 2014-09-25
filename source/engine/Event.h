@@ -33,6 +33,7 @@ enum Event_Type
 	EVENT_TYPE_FORWARD_TO_SCREEN_LAYER_START,
 
 	Event_Type_Input_Key_Down,
+	Event_Type_Input_Key_Up,
 	Event_Type_Input_Mousebutton_Down,
 	Event_Type_Input_Mousemotion,
 
@@ -135,6 +136,13 @@ class Event_Input_Key_Down : public Event_Input
 public:
 	Event_Input_Key m_key;
 	Event_Input_Key_Down(Event_Input_Key n_key);
+};
+
+class Event_Input_Key_Up : public Event_Input
+{
+public:
+	Event_Input_Key m_key;
+	Event_Input_Key_Up(Event_Input_Key n_key);
 };
 
 enum class Event_Input_Mousebutton

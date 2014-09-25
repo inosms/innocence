@@ -36,4 +36,12 @@ void inGameLogicListener::VProcessEvent( Event& n_event )
 			tmp_player->OnRequestPlayerJump();
 		}
 	}
+	else if( n_event.GetType() == inEvent_Type_RequestPlayerStop )
+	{
+		GameObject_PlayerTest* tmp_player = dynamic_cast<GameObject_PlayerTest*>(tmp_logic->GetPlayer());
+		if( tmp_player )
+		{
+			tmp_player->OnRequestPlayerStop();
+		}
+	}
 }

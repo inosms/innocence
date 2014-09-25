@@ -132,7 +132,19 @@ void GameObject_PlayerTest::VUpdate(){}
 void GameObject_PlayerTest::OnRequestPlayerMove(glm::vec2 n_direction)
 {
 	b2Vec2 tmp_dir(n_direction.x,n_direction.y);
-	m_body->ApplyForce(100.f*tmp_dir,m_body->GetWorldCenter(),true);
+	b2Vec2 tmp_endVel = 10.0 * tmp_dir;
+	b2Vec2 tmp_nowVel = m_body->GetLinearVelocity();
+	b2Vec2 tmp_diffVel = tmp_endVel - tmp_nowVel;
+	b2Vec2 tmp_impulse = m_body->GetMass() * tmp_diffVel;
+	m_body->ApplyLinearImpulse(tmp_impulse,m_body->GetWorldCenter(),true);
+}
+
+void GameObject_PlayerTest::OnRequestPlayerStop()
+{
+	b2Vec2 tmp_nowVel = m_body->GetLinearVelocity();
+	// apply the negative of current velocity to stop the movement
+	b2Vec2 tmp_impulse = m_body->GetMass() * -1 * tmp_nowVel;
+	m_body->ApplyLinearImpulse(tmp_impulse,m_body->GetWorldCenter(),true);
 }
 
 void GameObject_PlayerTest::OnRequestPlayerJump()
@@ -147,6 +159,7 @@ void Creator_PlayerTest::CreateGameObject(GameLogic& n_gameLogic)
 
 	b2BodyDef tmp_def;
 	tmp_def.type = b2_dynamicBody;
+	tmp_def.fixedRotation = true;
 	tmp_def.position.Set(m_position.x,m_position.y);
 	b2Body* tmp_body = n_gameLogic.GetPhysics()->CreateBody(tmp_def,m_id);
 	tmp_test->SetBody(tmp_body);

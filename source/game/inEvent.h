@@ -7,7 +7,8 @@ enum inEvent_Type
 {
     // starting with the end of the default events of the engine
     inEvent_Type_RequestPlayerMove = Event_Type_LIST_END,
-    inEvent_Type_RequestPlayerJump
+    inEvent_Type_RequestPlayerJump,
+    inEvent_Type_RequestPlayerStop
 };
 
 class Event_RequestPlayerMove : public Event
@@ -21,6 +22,12 @@ class Event_RequestPlayerJump : public Event
 {
 public:
     Event_RequestPlayerJump();
+};
+
+class Event_RequestPlayerStop : public Event
+{
+public:
+    Event_RequestPlayerStop();
 };
 
 #endif

@@ -69,9 +69,12 @@ Event_Input::Event_Input( unsigned int n_type ) :
 Event_Input_Key_Down::Event_Input_Key_Down(Event_Input_Key n_key) :
 	Event_Input(Event_Type_Input_Key_Down),
 	m_key(n_key)
-{
+{}
 
-}
+Event_Input_Key_Up::Event_Input_Key_Up(Event_Input_Key n_key) :
+	Event_Input(Event_Type_Input_Key_Up),
+	m_key(n_key)
+{}
 
 Event_Input_Mousebutton_Down::Event_Input_Mousebutton_Down( Event_Input_Mousebutton n_button , unsigned int n_x, unsigned int n_y , float n_percent_x, float n_percent_y ):
 	Event_Input(Event_Type_Input_Mousebutton_Down),

@@ -7,6 +7,7 @@ class inController : public Controller
 {
 public:
     virtual void VOnKeyDown(Event_Input_Key n_key);
+    virtual void VOnKeyUp(Event_Input_Key n_key);
 };
 
 #endif
