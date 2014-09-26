@@ -305,7 +305,7 @@ Menu_Title::Menu_Title() : m_backgroundColor()
 	g_fontManager.AddFont("TravelingTypewriter.ttf",255);
 
 	std::string tmp_text = "";
-	for( int i = 0; i < 4; i++ ) tmp_text += "PRESS ANY KEY +++ ";
+	for( int i = 0; i < 2; i++ ) tmp_text += "PRESS ANY KEY + INNOCENCE + ";
 
 	// add these right away as tmp_text is large enough no cover these up (ok hopefully...)
 	m_stripe1.AddMenuItem(tmp_text);
