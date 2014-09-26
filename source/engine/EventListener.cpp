@@ -68,7 +68,9 @@ void HumanViewListener::VProcessEvent( Event& n_event )
 	else if( n_event.GetType() == Event_Type_MoveObject )
 	{
 		Event_MoveObject& tmp_event = dynamic_cast<Event_MoveObject&>(n_event);
-		m_view->GetScene()->FindSceneNode(tmp_event.m_id)->SetNewMatrix(tmp_event.m_mat);
+		SceneNode* tmp_node = m_view->GetScene()->FindSceneNode(tmp_event.m_id);
+		if(!tmp_node) ERROR_MESSAGE("tried to move non existing object " << tmp_event.m_id);
+		else tmp_node->SetNewMatrix(tmp_event.m_mat);
 	}
 	else if( n_event.GetType() == Event_Type_MoveCamera )
 	{
@@ -95,6 +97,8 @@ void GameLogicListener::VProcessEvent( Event& n_event )
 	else if( n_event.GetType() == Event_Type_MoveObject )
 	{
 		Event_MoveObject& tmp_event = dynamic_cast<Event_MoveObject&>(n_event);
-		m_logic->FindObject(tmp_event.m_id)->SetPos(tmp_event.m_mat);
+		GameObject* tmp_object = m_logic->FindObject(tmp_event.m_id);
+		if(!tmp_object) ERROR_MESSAGE("tried to move non existing object " << tmp_event.m_id);
+		else tmp_object->SetPos(tmp_event.m_mat);
 	}
 }

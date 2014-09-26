@@ -38,11 +38,23 @@ protected:
 	const unsigned int m_gameLogicTicksDelay;
 
 	// when the game logic was updated the last time
+	// this is increased by TicksDelay each time
 	unsigned int m_lastGameLogicTickTime;
 
+	// the real time from SDL the game logic was ticked the last time
+	// this is really the REALY time, which is very useful for interpolating
+	// correctly when the gamelogic gets very slow
+	// (as then LastTickTime is waay back and interpolation gets veery high,
+	// which looks like a ol drunk engine then)
+	unsigned int m_realLastGameLogicTickTime;
 
 	GameLogic_Thread m_gameLogicThread;
 
+	// whether interpolation value is calculated or just 0 ( no interpolation) is passed
+	bool m_calculateInterpolation = true;
+	// the maximum interpolation value, this prevents the interpolation
+	// from exploding
+	const float m_maxInterpolationValue = 1.5f;
 public:
 
 	GameLoop();
@@ -62,6 +74,7 @@ public:
 	// sets running to false
 	void Kill();
 
+	void SetInterpolationEnabled(bool n_enabled);
 	unsigned int GetLastGameLogicTickTime();
 	unsigned int GetGameLogicTicksDelay();
 };

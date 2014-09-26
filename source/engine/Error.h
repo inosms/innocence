@@ -8,7 +8,7 @@
 #ifdef DEBUG
 	#define DEBUG_MESSAGE(message) std::cout << "[DEBUG] " << message << " " << __FILE__ << " " << __LINE__ << std::endl
 #else
-	#define DEBUG_MESSAGE(message) 
+	#define DEBUG_MESSAGE(message)
 #endif
 
 #ifdef PEDANTIC_DEBUG
@@ -19,6 +19,8 @@
 
 #define UNIMPLEMENTED std::cout << "[ERROR] Unimplemented!" << std::endl;
 #define ERROR_MESSAGE(message) std::cout << "[ERROR] " << message << " " << __FILE__ << " " << __LINE__ << std::endl
+#define WARNING_MESSAGE(message) std::cout << "[WARNING] " << message << " " << __FILE__ << " " << __LINE__ << std::endl
+
 
 #define INFO(message) std::cout << "[INFO] " << message << std::endl
 #define THROW_IF(expr,message) if(expr) throw Exception(message);
