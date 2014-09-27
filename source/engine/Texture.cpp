@@ -19,14 +19,14 @@ void Texture::InitFromSurface(SDL_Surface* n_surface)
     glEnable(GL_TEXTURE_2D);
 
     GLenum Mode = 0;
-    switch (n_surface->format->BytesPerPixel) 
+    switch (n_surface->format->BytesPerPixel)
     {
 	    case 1: { Mode = GL_ALPHA; break; }
 	    case 3: { Mode = GL_RGB; break; }
 	    case 4: { Mode = GL_RGBA; break; }
 	    default: { break; }
 	}
-	
+
     glGenTextures(1, &m_texture);
 
     glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -68,6 +68,11 @@ unsigned int Texture::GetHeight()
 unsigned int Texture::GetWidth()
 {
 	return m_width;
+}
+
+unsigned int Texture::GetId()
+{
+	return m_texture;
 }
 
 Texture::~Texture()

@@ -19,12 +19,14 @@ public:
 	~Texture();
 
 	void Bind();
-	
+
 	// binds the texture to GL_TEXTURE0+n_toWhichActive
 	void Bind(int n_toWhichActive);
 
 	unsigned int GetHeight();
 	unsigned int GetWidth();
+
+	unsigned int GetId();
 };
 
 class TextureManager
