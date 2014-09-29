@@ -5,15 +5,17 @@ uniform sampler2D tex;
 in vec3 out_normal;
 in vec2 out_tex;
 
-out vec4 color;
-
+layout (location = 0) out vec4 colorOut;
+layout (location = 1) out vec4 normalOut;
 
 void main()
 {
-	vec3 light_dir = normalize(vec3(0,0,1));
+	vec3 light_dir = normalize(vec3(1,1,0));
 	float diff = clamp(dot(normalize(out_normal), normalize(light_dir)),0,1);
 	float spec = pow(diff,50);
-	float amb = 0.4;
-	color = (spec+0.1*diff+amb) * vec4(1,1,1,0) + vec4(out_normal*0.41,0);
-	color.a = 1;
+	float amb = 0.1;
+	colorOut = (spec+0.4*diff+amb) * vec4(1,1,1,0);
+	colorOut.a = 1;
+	
+	normalOut = vec4(out_normal,1);
 }

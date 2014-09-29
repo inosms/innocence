@@ -49,6 +49,12 @@ Texture::Texture(SDL_Surface* n_surface)
 	InitFromSurface(n_surface);
 }
 
+Texture::Texture(unsigned int n_id,unsigned int n_height, unsigned int n_width) :
+	m_texture(n_id),
+	m_height(n_height),
+	m_width(n_width)
+{}
+
 void Texture::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -73,6 +79,44 @@ unsigned int Texture::GetWidth()
 unsigned int Texture::GetId()
 {
 	return m_texture;
+}
+
+Texture* Texture::GetColorAttachmentTexture()
+{
+	unsigned int tmp_newId;
+	unsigned int tmp_width = GetVideoSystem()->VGetWidth();
+	unsigned int tmp_height = GetVideoSystem()->VGetHeight();
+	glGenTextures(1, &tmp_newId);
+	glBindTexture(GL_TEXTURE_2D, tmp_newId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+					tmp_width, tmp_height,
+					0, GL_RGBA, GL_UNSIGNED_BYTE,
+					NULL);
+	glBindTexture(GL_TEXTURE_2D,0);
+	return new Texture(tmp_newId,tmp_width,tmp_height);
+}
+
+Texture* Texture::GetDepthAttachmentTexture()
+{
+	unsigned int tmp_newId;
+	unsigned int tmp_width = GetVideoSystem()->VGetWidth();
+	unsigned int tmp_height = GetVideoSystem()->VGetHeight();
+	glGenTextures(1, &tmp_newId);
+	glBindTexture(GL_TEXTURE_2D, tmp_newId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+					tmp_width, tmp_height,
+					0, GL_DEPTH_COMPONENT, GL_FLOAT,
+					NULL);
+	glBindTexture(GL_TEXTURE_2D,0);
+	return new Texture(tmp_newId,tmp_width,tmp_height);
 }
 
 Texture::~Texture()

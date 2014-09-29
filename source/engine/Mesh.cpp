@@ -240,7 +240,8 @@ MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height, float n_center
 	return tmp_new;
 }
 
-MeshTexture::MeshTexture(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale,float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size) : Mesh(n_vertices,n_colors,n_normals,n_textureCoords,n_size),
+MeshTexture::MeshTexture(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale,float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size) :
+	Mesh(n_vertices,n_colors,n_normals,n_textureCoords,n_size),
 	m_width(n_width),
 	m_height(n_height),
 	m_centerX(n_centerX),

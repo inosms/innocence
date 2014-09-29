@@ -29,7 +29,7 @@ void VideoSystem_SDL_OpenGL::VInit()
 
 	SDL_CreateWindowAndRenderer(	TMP_SCREEN_WIDTH,
 									TMP_SCREEN_HEIGHT,
-									SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI /*|
+									SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS| SDL_WINDOW_ALLOW_HIGHDPI /*|
 										SDL_WINDOW_FULLSCREEN_DESKTOP*/, &m_window,&m_renderer);
 	// https://bugzilla.libsdl.org/show_bug.cgi?id=1934
 
@@ -52,7 +52,7 @@ void VideoSystem_SDL_OpenGL::VInit()
 
 
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
-	glViewport( 0.f,0.f,TMP_SCREEN_WIDTH,TMP_SCREEN_HEIGHT );
+	glViewport( 0.f,0.f,VGetWidth(),VGetHeight() );
 
 	// https://stackoverflow.com/questions/22561832/gl-depth-test-does-not-work-in-opengl-3-3
 
@@ -91,14 +91,14 @@ void VideoSystem_SDL_OpenGL::VUpdateScreen()
 unsigned int VideoSystem_SDL_OpenGL::VGetWidth()
 {
 	int w,h;
-	SDL_GetWindowSize(m_window,&w,&h);
+	SDL_GL_GetDrawableSize(m_window,&w,&h);
 	return w;
 }
 
 unsigned int VideoSystem_SDL_OpenGL::VGetHeight()
 {
 	int w,h;
-	SDL_GetWindowSize(m_window,&w,&h);
+	SDL_GL_GetDrawableSize(m_window,&w,&h);
 	return h;
 }
 

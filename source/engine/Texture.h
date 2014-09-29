@@ -16,6 +16,8 @@ public:
 
 	Texture(std::string n_path);
 	Texture(SDL_Surface* n_surface);
+	// create this texture object from an already existing OpenGL texture
+	Texture(unsigned int n_id,unsigned int n_height, unsigned int n_width);
 	~Texture();
 
 	void Bind();
@@ -27,6 +29,10 @@ public:
 	unsigned int GetWidth();
 
 	unsigned int GetId();
+
+	// for FBOs
+	static Texture* GetColorAttachmentTexture();
+	static Texture* GetDepthAttachmentTexture();
 };
 
 class TextureManager

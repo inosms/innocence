@@ -29,7 +29,6 @@ void Menu_Start::VRender( double n_interpolation )
 
 	g_menuShader->SetMat("modelview",glm::mat4x4());
 	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
 
 	m_textureMesh->Render();
 	g_menuShader->SetFloat("texture_multiplier",1.f);
@@ -336,7 +335,6 @@ void Menu_Title::VRender( double n_interpolation )
 	g_menuShader->SetTexture("tex",0);
 	g_menuShader->SetMat("modelview",glm::mat4x4());
 	g_menuShader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-	g_menuShader->SetMat("normalMat", glm::transpose(glm::inverse(glm::mat4x4())));
 
 	g_menuShader->SetFloat("texture_u_offset",m_backgroundOffset);
 	m_meshLayer0->Render();
