@@ -5,6 +5,7 @@
 
 class inHumanView : public GameView_Human
 {
+	EffectManager m_effectManager;
 public:
 
 	inHumanView();

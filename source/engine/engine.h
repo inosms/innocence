@@ -6,6 +6,7 @@
 #include "Color.h"
 #include "Controller.h"
 #include "Creator.h"
+#include "Effect.h"
 #include "Error.h"
 #include "Event.h"
 #include "EventListener.h"

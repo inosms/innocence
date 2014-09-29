@@ -122,7 +122,7 @@ void FBO::Render(unsigned int n_colorAttachmentNumber)
 {
     static Shader* tmp_shader = g_shaderManager.GetShader("fbo");
     tmp_shader->Begin();
-
+    tmp_shader->SetTexture("tex",0);
     tmp_shader->SetMat("modelview",glm::mat4x4());
     tmp_shader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
     m_rect->SetTexture(m_colorAttachments[n_colorAttachmentNumber]);

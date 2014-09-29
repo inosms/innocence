@@ -42,7 +42,7 @@ void GameView_Human::VRender( double n_interpolation )
 	for( auto i_layer : m_screenLayers )
 		i_layer->VRender(n_interpolation);
 
-	GetVideoSystem()->VUpdateScreen();
+	//GetVideoSystem()->VUpdateScreen();
 }
 
 void GameView_Human::VUpdate()
