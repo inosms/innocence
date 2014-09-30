@@ -15,7 +15,7 @@ inHumanView::inHumanView() : GameView_Human( new inHumanViewListener(this) )
 void inHumanView::VInit()
 {
 	GameView_Human::VInit();
-	g_meshManager.AddMesh( "monkey" , new Mesh(GetResourcePath("monkey.obj")));
+	g_meshManager.AddMesh( "monkey" , new Mesh(GetResourcePath("monkey.dae")));
 	g_fbo = new FBO();
 	// for color
 	g_fbo->AddColorTexture();

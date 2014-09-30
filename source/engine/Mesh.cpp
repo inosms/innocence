@@ -4,7 +4,12 @@
 #include <vector>
 #include "Mesh.h"
 #include "Math.h"
+#include "Error.h"
 #include "VideoSystem_SDL_OpenGL.h"
+// http://assimp.sourceforge.net/lib_html/usage.html
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
 
 MeshManager g_meshManager;
 
@@ -31,75 +36,61 @@ int toInt(std::string n_string)
 
 Mesh::Mesh(std::string n_filename)
 {
-	// load obj file and parse
-	std::fstream tmp_inputFile(n_filename,std::ios::in);
+	Assimp::Importer tmp_importer;
+	const aiScene* tmp_scene = tmp_importer.ReadFile(n_filename,
+		aiProcess_Triangulate	|
+        aiProcess_JoinIdenticalVertices |
+		aiProcess_OptimizeMeshes |
+		aiProcess_OptimizeGraph |
+		aiProcess_GenSmoothNormals);
+	if( !tmp_scene ) throw Exception(tmp_importer.GetErrorString());
+	INFO(n_filename << " has " << tmp_scene->mNumMeshes << " meshes ");
 
-	std::vector<glm::vec3> tmp_vertices;
-	std::vector<glm::vec3> tmp_normals;
-
-	std::vector<glm::vec3> tmp_verticesInCorrectOrder;
-	std::vector<glm::vec3> tmp_normalsInCorrectOrder;
-
-	if( tmp_inputFile.is_open() )
+	// so this loop just loops once, but it actually should loop for every mesh
+	// and create every mesh; and also store it in a SceneNode Hierarchy, so
+	// have fun coding that
+	// hue
+	// ... that's me... so I've started writing with myself in my code...
+	for( unsigned int i = 0; i < tmp_scene->mNumMeshes && i < 1 /* FIXME!! */; i++ )
 	{
-		while( !tmp_inputFile.eof() )
+		const aiMesh* tmp_mesh = tmp_scene->mMeshes[i];
+		unsigned int tmp_faces = tmp_mesh->mNumFaces;
+
+		// this assumes that every face is a triangle!
+		unsigned int tmp_vertsPerFace = 3;
+
+		// create the index array
+		unsigned int* tmp_indicesArray = new unsigned int[tmp_vertsPerFace*tmp_faces];
+		unsigned int tmp_indicesArrayIndex = 0;
+		for( unsigned int j = 0; j < tmp_faces; j++ )
 		{
-			std::string tmp_command;
-			tmp_inputFile >> tmp_command;
-
-			// vertex
-			if( tmp_command == "v" )
-			{
-				glm::vec3 tmp_newVert;
-				tmp_inputFile >> tmp_newVert.x;
-				tmp_inputFile >> tmp_newVert.y;
-				tmp_inputFile >> tmp_newVert.z;
-				tmp_vertices.push_back(tmp_newVert);
-			}
-			// normal
-			else if( tmp_command == "vn" )
-			{
-				glm::vec3 tmp_newNormal;
-				tmp_inputFile >> tmp_newNormal.x;
-				tmp_inputFile >> tmp_newNormal.y;
-				tmp_inputFile >> tmp_newNormal.z;
-				tmp_normals.push_back(tmp_newNormal);
-			}
-			else if( tmp_command == "f" )
-			{
-				for( int i = 0; i < 3; i++ )
-				{
-					std::string tmp_vert;
-					tmp_inputFile >> tmp_vert;
-					std::vector<std::string> tmp_indices = split(tmp_vert,'/');
-					tmp_verticesInCorrectOrder.push_back(tmp_vertices[toInt(tmp_indices[0])-1]);
-					tmp_normalsInCorrectOrder.push_back(tmp_normals[toInt(tmp_indices[2])-1]);
-				}
-			}
+			// this also assumes triangles
+			tmp_indicesArray[tmp_indicesArrayIndex++] = tmp_mesh->mFaces[j].mIndices[0];
+			tmp_indicesArray[tmp_indicesArrayIndex++] = tmp_mesh->mFaces[j].mIndices[1];
+			tmp_indicesArray[tmp_indicesArrayIndex++] = tmp_mesh->mFaces[j].mIndices[2];
 		}
+
+		Init((float*)tmp_mesh->mVertices,nullptr,(float*)tmp_mesh->mNormals,nullptr,tmp_indicesArray,tmp_mesh->mNumVertices*3);
+		return; // FIXME: this should definitely not be here...
+			/*
+		float* tmp_texture
+
+		// buffer for vertex texture coordinates
+		if (mesh->HasTextureCoords(0)) {
+			float *texCoords = (float *)malloc(sizeof(float)*2*mesh->mNumVertices);
+			for (unsigned int k = 0; k < mesh->mNumVertices; ++k) {
+
+				texCoords[k*2]   = mesh->mTextureCoords[0][k].x;
+				texCoords[k*2+1] = mesh->mTextureCoords[0][k].y;
+
+			}
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*2*mesh->mNumVertices, texCoords, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(texCoordLoc);
+			glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, 0, 0, 0);
+		}*/
 	}
-	else throw std::string("file not found");
-
-	glGenVertexArrays(1,&m_vao);
-	glBindVertexArray(m_vao);
-
-	// generate vertices buffer
-	// there must at least be given vertices
-	glGenBuffers(1,&m_vbo[0]);
-	glBindBuffer(GL_ARRAY_BUFFER,m_vbo[0]);
-	glBufferData(GL_ARRAY_BUFFER,tmp_verticesInCorrectOrder.size()*sizeof(glm::vec3),&tmp_verticesInCorrectOrder[0], GL_STATIC_DRAW);
-	glVertexAttribPointer((GLuint)0,3,GL_FLOAT,GL_FALSE,0,0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1,&m_vbo[2]);
-	glBindBuffer(GL_ARRAY_BUFFER,m_vbo[2]);
-	glBufferData(GL_ARRAY_BUFFER,tmp_normalsInCorrectOrder.size()*sizeof(glm::vec3),&tmp_normalsInCorrectOrder[0],GL_STATIC_DRAW);
-	glVertexAttribPointer((GLuint)2,3,GL_FLOAT,GL_FALSE,0,0);
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
-
-	m_verticesCount = tmp_verticesInCorrectOrder.size();
 }
 
 Mesh::~Mesh()
@@ -107,9 +98,9 @@ Mesh::~Mesh()
 	if( m_texture ) delete m_texture;
 }
 
-Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size ) :
-	m_verticesCount(n_size/3)
+void Mesh::Init(float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords,unsigned int* n_indices, unsigned int n_size )
 {
+	m_verticesCount = n_size/3;
 	if( !n_vertices ) throw std::string("no vertices given!");
 
 	glGenVertexArrays(1,&m_vao);
@@ -122,6 +113,20 @@ Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textu
 		glBufferData(GL_ARRAY_BUFFER,n_size*sizeof(GLfloat),n_vertices, GL_STATIC_DRAW);
 		glVertexAttribPointer((GLuint)0,3,GL_FLOAT,GL_FALSE,0,0);
 		glEnableVertexAttribArray(0);
+
+		unsigned int* tmp_indices = n_indices;
+		if( !tmp_indices )
+		{
+			tmp_indices = new unsigned int[m_verticesCount];
+			for( unsigned int i = 0; i < m_verticesCount; i++ )
+				tmp_indices[i] = i;
+		}
+
+		unsigned int tmp_elementBuffer;
+		glGenBuffers(1,&tmp_elementBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,tmp_elementBuffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * m_verticesCount, tmp_indices, GL_STATIC_DRAW);
+		if( !n_indices ) delete tmp_indices;
 
 		if( n_colors )
 		{
@@ -151,11 +156,16 @@ Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textu
 	glBindVertexArray(0);
 }
 
+Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int* n_indices, unsigned int n_size )
+{
+	Init(n_vertices,n_colors,n_normals,n_textureCoords,n_indices,n_size);
+}
+
 void Mesh::Render()
 {
 	if( m_texture ) m_texture->Bind(0);
 	glBindVertexArray(m_vao);
-		glDrawArrays(GL_TRIANGLES,0,m_verticesCount);
+		glDrawElements(GL_TRIANGLES,m_verticesCount*3,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
 
@@ -187,7 +197,7 @@ Mesh* Mesh::GetRect()
 						1,1,1,
 						1,1,1,
 						1,1,1};
-	Mesh* tmp_new = new Mesh(n_vert,n_color,nullptr,nullptr,18);
+	Mesh* tmp_new = new Mesh(n_vert,n_color,nullptr,nullptr,nullptr,18);
 	return tmp_new;
 }
 
@@ -241,7 +251,7 @@ MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height, float n_center
 }
 
 MeshTexture::MeshTexture(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale,float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size) :
-	Mesh(n_vertices,n_colors,n_normals,n_textureCoords,n_size),
+	Mesh(n_vertices,n_colors,n_normals,n_textureCoords,nullptr,n_size),
 	m_width(n_width),
 	m_height(n_height),
 	m_centerX(n_centerX),

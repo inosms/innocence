@@ -2,7 +2,8 @@
 
 Camera::Camera()
 {
-	m_matrix = glm::translate(m_matrix, glm::vec3(0,0,-100));
+	m_defaultCameraDisplacement = glm::translate(m_matrix, glm::vec3(0,0,-10));
+	m_matrix = m_defaultCameraDisplacement;
 	GoToPosition(m_matrix);
 }
 
@@ -28,5 +29,5 @@ void Camera::Update()
 
 void Camera::GoToPosition(glm::mat4x4 n_mat)
 {
-	m_gotoMatrix = n_mat * glm::translate(glm::mat4(1.f), glm::vec3(0,0,-100));
+	m_gotoMatrix = n_mat * m_defaultCameraDisplacement;
 }

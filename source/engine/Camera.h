@@ -8,6 +8,11 @@ class Camera
 private:
 	glm::mat4x4 m_matrix;
 
+	// when goto is called the camera should go to that
+	// position, but keep at THIS distance (could basically
+	// be any matrix)
+	glm::mat4x4 m_defaultCameraDisplacement;
+
 	// the goal matrix, the current matrix always
 	// tries to catch this
 	glm::mat4x4 m_gotoMatrix;

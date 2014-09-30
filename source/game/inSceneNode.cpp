@@ -23,7 +23,7 @@ void SceneNode_Test::VRender( double n_interpolation, glm::mat4x4& n_matrix )
 {
 	static Mesh* tmp_mesh = g_meshManager.GetMesh("monkey");
 
-	glm::mat4x4 tmp_proj = glm::perspective((10.0f/360.0f) * 2 * PI, 16.0f/9.0f, 1.0f, 200.0f);
+	glm::mat4x4 tmp_proj = glm::perspective((60.0f/360.0f) * 2 * PI, 16.0f/9.0f, 1.0f, 200.0f);
 	glm::mat4x4 tmp_scale = glm::scale(glm::mat4x4(1.f),glm::vec3(m_width,m_height,1.f));
 
 	g_meshShader->Begin();
