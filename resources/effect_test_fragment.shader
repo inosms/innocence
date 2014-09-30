@@ -9,7 +9,7 @@ layout (location = 0) out vec4 color;
 
 void main()
 {
-	color = texture(texture_screen_normal,out_tex) + texture(texture_screen,out_tex);return;
+	color = texture(texture_screen_normal,out_tex)*0.5 + texture(texture_screen,out_tex);return;
 	color += texture(texture_screen,vec2(0.0021+out_tex.x,out_tex.y));
 	color += texture(texture_screen,vec2(-0.0021+out_tex.x,out_tex.y));
 	color += texture(texture_screen,vec2(0.0014+out_tex.x,out_tex.y));

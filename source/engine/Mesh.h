@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include "Texture.h"
 
 extern int toInt(std::string);
@@ -19,7 +20,7 @@ class Mesh
 
 	Texture* m_texture = nullptr;
 
-	void Init(float* n_vertices,float* n_colors,float* n_normals,float* n_textureCoords,unsigned int* n_indices, unsigned int n_size );
+	void Init(float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords,std::vector<unsigned int> n_indices, int n_size );
 
 public:
 
@@ -31,7 +32,7 @@ public:
 	// vert/col/normal/tex are all per triangle
 	// first 3 elements in vert/col/normal belong to 1 vert; first 2 in texCoord to 1
 	// n_size is the number of vertices*3; thus elements in n_vertices/col/nor
-	Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords,unsigned int* n_indices, unsigned int n_size );
+	Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords,std::vector<unsigned int> n_indices, unsigned int n_size );
 
 	void Render();
 

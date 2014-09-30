@@ -37,12 +37,7 @@ int toInt(std::string n_string)
 Mesh::Mesh(std::string n_filename)
 {
 	Assimp::Importer tmp_importer;
-	const aiScene* tmp_scene = tmp_importer.ReadFile(n_filename,
-		aiProcess_Triangulate	|
-        aiProcess_JoinIdenticalVertices |
-		aiProcess_OptimizeMeshes |
-		aiProcess_OptimizeGraph |
-		aiProcess_GenSmoothNormals);
+	const aiScene* tmp_scene = tmp_importer.ReadFile(n_filename, aiProcessPreset_TargetRealtime_Quality);
 	if( !tmp_scene ) throw Exception(tmp_importer.GetErrorString());
 	INFO(n_filename << " has " << tmp_scene->mNumMeshes << " meshes ");
 
@@ -54,20 +49,15 @@ Mesh::Mesh(std::string n_filename)
 	for( unsigned int i = 0; i < tmp_scene->mNumMeshes && i < 1 /* FIXME!! */; i++ )
 	{
 		const aiMesh* tmp_mesh = tmp_scene->mMeshes[i];
-		unsigned int tmp_faces = tmp_mesh->mNumFaces;
-
-		// this assumes that every face is a triangle!
-		unsigned int tmp_vertsPerFace = 3;
 
 		// create the index array
-		unsigned int* tmp_indicesArray = new unsigned int[tmp_vertsPerFace*tmp_faces];
-		unsigned int tmp_indicesArrayIndex = 0;
-		for( unsigned int j = 0; j < tmp_faces; j++ )
+		std::vector<unsigned int> tmp_indicesArray;
+		for( unsigned int j = 0; j < tmp_mesh->mNumFaces; j++ )
 		{
 			// this also assumes triangles
-			tmp_indicesArray[tmp_indicesArrayIndex++] = tmp_mesh->mFaces[j].mIndices[0];
-			tmp_indicesArray[tmp_indicesArrayIndex++] = tmp_mesh->mFaces[j].mIndices[1];
-			tmp_indicesArray[tmp_indicesArrayIndex++] = tmp_mesh->mFaces[j].mIndices[2];
+			tmp_indicesArray.push_back(tmp_mesh->mFaces[j].mIndices[0]);
+			tmp_indicesArray.push_back(tmp_mesh->mFaces[j].mIndices[1]);
+			tmp_indicesArray.push_back(tmp_mesh->mFaces[j].mIndices[2]);
 		}
 
 		Init((float*)tmp_mesh->mVertices,nullptr,(float*)tmp_mesh->mNormals,nullptr,tmp_indicesArray,tmp_mesh->mNumVertices*3);
@@ -98,13 +88,33 @@ Mesh::~Mesh()
 	if( m_texture ) delete m_texture;
 }
 
-void Mesh::Init(float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords,unsigned int* n_indices, unsigned int n_size )
+void Mesh::Init(float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords,std::vector<unsigned int> n_indices, int n_size )
 {
-	m_verticesCount = n_size/3;
+	m_verticesCount = n_indices.size();
 	if( !n_vertices ) throw std::string("no vertices given!");
 
 	glGenVertexArrays(1,&m_vao);
 	glBindVertexArray(m_vao);
+
+		// in case there was no indices vector given
+		// generate one;
+		// it assumes that all vertices are given in the order
+		// 1 2 3 4,... and size/3 is the number of vertices
+		// (no shared vertices)
+		std::vector<unsigned int> tmp_indices = n_indices;
+		if( tmp_indices.size() == 0 )
+		{
+			// also set the count to size/3
+			// (as no shared vertices are assumed)
+			m_verticesCount = n_size/3;
+			for( unsigned int i = 0; i < m_verticesCount; i++ )
+				tmp_indices.push_back(i);
+		}
+
+		unsigned int tmp_elementBuffer;
+		glGenBuffers(1,&tmp_elementBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,tmp_elementBuffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * tmp_indices.size(), &tmp_indices[0], GL_STATIC_DRAW);
 
 		// generate vertices buffer
 		// there must at least be given vertices
@@ -113,20 +123,6 @@ void Mesh::Init(float* n_vertices, float* n_colors, float* n_normals, float* n_t
 		glBufferData(GL_ARRAY_BUFFER,n_size*sizeof(GLfloat),n_vertices, GL_STATIC_DRAW);
 		glVertexAttribPointer((GLuint)0,3,GL_FLOAT,GL_FALSE,0,0);
 		glEnableVertexAttribArray(0);
-
-		unsigned int* tmp_indices = n_indices;
-		if( !tmp_indices )
-		{
-			tmp_indices = new unsigned int[m_verticesCount];
-			for( unsigned int i = 0; i < m_verticesCount; i++ )
-				tmp_indices[i] = i;
-		}
-
-		unsigned int tmp_elementBuffer;
-		glGenBuffers(1,&tmp_elementBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,tmp_elementBuffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * m_verticesCount, tmp_indices, GL_STATIC_DRAW);
-		if( !n_indices ) delete tmp_indices;
 
 		if( n_colors )
 		{
@@ -156,7 +152,7 @@ void Mesh::Init(float* n_vertices, float* n_colors, float* n_normals, float* n_t
 	glBindVertexArray(0);
 }
 
-Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int* n_indices, unsigned int n_size )
+Mesh::Mesh( float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, std::vector<unsigned int> n_indices, unsigned int n_size )
 {
 	Init(n_vertices,n_colors,n_normals,n_textureCoords,n_indices,n_size);
 }
@@ -197,7 +193,7 @@ Mesh* Mesh::GetRect()
 						1,1,1,
 						1,1,1,
 						1,1,1};
-	Mesh* tmp_new = new Mesh(n_vert,n_color,nullptr,nullptr,nullptr,18);
+	Mesh* tmp_new = new Mesh(n_vert,n_color,nullptr,nullptr,std::vector<unsigned int>(),18);
 	return tmp_new;
 }
 
@@ -251,7 +247,7 @@ MeshTexture* Mesh::GetTexturedRect(float n_width, float n_height, float n_center
 }
 
 MeshTexture::MeshTexture(float n_width, float n_height, float n_centerX, float n_centerY, Texture* n_texture,float n_textureXScale, float n_textureYScale,float* n_vertices, float* n_colors, float* n_normals, float* n_textureCoords, unsigned int n_size) :
-	Mesh(n_vertices,n_colors,n_normals,n_textureCoords,nullptr,n_size),
+	Mesh(n_vertices,n_colors,n_normals,n_textureCoords,std::vector<unsigned int>(),n_size),
 	m_width(n_width),
 	m_height(n_height),
 	m_centerX(n_centerX),
