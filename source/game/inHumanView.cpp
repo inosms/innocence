@@ -31,6 +31,7 @@ void inHumanView::VInit()
 	Effect* tmp_testEffect;
 	tmp_testEffect = new Effect(tmp_shader);
 	tmp_testEffect->AddInputTexture("texture_screen",g_fbo->GetTexture(0));
+	tmp_testEffect->AddInputTexture("texture_screen_normal",g_fbo->GetTexture(1));
 	m_effectManager.AddEffect("test",tmp_testEffect);
 /*
 	Shader* tmp_shader2 =new Shader(GetResourcePath("effect_test_vertex.shader"),GetResourcePath(""),GetResourcePath("effect_test2_fragment.shader"));

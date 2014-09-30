@@ -1,8 +1,8 @@
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ../build/ )
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 2.6)
 project(innocence)
 
-set(CMAKE_CXX_FLAGS "-std=c++11")  
+set(CMAKE_CXX_FLAGS "-std=c++11")
 
 # http://stackoverflow.com/questions/9531637/cmake-command-line-for-c-define
 # if per command line -DPEDANTIC-DEBUG=true is typed; this code is executed and
@@ -31,4 +31,4 @@ add_subdirectory(engine/Box2D/Box2D)
 add_subdirectory(game)
 
 add_executable(innocence main.cpp)
-target_link_libraries( innocence engine game Box2D pugixml ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_LIBRARY} )
+target_link_libraries( innocence engine game Box2D pugixml assimp ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_LIBRARY} )
