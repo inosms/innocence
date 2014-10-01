@@ -16,16 +16,14 @@ IF( DEFINED DEBUG )
 ENDIF()
 
 # http://www.cmake.org/Wiki/CMake:HowToUseExistingOSXFrameworks
-#IF( APPLE )
-#	FIND_LIBRARY( SDL2_LIBRARY SDL2 )
-#	FIND_LIBRARY( SDL2IMAGE_LIBRARY SDL2_image )
-#	FIND_LIBRARY( SDL2TTF_LIBRARY SDL2_ttf )
-#	FIND_LIBRARY( OPENGL_LIBRARY OpenGL )
-#ENDIF()
+IF( APPLE )
+	FIND_LIBRARY( SDL2_LIBRARY SDL2 )
+	FIND_LIBRARY( SDL2IMAGE_LIBRARY SDL2_image )
+	FIND_LIBRARY( SDL2TTF_LIBRARY SDL2_ttf )
+	FIND_LIBRARY( OPENGL_LIBRARY OpenGL )
+ENDIF()
 INCLUDE(FindPkgConfig)
 find_package(OpenGL REQUIRED)
-
-
 include_directories( ${OPENGL_INCLUDE_DIRS} )
 
 include_directories("engine/Box2D/")
@@ -34,4 +32,8 @@ add_subdirectory(engine/Box2D/Box2D)
 add_subdirectory(game)
 
 add_executable(innocence main.cpp)
-target_link_libraries( innocence game engine Box2D pugixml assimp SDL2 SDL2_image SDL2_ttf ${OPENGL_LIBRARIES} )
+IF(APPLE)
+    target_link_libraries( innocence engine game Box2D pugixml assimp ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_LIBRARY} )
+ELSE()
+    target_link_libraries( innocence game engine Box2D pugixml assimp SDL2 SDL2_image SDL2_ttf ${OPENGL_LIBRARIES} )
+ENDIF()

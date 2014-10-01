@@ -144,7 +144,7 @@ GLint Shader::Location(std::string n_variable)
     if( tmp_newLoc < 0 ) throw Exception("could not find variable " + n_variable + " in Shader");
 
     m_variableToLocation[n_variable] = tmp_newLoc;
-  } 
+  }
 
   return m_variableToLocation[n_variable];
 }
@@ -159,12 +159,12 @@ void Shader::SetMat(std::string n_matVariable, glm::mat4x4 n_mat)
   glUniformMatrix4fv(Location(n_matVariable),1,GL_FALSE,&n_mat[0][0]);
 }
 
-void Shader::SetMat(std::string n_matVariable, glm::dmat4x4 n_mat)
+/*void Shader::SetMat(std::string n_matVariable, glm::dmat4x4 n_mat)
 {
   // this won't compile on linux, because me genius I guess
   //glUniformMatrix4dv(Location(n_matVariable),1,GL_FALSE,&n_mat[0][0]);
 }
-
+*/
 
 void Shader::SetTexture(std::string n_name, int loc)
 {
