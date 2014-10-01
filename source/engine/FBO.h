@@ -23,8 +23,14 @@ class FBO
     // this is used for rendering
     MeshTexture* m_rect = nullptr;
     std::vector<Texture*> m_colorAttachments;
+    Texture* m_depthAttachment;
+    float m_scale;
 public:
-    FBO();
+    // creates a FBO
+    // n_scale scales the FBO to n_scales times the current window size
+    // this requires all the textures to also have this scale!
+    // (otherwise it either cuts off the image or adds black stripes)
+    FBO(float n_scale = 1.0f);
     ~FBO();
     void Bind();
     void UnBind();
@@ -43,8 +49,10 @@ public:
     // adds a new color texture and returns the number of texture
     // this number can be used with Render(uint) to render the color texture
     // and can also be used with GLSL to output to this texture
+    // the added textue is also scaled with m_scale
     unsigned int AddColorTexture();
     // adds a depth texture, as only one depth texture is allowed this returns nothing
+    // is also scaled with m_scale
     void AddDepthTexture();
 
     // render color attachment to screen; specify number here
@@ -56,6 +64,7 @@ public:
     // returns the texture with the given attachmentNumber
     // or nullptr if not existing
     Texture* GetTexture(unsigned int n_colorAttachmentNumber);
+    Texture* GetDepthTexture();
 };
 
 #endif

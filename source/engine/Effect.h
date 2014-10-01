@@ -20,7 +20,8 @@ protected:
     std::string m_name = "";
 public:
     // the shader is deleted with the effect
-    Effect(Shader* n_shader);
+    // scale scales the size of the effect to scale times the window size
+    Effect(Shader* n_shader, float n_scale = 1.f);
     ~Effect();
 
     // adds a texture to the input;

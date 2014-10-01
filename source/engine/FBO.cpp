@@ -4,7 +4,8 @@
 #include "Application.h"
 #include "Shader.h"
 
-FBO::FBO()
+FBO::FBO(float n_scale) :
+m_scale(n_scale)
 {
     if( g_shaderManager.GetShader("fbo") == nullptr )
         g_shaderManager.AddShader("fbo","fbo_vertex.shader","","fbo_fragment.shader");
@@ -13,7 +14,6 @@ FBO::FBO()
     m_rect = Mesh::GetTexturedRect(1,1,0.5,0.5,nullptr,1,-1);
 
     glGenFramebuffers(1, &m_id);
-//    Init();
 }
 
 FBO::~FBO()
@@ -21,37 +21,23 @@ FBO::~FBO()
     glDeleteFramebuffers(1,&m_id);
     for( auto i : m_colorAttachments )
         delete i;
+    delete m_depthAttachment;
 }
-
 void FBO::Bind()
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
-}
 
-// FIXME: Well... do you REALLY need this!??!?
-void FBO::Init()
-{
-    Bind();
-    glClearColor(0.0f,0.0f,0.0f,1.0f);
-    glViewport( 0.f,0.f,GetVideoSystem()->VGetWidth(),GetVideoSystem()->VGetHeight() );
+    // applying the scale
+    glViewport( 0.f,0.f,GetVideoSystem()->VGetWidth()*m_scale,GetVideoSystem()->VGetHeight()*m_scale );
 
-    // https://stackoverflow.com/questions/22561832/gl-depth-test-does-not-work-in-opengl-3-3
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CCW);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    UnBind();
 }
 
 void FBO::UnBind()
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+    // for resetting the scale
+    glViewport( 0.f,0.f,GetVideoSystem()->VGetWidth(),GetVideoSystem()->VGetHeight() );
 }
 
 void FBO::CheckState()
@@ -98,7 +84,10 @@ void FBO::AddTexture(Texture* n_texture,FBO_Texture_Attachment n_attachment)
         m_colorAttachments.push_back(n_texture);
     }
     else if( n_attachment == FBO_Texture_Attachment::DEPTH )
+    {
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, n_texture->GetId(), 0);
+        m_depthAttachment = n_texture;
+    }
     else if( n_attachment == FBO_Texture_Attachment::STENCIL )
         glFramebufferTexture(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, n_texture->GetId(), 0);
     else if( n_attachment == FBO_Texture_Attachment::DEPTH_STENCIL )
@@ -108,13 +97,18 @@ void FBO::AddTexture(Texture* n_texture,FBO_Texture_Attachment n_attachment)
 
 unsigned int FBO::AddColorTexture()
 {
-    AddTexture(Texture::GetColorAttachmentTexture(),FBO_Texture_Attachment::COLOR);
+    AddTexture(Texture::GetColorAttachmentTexture(m_scale),FBO_Texture_Attachment::COLOR);
     return m_colorAttachmentCount-1;
 }
 
 void FBO::AddDepthTexture()
 {
-    AddTexture(Texture::GetDepthAttachmentTexture(),FBO_Texture_Attachment::DEPTH);
+    AddTexture(Texture::GetDepthAttachmentTexture(m_scale),FBO_Texture_Attachment::DEPTH);
+}
+
+Texture* FBO::GetDepthTexture()
+{
+    return m_depthAttachment;
 }
 
 

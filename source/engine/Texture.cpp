@@ -81,11 +81,11 @@ unsigned int Texture::GetId()
 	return m_texture;
 }
 
-Texture* Texture::GetColorAttachmentTexture()
+Texture* Texture::GetColorAttachmentTexture(float n_scale)
 {
 	unsigned int tmp_newId;
-	unsigned int tmp_width = GetVideoSystem()->VGetWidth();
-	unsigned int tmp_height = GetVideoSystem()->VGetHeight();
+	unsigned int tmp_width = GetVideoSystem()->VGetWidth()*n_scale;
+	unsigned int tmp_height = GetVideoSystem()->VGetHeight()*n_scale;
 	glGenTextures(1, &tmp_newId);
 	glBindTexture(GL_TEXTURE_2D, tmp_newId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -100,11 +100,11 @@ Texture* Texture::GetColorAttachmentTexture()
 	return new Texture(tmp_newId,tmp_width,tmp_height);
 }
 
-Texture* Texture::GetDepthAttachmentTexture()
+Texture* Texture::GetDepthAttachmentTexture(float n_scale)
 {
 	unsigned int tmp_newId;
-	unsigned int tmp_width = GetVideoSystem()->VGetWidth();
-	unsigned int tmp_height = GetVideoSystem()->VGetHeight();
+	unsigned int tmp_width = GetVideoSystem()->VGetWidth()*n_scale;
+	unsigned int tmp_height = GetVideoSystem()->VGetHeight()*n_scale;
 	glGenTextures(1, &tmp_newId);
 	glBindTexture(GL_TEXTURE_2D, tmp_newId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

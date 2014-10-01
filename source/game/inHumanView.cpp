@@ -3,6 +3,7 @@
 #include "inGameObject.h"
 #include "inMenu.h"
 #include "inController.h"
+#include "inEffect.h"
 
 FBO* g_fbo;
 
@@ -25,22 +26,14 @@ void inHumanView::VInit()
 	g_fbo->AddDepthTexture();
 
 	g_fbo->CheckState();
-
-	Shader* tmp_shader =new Shader(GetResourcePath("effect_test_vertex.shader"),GetResourcePath(""),GetResourcePath("effect_test_fragment.shader"));
-	tmp_shader->Init();
-	Effect* tmp_testEffect;
-	tmp_testEffect = new Effect(tmp_shader);
-	tmp_testEffect->AddInputTexture("texture_screen",g_fbo->GetTexture(0));
-	tmp_testEffect->AddInputTexture("texture_screen_normal",g_fbo->GetTexture(1));
-	m_effectManager.AddEffect("test",tmp_testEffect);
 /*
-	Shader* tmp_shader2 =new Shader(GetResourcePath("effect_test_vertex.shader"),GetResourcePath(""),GetResourcePath("effect_test2_fragment.shader"));
-	tmp_shader2->Init();
-	Effect* tmp_testEffect2;
-	tmp_testEffect2 = new Effect(tmp_shader2);
-	tmp_testEffect2->AddInputTexture("texture_lastEffect",tmp_testEffect->GetResultTexture());
-	m_effectManager.AddEffect("second",tmp_testEffect2);
+	m_effectManager.AddEffect("blur_horizontal",new Effect_BlurHorizontal(g_fbo->GetTexture(1)));
+	m_effectManager.AddEffect("blur_vertical",new Effect_BlurVertical(m_effectManager.GetEffect("blur_horizontal")->GetResultTexture()));
+	m_effectManager.AddEffect("bloom",new Effect_Bloom(
+											m_effectManager.GetEffect("blur_vertical")->GetResultTexture(),
+											g_fbo->GetTexture(0)));
 */
+	m_effectManager.AddEffect("dof",new Effect_DOF(g_fbo->GetTexture(1),g_fbo->GetDepthTexture()));
 }
 
 void inHumanView::VRender(double n_interpolation)

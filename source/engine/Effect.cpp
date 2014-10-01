@@ -1,10 +1,10 @@
 #include "Effect.h"
 #include "engine.h"
 
-Effect::Effect(Shader* n_shader) :
+Effect::Effect(Shader* n_shader, float n_scale) :
     m_shader(n_shader)
 {
-    m_fbo = new FBO();
+    m_fbo = new FBO(n_scale);
     m_fbo->AddColorTexture();
     m_fbo->AddDepthTexture();
     m_fbo->CheckState();
@@ -37,6 +37,7 @@ void Effect::Apply()
     m_fbo->Bind();
         GetVideoSystem()->VClearScreen();
         m_shader->Begin();
+        VSetShader();
 
         // bind all the textures
         int tmp_counter = 0;

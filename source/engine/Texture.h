@@ -31,8 +31,10 @@ public:
 	unsigned int GetId();
 
 	// for FBOs
-	static Texture* GetColorAttachmentTexture();
-	static Texture* GetDepthAttachmentTexture();
+	// n_scale scales the size of the texture
+	// 1 = the current window size
+	static Texture* GetColorAttachmentTexture(float n_scale = 1.0f);
+	static Texture* GetDepthAttachmentTexture(float n_scale = 1.0f);
 };
 
 class TextureManager
