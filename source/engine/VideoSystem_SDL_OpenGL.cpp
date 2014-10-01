@@ -3,9 +3,8 @@
 #include "Event.h"
 #include "Application.h"
 #include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-#include <SDL2_ttf/SDL_ttf.h>
-#include <OpenGL/gl3.h>
+#include "Texture.h"
+#include "Font.h"
 #include "Shader.h"
 #include "Math.h"
 

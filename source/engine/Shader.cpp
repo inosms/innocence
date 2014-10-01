@@ -161,7 +161,8 @@ void Shader::SetMat(std::string n_matVariable, glm::mat4x4 n_mat)
 
 void Shader::SetMat(std::string n_matVariable, glm::dmat4x4 n_mat)
 {
-  glUniformMatrix4dv(Location(n_matVariable),1,GL_FALSE,&n_mat[0][0]);
+  // this won't compile on linux, because me genius I guess
+  //glUniformMatrix4dv(Location(n_matVariable),1,GL_FALSE,&n_mat[0][0]);
 }
 
 

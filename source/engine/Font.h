@@ -2,7 +2,11 @@
 #define _FONT_H_
 
 #include <SDL2/SDL.h>
+#ifdef __APPLE__
 #include <SDL2_ttf/SDL_ttf.h>
+#elif __linux__
+#include <SDL2/SDL_ttf.h>
+#endif
 #include <string>
 #include <map>
 #include "Texture.h"

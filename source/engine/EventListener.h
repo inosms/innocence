@@ -4,6 +4,7 @@
 #include "Event.h"
 #include <mutex>
 #include <vector>
+#include <memory>
 
 class EventListener
 {

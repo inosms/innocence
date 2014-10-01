@@ -3,8 +3,11 @@
 
 #include <string>
 #include <map>
+#ifdef __APPLE__
 #include <SDL2_image/SDL_image.h>
-
+#elif __linux__
+#include <SDL2/SDL_image.h>
+#endif
 class Texture
 {
 	unsigned int m_texture;

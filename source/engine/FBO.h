@@ -1,7 +1,7 @@
 #ifndef _FBO_H_
 #define _FBO_H_
 
-#include <OpenGL/gl3.h>
+#include "VideoSystem_SDL_OpenGL.h"
 #include <vector>
 
 // http://www.lighthouse3d.com/tutorials/opengl-short-tutorials/opengl_framebuffer_objects/

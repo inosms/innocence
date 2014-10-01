@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include <OpenGL/gl3.h>
+#include "VideoSystem_SDL_OpenGL.h"
 #include "Math.h"
 
 class Shader
@@ -32,8 +32,8 @@ public:
 
   // easy setter for ultralazy peoplez
   void SetMat(std::string n_matVariable, glm::mat4x4 n_mat);
-  void SetMat(std::string n_matVariable, glm::dmat4x4 n_mat);
-
+  // fixme: this won't compile on linux
+  //void SetMat(std::string n_matVariable, glm::dmat4x4 n_mat);
   void SetTexture(std::string n_name, int loc);
   void SetFloat(std::string n_name, float n_float);
   void SetVec3(std::string n_name,float n_r, float n_g, float n_b);
