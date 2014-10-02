@@ -19,5 +19,6 @@
 extern void print(glm::mat4x4& n_mat);
 extern void print(glm::vec3& n_vec);
 extern float toFloat(std::string n_string);
+extern int toInt(std::string);
 
 #endif

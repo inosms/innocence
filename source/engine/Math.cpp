@@ -25,3 +25,11 @@ float toFloat(std::string n_string)
 	s >> tmp_float;
 	return tmp_float;
 }
+
+int toInt(std::string n_string)
+{
+	std::stringstream s(n_string);
+	int tmp_int;
+	s >> tmp_int;
+	return tmp_int;
+}
