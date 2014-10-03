@@ -12,6 +12,7 @@ SceneNode_Test::SceneNode_Test(unsigned int n_id, float n_width, float n_height)
 	{
 		g_meshShader = g_shaderManager.AddShader("mesh","mesh_vertex.shader","","mesh_fragment.shader");
 	}
+	m_animationManager = g_meshNodeManager.GetMeshNode("monkey")->GetAnimationManagerCopy();
 }
 
 void SceneNode_Test::VRender( double n_interpolation, glm::mat4x4& n_matrix )
@@ -23,6 +24,12 @@ void SceneNode_Test::VRender( double n_interpolation, glm::mat4x4& n_matrix )
 
 	g_meshShader->Begin();
 		g_meshShader->SetMat("projection",tmp_proj);
+		m_animationManager.Apply(n_interpolation);
 		tmp_mesh->Render(g_meshShader,n_matrix * tmp_scale);
 	g_meshShader->End();
+}
+
+void SceneNode_Test::VUpdate()
+{
+	m_animationManager.Tick();
 }

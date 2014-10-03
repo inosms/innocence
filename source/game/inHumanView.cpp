@@ -26,14 +26,14 @@ void inHumanView::VInit()
 	g_fbo->AddDepthTexture();
 
 	g_fbo->CheckState();
-
+/*
 	m_effectManager.AddEffect("blur_horizontal",new Effect_BlurHorizontal(g_fbo->GetTexture(1)));
 	m_effectManager.AddEffect("blur_vertical",new Effect_BlurVertical(m_effectManager.GetEffect("blur_horizontal")->GetResultTexture()));
 /*	m_effectManager.AddEffect("bloom",new Effect_Bloom(
 											m_effectManager.GetEffect("blur_vertical")->GetResultTexture(),
 											g_fbo->GetTexture(0)));
-
-	m_effectManager.AddEffect("dof",new Effect_DOF(g_fbo->GetTexture(0),g_fbo->GetDepthTexture()));*/
+*/
+	m_effectManager.AddEffect("dof",new Effect_DOF(g_fbo->GetTexture(0),g_fbo->GetDepthTexture()));
 }
 
 void inHumanView::VRender(double n_interpolation)
