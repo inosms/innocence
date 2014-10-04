@@ -47,7 +47,7 @@ uniform sampler2D bgl_RenderedTexture;
 uniform sampler2D bgl_DepthTexture;
 uniform float bgl_RenderedTextureWidth;
 uniform float bgl_RenderedTextureHeight;
-uniform float focalDepth = 1;  //focal distance value in meters, but you may use autofocus option below
+uniform float focalDepth = 1.1;  //focal distance value in meters, but you may use autofocus option below
 uniform float focalLength = 20; //focal length in mm
 uniform float fstop = 2; //f-stop value
 uniform bool showFocus = false; //show debug focus point and focal range (red = focal point, green = focal range)

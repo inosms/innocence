@@ -20,6 +20,9 @@ class Shader
 
 public:
   Shader( std::string n_vertexShaderFile, std::string n_geometryShaderFile, std::string n_fragmentShaderFile );
+  // given the shadername this constructs
+  // name + .vertexshader / + .fragmentshader / + .geometryshader
+  Shader( std::string n_shaderName );
 
   void Init();
 
@@ -47,9 +50,10 @@ class ShaderManager
   std::map<std::string, Shader*> m_map;
 public:
 
-  // adds a shader by name and shader source by relative to resource folder path
+  // adds a shader by name, which is the shaders path relative to the resource path
+  // without the file ending (whitout .vertex/fragment/geometryshader)
   // also returns newly created shader
-  Shader* AddShader(std::string n_name, std::string n_vs, std::string n_gs, std::string n_fs);
+  Shader* AddShader(std::string n_name);
 
   // the name must be relative to the resource path
   void AddShader(std::string n_name, Shader* n_shader);

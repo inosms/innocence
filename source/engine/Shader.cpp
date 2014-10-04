@@ -18,6 +18,9 @@ Shader::Shader( std::string n_vertexShaderFile, std::string n_geometryShaderFile
   INFO("shading language version " << glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
+Shader::Shader( std::string n_shaderName ) : Shader(n_shaderName+".vertexshader",n_shaderName+".geometryshader",n_shaderName+".fragmentshader")
+{}
+
 
 std::string Shader::LoadFile(std::string n_path)
 {
@@ -34,7 +37,7 @@ std::string Shader::LoadFile(std::string n_path)
     return tmp_buffer.str();
   }
   else
-    throw new std::string("file not found");
+    throw std::string("file not found: ") + n_path;
 }
 
 void Shader::CheckShader(GLuint n_shader)
@@ -59,7 +62,7 @@ void Shader::CheckShader(GLuint n_shader)
     std::string tmp_finalLog(&tmp_logBuffer[0],tmp_finalLength);
     ERROR_MESSAGE(tmp_finalLog);
 
-    throw new std::string("failed to compile shader");
+    throw std::string("failed to compile shader");
     // TODO: find out the concrete error
   }
 }
@@ -197,9 +200,9 @@ void Shader::SetVec4(std::string n_name,float n_r, float n_g, float n_b, float n
 }
 
 
-Shader* ShaderManager::AddShader(std::string n_name, std::string n_vs, std::string n_gs, std::string n_fs)
+Shader* ShaderManager::AddShader(std::string n_name)
 {
-  Shader* tmp_newShader = new Shader(GetResourcePath(n_vs),GetResourcePath(n_gs),GetResourcePath(n_fs));
+  Shader* tmp_newShader = new Shader(GetResourcePath(n_name));
   tmp_newShader->Init();
   AddShader(n_name, tmp_newShader);
   return tmp_newShader;

@@ -10,7 +10,7 @@ SceneNode_Test::SceneNode_Test(unsigned int n_id, float n_width, float n_height)
 {
 	if(!g_meshShader)
 	{
-		g_meshShader = g_shaderManager.AddShader("mesh","mesh_vertex.shader","","mesh_fragment.shader");
+		g_meshShader = g_shaderManager.AddShader("mesh");
 	}
 	m_animationManager = g_meshNodeManager.GetMeshNode("monkey")->GetAnimationManagerCopy();
 }

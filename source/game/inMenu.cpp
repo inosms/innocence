@@ -7,7 +7,7 @@ Shader* g_menuShader = nullptr;
 Menu_Start::Menu_Start() : Menu()
 {
 	// first load the shader which will be used by all menus
-	g_menuShader = g_shaderManager.AddShader("menushader","menu_vertex.shader","","menu_fragment.shader");
+	g_menuShader = g_shaderManager.AddShader("menu");
 
 	g_textureManager.AddTexture("start_menu.png");
 

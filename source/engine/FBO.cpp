@@ -8,7 +8,7 @@ FBO::FBO(float n_scale) :
 m_scale(n_scale)
 {
     if( g_shaderManager.GetShader("fbo") == nullptr )
-        g_shaderManager.AddShader("fbo","fbo_vertex.shader","","fbo_fragment.shader");
+        g_shaderManager.AddShader("fbo");
 
     // create a 1x1 rect with no texture yet
     m_rect = Mesh::GetTexturedRect(1,1,0.5,0.5,nullptr,1,-1);

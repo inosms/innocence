@@ -43,6 +43,7 @@ int GameLoop::Run()
 
 		// prevents interpolation form exploding
 		tmp_interpolation = fmin(m_maxInterpolationValue,tmp_interpolation);
+		unsigned int tmp_TIME = SDL_GetTicks();
 		VRender(tmp_interpolation);
 	}
 
