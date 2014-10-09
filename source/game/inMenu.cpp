@@ -161,7 +161,7 @@ void MenuItem::Render()
 
 void Stripe::Render(double n_interpolation)
 {
-	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
+	float tmp_ratio = GetVideoSystem().VGetWidth()/float(GetVideoSystem().VGetHeight());
 	g_menuShader->SetMat("projection",glm::ortho(0.f,tmp_ratio,0.f,1.f,-1.f,1.f));
 
 	float tmp_interpolatedInterpolationValue = m_interpolationValue;
@@ -390,7 +390,7 @@ void Menu_Title::SetStripeMatrices()
 {
 	// the ratio is important in order to compute the angle
 	// ( as the stripe should go from one corner to the other)
-	float tmp_ratio = GetVideoSystem()->VGetWidth()/float(GetVideoSystem()->VGetHeight());
+	float tmp_ratio = GetVideoSystem().VGetWidth()/float(GetVideoSystem().VGetHeight());
 
 	// set first stripe
 	glm::mat4 tmp_1translate = glm::translate(glm::mat4(),glm::vec3(0,1.f,0));

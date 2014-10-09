@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "GameLogic.h"
 #include "GameLoop.h"
@@ -19,8 +20,8 @@ class Application : public GameLoop
 {
 public:
 	/** IMPORTANT GAME SUBSYSTEMS */
-	VideoSystem* m_videoSystem;
-	GameLogic* m_gameLogic;
+	std::unique_ptr<VideoSystem> m_videoSystem;
+	std::unique_ptr<GameLogic> m_gameLogic;
 
 	std::vector<GameView*> m_gameViews;
 
@@ -53,11 +54,11 @@ public:
 };
 
 extern Application* g_application;
-extern UniqueNumberGenerator* GetUniqueNumberGenerator();
-extern EventManager* GetEventManager();
-extern GameLogic* GetGameLogic();
-extern ProcessManager* GetProcessManager();
-extern VideoSystem* GetVideoSystem();
+extern UniqueNumberGenerator& GetUniqueNumberGenerator();
+extern EventManager& GetEventManager();
+extern GameLogic& GetGameLogic();
+extern ProcessManager& GetProcessManager();
+extern VideoSystem& GetVideoSystem();
 // input relative path to resource path output path plus resourcepath
 extern std::string GetResourcePath(std::string n_relative);
 

@@ -62,7 +62,7 @@ void ScreenLayer_Scene::VUpdate()
 void ScreenLayer_Scene::VRender( double n_interpolation )
 {
 	m_fbo->Bind();
-	GetVideoSystem()->VClearScreen();
+	GetVideoSystem().VClearScreen();
 	m_rootNode.RecursiveRenderCall_TopLevel(n_interpolation,m_camera);
 	m_fbo->UnBind();
 	m_effectManager.ApplyAndRenderResult();

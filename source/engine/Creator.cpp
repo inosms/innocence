@@ -4,5 +4,5 @@
 
 Creator::Creator()
 {
-	m_id = GetUniqueNumberGenerator()->GetUniqueID();
+	m_id = GetUniqueNumberGenerator().GetUniqueID();
 }

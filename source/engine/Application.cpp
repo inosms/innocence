@@ -6,7 +6,7 @@ Application* g_application = nullptr ;
 
 Application::Application()
 {
-	m_videoSystem = new VideoSystem_SDL_OpenGL();
+	m_videoSystem = std::unique_ptr<VideoSystem_SDL_OpenGL>(new VideoSystem_SDL_OpenGL());
 
 	g_application = this;
 }
@@ -22,9 +22,7 @@ void Application::VViewUpdate()
 	PEDANTIC_DEBUG_MESSAGE("VUpdate() called");
 
 	for( GameView* i_gameView : m_gameViews )
-	{
 		i_gameView->VUpdate();
-	}
 }
 
 
@@ -43,7 +41,7 @@ void Application::VInit()
 {
 	m_videoSystem->VInit();
 
-	m_gameLogic = VCreateGameLogic();
+	m_gameLogic = std::unique_ptr<GameLogic>(VCreateGameLogic());
 	if( !m_gameLogic ) throw Exception("game logic must not be null");
 }
 
@@ -82,29 +80,29 @@ void Application::RemoveGameView( unsigned int n_id )
 	}
 }
 
-UniqueNumberGenerator* GetUniqueNumberGenerator()
+UniqueNumberGenerator& GetUniqueNumberGenerator()
 {
-	return &(g_application->m_uniqueNumberGenerator);
+	return (g_application->m_uniqueNumberGenerator);
 }
 
-EventManager* GetEventManager()
+EventManager& GetEventManager()
 {
-	return &(g_application->m_eventManager);
+	return (g_application->m_eventManager);
 }
 
-GameLogic* GetGameLogic()
+GameLogic& GetGameLogic()
 {
-	return (g_application->m_gameLogic);
+	return *(g_application->m_gameLogic);
 }
 
-ProcessManager* GetProcessManager()
+ProcessManager& GetProcessManager()
 {
-	return &(g_application->m_processManager);
+	return (g_application->m_processManager);
 }
 
-VideoSystem* GetVideoSystem()
+VideoSystem& GetVideoSystem()
 {
-	return g_application->m_videoSystem;
+	return *(g_application->m_videoSystem);
 }
 
 std::string GetResourcePath(std::string n_relative)

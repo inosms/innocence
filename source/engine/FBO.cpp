@@ -28,7 +28,7 @@ void FBO::Bind()
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
 
     // applying the scale
-    glViewport( 0.f,0.f,GetVideoSystem()->VGetWidth()*m_scale,GetVideoSystem()->VGetHeight()*m_scale );
+    glViewport( 0.f,0.f,GetVideoSystem().VGetWidth()*m_scale,GetVideoSystem().VGetHeight()*m_scale );
 
 }
 
@@ -37,7 +37,7 @@ void FBO::UnBind()
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
     // for resetting the scale
-    glViewport( 0.f,0.f,GetVideoSystem()->VGetWidth(),GetVideoSystem()->VGetHeight() );
+    glViewport( 0.f,0.f,GetVideoSystem().VGetWidth(),GetVideoSystem().VGetHeight() );
 }
 
 void FBO::CheckState()

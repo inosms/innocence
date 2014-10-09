@@ -39,5 +39,5 @@ void GameObject::SetBody(b2Body* n_body)
 GameObject::~GameObject()
 {
 	if( m_body )
-		GetGameLogic()->GetPhysics()->DestroyBody(m_body);
+		GetGameLogic().GetPhysics()->DestroyBody(m_body);
 }

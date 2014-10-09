@@ -6,7 +6,7 @@ GameLogic::GameLogic(EventListener* n_listener) :
 	m_listener(n_listener)
 	{
 		// add all default event types
-		FORALLDEFAULTEVENTTYPES(GetEventManager()->AddEventListener(m_listener,event));
+		FORALLDEFAULTEVENTTYPES(GetEventManager().AddEventListener(m_listener,event));
 	}
 
 void GameLogic::AddObject( GameObject* n_object )

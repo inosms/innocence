@@ -7,7 +7,7 @@
 
 inHumanView::inHumanView() : GameView_Human( new inHumanViewListener(this) )
 {
-	GetEventManager()->SendEvent( std::shared_ptr<Event_AddScreenLayer>(new Event_AddScreenLayer(new Menu_Start())));
+	GetEventManager().SendEvent( std::shared_ptr<Event_AddScreenLayer>(new Event_AddScreenLayer(new Menu_Start())));
 	m_controller = new inController();
 }
 

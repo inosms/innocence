@@ -32,17 +32,17 @@ GameView_Human::GameView_Human(EventListener* n_listener) :
 	m_listener( n_listener )
 	{
 		// add all default event types
-		FORALLDEFAULTEVENTTYPES(GetEventManager()->AddEventListener(m_listener,event));
+		FORALLDEFAULTEVENTTYPES(GetEventManager().AddEventListener(m_listener,event));
 	}
 
 void GameView_Human::VRender( double n_interpolation )
 {
-	GetVideoSystem()->VClearScreen();
+	GetVideoSystem().VClearScreen();
 
 	for( auto i_layer : m_screenLayers )
 		i_layer->VRender(n_interpolation);
 
-	GetVideoSystem()->VUpdateScreen();
+	GetVideoSystem().VUpdateScreen();
 }
 
 void GameView_Human::VUpdate()

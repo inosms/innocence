@@ -9,7 +9,7 @@
 #include <thread>
 
 // https://stackoverflow.com/questions/679979/how-to-make-a-variadic-macro-variable-number-of-arguments
-#define SEND_EVENT(type, ...) GetEventManager()->SendEvent( std::shared_ptr<type>(new type( __VA_ARGS__ )))
+#define SEND_EVENT(type, ...) GetEventManager().SendEvent( std::shared_ptr<type>(new type( __VA_ARGS__ )))
 
 class EventManager
 {
