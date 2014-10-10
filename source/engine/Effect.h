@@ -13,16 +13,16 @@ class Mesh;
 class Effect
 {
 protected:
-    FBO* m_fbo;
-    Shader* m_shader;
-    Mesh* m_rect;
+    std::unique_ptr<FBO> m_fbo;
+    std::unique_ptr<Shader> m_shader;
+    std::unique_ptr<Mesh> m_rect;
     std::map<std::string,Texture*> m_inputTextures;
     std::string m_name = "";
 public:
     // the shader is deleted with the effect
     // scale scales the size of the effect to scale times the window size
     Effect(Shader* n_shader, float n_scale = 1.f);
-    ~Effect();
+    virtual ~Effect();
 
     // adds a texture to the input;
     // the texture is NOT deleted with the effect,

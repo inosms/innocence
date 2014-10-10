@@ -1,23 +1,18 @@
 #include "Effect.h"
 #include "engine.h"
 
-Effect::Effect(Shader* n_shader, float n_scale) :
-    m_shader(n_shader)
+Effect::Effect(Shader* n_shader, float n_scale)
 {
-    m_fbo = new FBO(n_scale);
+    m_shader = std::unique_ptr<Shader>(n_shader);
+    m_fbo = std::unique_ptr<FBO>(new FBO(n_scale));
     m_fbo->AddColorTexture();
     m_fbo->AddDepthTexture();
     m_fbo->CheckState();
 
-    m_rect = Mesh::GetTexturedRect(1,1,0.5,0.5,nullptr,1,-1);
+    m_rect = std::unique_ptr<Mesh>(Mesh::GetTexturedRect(1,1,0.5,0.5,nullptr,1,-1));
 }
 
-Effect::~Effect()
-{
-    delete m_shader;
-    delete m_fbo;
-    delete m_rect;
-}
+Effect::~Effect(){}
 
 // adds a texture to the input;
 // the texture is NOT deleted with the effect,
@@ -91,9 +86,8 @@ void EffectManager::ApplyAndRenderResult()
 }
 
 
-Effect_DefaultNoEffect::Effect_DefaultNoEffect(Texture* n_inputTexture) : Effect(nullptr,1.f)
+Effect_DefaultNoEffect::Effect_DefaultNoEffect(Texture* n_inputTexture) : Effect(new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_default.fragmentshader")),1.f)
 {
-    m_shader = new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_default.fragmentshader"));
     m_shader->Init();
     AddInputTexture("texture_screen",n_inputTexture);
 }
@@ -103,10 +97,8 @@ Effect_DefaultNoEffect::Effect_DefaultNoEffect(Texture* n_inputTexture) : Effect
 // to render faster (the details won't matter anyway)
 const float EFFECT_BLUR_RESIZE_FACTOR = 0.3f;
 
-Effect_BlurHorizontal::Effect_BlurHorizontal(Texture* n_inputTexture) : Effect(nullptr,EFFECT_BLUR_RESIZE_FACTOR)
+Effect_BlurHorizontal::Effect_BlurHorizontal(Texture* n_inputTexture) : Effect(new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_blurHorizontal.fragmentshader")),EFFECT_BLUR_RESIZE_FACTOR)
 {
-    // set shader here and not in constructor as Init must be called
-    m_shader = new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_blurHorizontal.fragmentshader"));
     m_shader->Init();
     AddInputTexture("texture_screen",n_inputTexture);
 }
@@ -116,10 +108,8 @@ void Effect_BlurHorizontal::VSetShader()
     m_shader->SetFloat("screen_width",GetVideoSystem().VGetWidth()*EFFECT_BLUR_RESIZE_FACTOR);
 }
 
-Effect_BlurVertical::Effect_BlurVertical(Texture* n_inputTexture) : Effect(nullptr,EFFECT_BLUR_RESIZE_FACTOR)
+Effect_BlurVertical::Effect_BlurVertical(Texture* n_inputTexture) : Effect(new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_blurVertical.fragmentshader")),EFFECT_BLUR_RESIZE_FACTOR)
 {
-    // set shader here and not in constructor as Init must be called
-    m_shader = new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_blurVertical.fragmentshader"));
     m_shader->Init();
     AddInputTexture("texture_screen",n_inputTexture);
 }
@@ -129,18 +119,15 @@ void Effect_BlurVertical::VSetShader()
     m_shader->SetFloat("screen_height",GetVideoSystem().VGetHeight()*EFFECT_BLUR_RESIZE_FACTOR);
 }
 
-Effect_Bloom::Effect_Bloom(Texture* n_inputTextureBlurred, Texture* n_inputTexture) : Effect(nullptr,1.f)
+Effect_Bloom::Effect_Bloom(Texture* n_inputTextureBlurred, Texture* n_inputTexture) : Effect(new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_bloom.fragmentshader")),1.f)
 {
-    // set shader here and not in constructor as Init must be called
-    m_shader = new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_bloom.fragmentshader"));
     m_shader->Init();
     AddInputTexture("texture_screen",n_inputTexture);
     AddInputTexture("texture_blurred",n_inputTextureBlurred);
 }
 
-Effect_DOF::Effect_DOF(Texture* n_inputTexture, Texture* n_inputDepthTexture) : Effect(nullptr,0.5f)
+Effect_DOF::Effect_DOF(Texture* n_inputTexture, Texture* n_inputDepthTexture) : Effect(new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_dof.fragmentshader")),0.5f)
 {
-    m_shader = new Shader(GetResourcePath("effect_default.vertexshader"),GetResourcePath(""),GetResourcePath("effect_dof.fragmentshader"));
     m_shader->Init();
     AddInputTexture("bgl_RenderedTexture",n_inputTexture);
     AddInputTexture("bgl_DepthTexture",n_inputDepthTexture);
