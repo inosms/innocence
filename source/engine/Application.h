@@ -23,7 +23,7 @@ public:
 	std::unique_ptr<VideoSystem> m_videoSystem;
 	std::unique_ptr<GameLogic> m_gameLogic;
 
-	std::vector<GameView*> m_gameViews;
+	std::vector<std::unique_ptr<GameView> > m_gameViews;
 
 	UniqueNumberGenerator m_uniqueNumberGenerator;
 	EventManager m_eventManager;

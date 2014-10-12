@@ -6,14 +6,14 @@
 #include "Camera.h"
 #include "Process.h"
 #include "Effect.h"
+#include "FBO.h"
 
-class FBO;
 class ScreenLayer_Scene : public ScreenLayer
 {
 protected:
 	Camera m_camera;
 	SceneNode m_rootNode;
-	FBO* m_fbo;
+	FBO m_fbo;
 	EffectManager m_effectManager;
 
 public:

@@ -9,6 +9,7 @@ class FBO;
 class Shader;
 class Texture;
 class Mesh;
+class EffectManager;
 
 class Effect
 {
@@ -18,6 +19,8 @@ protected:
     std::unique_ptr<Mesh> m_rect;
     std::map<std::string,Texture*> m_inputTextures;
     std::string m_name = "";
+    // this will be set by the manager when added
+    EffectManager* m_manager = nullptr;
 public:
     // the shader is deleted with the effect
     // scale scales the size of the effect to scale times the window size
@@ -27,11 +30,14 @@ public:
     // adds a texture to the input;
     // the texture is NOT deleted with the effect,
     // its just a pointer to a texture somewhere (most likely a FBO)
+    // add by normal pointer as the FBO will outlive this effect (in this engine it does)
     void AddInputTexture(std::string n_glslName, Texture* n_texture);
     void Apply();
     void RenderResult();
 
     // returns the first texture of the FBO
+    // return by pointer, as there are no effects outliving another while still holding
+    // a reference
     Texture* GetResultTexture();
 
     // called before rendering
@@ -39,11 +45,12 @@ public:
 
     void SetName(std::string n_name);
     std::string GetName();
+    void SetManager(EffectManager* n_manager);
 };
 
 class EffectManager
 {
-    std::vector<Effect*> m_effects;
+    std::vector<std::unique_ptr<Effect> > m_effects;
 public:
 
     void AddEffect(std::string n_name,Effect* n_effect);

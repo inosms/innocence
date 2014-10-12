@@ -97,8 +97,9 @@ void GameLogicListener::VProcessEvent( Event& n_event )
 	else if( n_event.GetType() == Event_Type_MoveObject )
 	{
 		Event_MoveObject& tmp_event = dynamic_cast<Event_MoveObject&>(n_event);
-		GameObject* tmp_object = m_logic->FindObject(tmp_event.m_id);
-		if(!tmp_object) ERROR_MESSAGE("tried to move non existing object " << tmp_event.m_id);
-		else tmp_object->SetPos(tmp_event.m_mat);
+		auto tmp_objectWeak = m_logic->FindObject(tmp_event.m_id);
+		auto tmp_objectShared = tmp_objectWeak.lock();
+		if(!tmp_objectShared) ERROR_MESSAGE("tried to move non existing object " << tmp_event.m_id);
+		else tmp_objectShared->SetPos(tmp_event.m_mat);
 	}
 }

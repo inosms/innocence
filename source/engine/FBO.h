@@ -18,12 +18,11 @@ class MeshTexture;
 class FBO
 {
     unsigned int m_id;
-    unsigned int m_colorAttachmentCount = 0;
 
     // this is used for rendering
-    MeshTexture* m_rect = nullptr;
-    std::vector<Texture*> m_colorAttachments;
-    Texture* m_depthAttachment;
+    std::unique_ptr<MeshTexture> m_rect = nullptr;
+    std::vector<std::unique_ptr<Texture> > m_colorAttachments;
+    std::unique_ptr<Texture> m_depthAttachment;
     float m_scale;
 public:
     // creates a FBO
@@ -63,6 +62,7 @@ public:
 
     // returns the texture with the given attachmentNumber
     // or nullptr if not existing
+    // the FBO must outlive the referencing effects ( in this engine it does)
     Texture* GetTexture(unsigned int n_colorAttachmentNumber);
     Texture* GetDepthTexture();
 };

@@ -49,8 +49,8 @@ GameObject* inGameLogic::GetPlayer()
 	for( auto i : m_objects )
 	{
 		// FIXME: this only for testing
-		if( dynamic_cast<GameObject_PlayerTest*>(i) )
-			return i;
+		if( dynamic_cast<GameObject_PlayerTest*>(i.get()) )
+			return i.get();
 	}
 	return nullptr;
 }

@@ -13,7 +13,7 @@ Application::Application()
 
 void Application::VRender(double n_interpolation)
 {
-	for( auto i_gameView : m_gameViews )
+	for( auto& i_gameView : m_gameViews )
 		i_gameView->VRender(n_interpolation);
 }
 
@@ -21,7 +21,7 @@ void Application::VViewUpdate()
 {
 	PEDANTIC_DEBUG_MESSAGE("VUpdate() called");
 
-	for( GameView* i_gameView : m_gameViews )
+	for( auto& i_gameView : m_gameViews )
 		i_gameView->VUpdate();
 }
 
@@ -55,6 +55,7 @@ void Application::VExit()
 			m_processManager.Update();
 		}
 	DEBUG_MESSAGE("All processes shut down");
+	m_gameLogic->Exit();
 
 	m_videoSystem->VExit();
 
@@ -65,7 +66,7 @@ void Application::AddGameView(GameView* n_gameView)
 {
 	assert(n_gameView!=nullptr);
 	n_gameView->VInit();
-	m_gameViews.push_back(n_gameView);
+	m_gameViews.push_back(std::unique_ptr<GameView>(n_gameView));
 }
 
 void Application::RemoveGameView( unsigned int n_id )

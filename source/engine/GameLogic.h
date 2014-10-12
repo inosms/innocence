@@ -16,7 +16,7 @@ enum GameLogicState
 class GameLogic
 {
 protected:
-	std::vector<GameObject*> m_objects;
+	std::vector<std::shared_ptr<GameObject> > m_objects;
 	EventListener* m_listener;
 	Physics m_physics;
 
@@ -24,15 +24,18 @@ protected:
 public:
 
 	GameLogic( EventListener* n_listener );
+	~GameLogic();
 
 	void AddObject( GameObject* n_object );
 	void RemoveObject( unsigned int n_id );
 
 	// returns Object with n_id as ID;
 	// return NULL if not found
-	GameObject* FindObject(unsigned int n_id);
+	std::weak_ptr<GameObject> FindObject(unsigned int n_id);
 
 	void SetState(int n_state);
+
+	void Exit();
 
 	Physics* GetPhysics();
 

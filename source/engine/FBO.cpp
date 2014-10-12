@@ -7,43 +7,39 @@
 FBO::FBO(float n_scale) :
 m_scale(n_scale)
 {
-    if( g_shaderManager.GetShader("fbo") == nullptr )
-        g_shaderManager.AddShader("fbo");
+	if( g_shaderManager.GetShader("fbo") == nullptr )
+		g_shaderManager.AddShader("fbo");
 
-    // create a 1x1 rect with no texture yet
-    m_rect = Mesh::GetTexturedRect(1,1,0.5,0.5,nullptr,1,-1);
+	// create a 1x1 rect with no texture yet
+	m_rect = std::unique_ptr<MeshTexture>(Mesh::GetTexturedRect(1,1,0.5,0.5,nullptr,1,-1));
 
-    glGenFramebuffers(1, &m_id);
+	glGenFramebuffers(1, &m_id);
 }
 
 FBO::~FBO()
 {
-    glDeleteFramebuffers(1,&m_id);
-    for( auto i : m_colorAttachments )
-        delete i;
-    delete m_depthAttachment;
+	glDeleteFramebuffers(1,&m_id);
 }
 void FBO::Bind()
 {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
 
-    // applying the scale
-    glViewport( 0.f,0.f,GetVideoSystem().VGetWidth()*m_scale,GetVideoSystem().VGetHeight()*m_scale );
-
+	// applying the scale
+	glViewport( 0.f,0.f,GetVideoSystem().VGetWidth()*m_scale,GetVideoSystem().VGetHeight()*m_scale );
 }
 
 void FBO::UnBind()
 {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
-    // for resetting the scale
-    glViewport( 0.f,0.f,GetVideoSystem().VGetWidth(),GetVideoSystem().VGetHeight() );
+	// for resetting the scale
+	glViewport( 0.f,0.f,GetVideoSystem().VGetWidth(),GetVideoSystem().VGetHeight() );
 }
 
 void FBO::CheckState()
 {
-    Bind();
-    GLenum e = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+	Bind();
+	GLenum e = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
 	switch (e) {
 
 		case GL_FRAMEBUFFER_UNDEFINED:
@@ -67,67 +63,69 @@ void FBO::CheckState()
 		default:
 			printf("FBO Problem?\n");
 	}
-    UnBind();
+	UnBind();
 }
 
 void FBO::AddTexture(Texture* n_texture,FBO_Texture_Attachment n_attachment)
 {
-    Bind();
-    if( n_attachment == FBO_Texture_Attachment::COLOR )
-    {
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0+m_colorAttachmentCount++, n_texture->GetId(), 0);
-        GLuint* attachments = new GLuint(m_colorAttachmentCount);
-        for(unsigned int i = 0; i < m_colorAttachmentCount; i++ )
-            attachments[i] = GL_COLOR_ATTACHMENT0+i;
-        glDrawBuffers(m_colorAttachmentCount,  attachments);
-        delete[] attachments;
-        m_colorAttachments.push_back(n_texture);
-    }
-    else if( n_attachment == FBO_Texture_Attachment::DEPTH )
-    {
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, n_texture->GetId(), 0);
-        m_depthAttachment = n_texture;
-    }
-    else if( n_attachment == FBO_Texture_Attachment::STENCIL )
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, n_texture->GetId(), 0);
-    else if( n_attachment == FBO_Texture_Attachment::DEPTH_STENCIL )
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, n_texture->GetId(), 0);
-    UnBind();
+	Bind();
+	if( n_attachment == FBO_Texture_Attachment::COLOR )
+	{
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0+m_colorAttachments.size(), n_texture->GetId(), 0);
+		GLuint* attachments = new GLuint(m_colorAttachments.size()+1);
+		for(unsigned int i = 0; i < m_colorAttachments.size()+1; i++ )
+			attachments[i] = GL_COLOR_ATTACHMENT0+i;
+		glDrawBuffers(m_colorAttachments.size()+1,  attachments);
+		delete[] attachments;
+		m_colorAttachments.push_back(std::unique_ptr<Texture>(n_texture));
+	}
+	else if( n_attachment == FBO_Texture_Attachment::DEPTH )
+	{
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, n_texture->GetId(), 0);
+		m_depthAttachment = std::unique_ptr<Texture>(n_texture);
+	}
+	else if( n_attachment == FBO_Texture_Attachment::STENCIL )
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, n_texture->GetId(), 0);
+	else if( n_attachment == FBO_Texture_Attachment::DEPTH_STENCIL )
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, n_texture->GetId(), 0);
+	UnBind();
 }
 
 unsigned int FBO::AddColorTexture()
 {
-    AddTexture(Texture::GetColorAttachmentTexture(m_scale),FBO_Texture_Attachment::COLOR);
-    return m_colorAttachmentCount-1;
+	AddTexture(Texture::GetColorAttachmentTexture(m_scale),FBO_Texture_Attachment::COLOR);
+	// the id is always the index in the color attachmentsments vector
+	// -1 us needed as when the first is added the size = 1, but the index of the object is 0
+	return m_colorAttachments.size()-1;
 }
 
 void FBO::AddDepthTexture()
 {
-    AddTexture(Texture::GetDepthAttachmentTexture(m_scale),FBO_Texture_Attachment::DEPTH);
+	AddTexture(Texture::GetDepthAttachmentTexture(m_scale),FBO_Texture_Attachment::DEPTH);
 }
 
 Texture* FBO::GetDepthTexture()
 {
-    return m_depthAttachment;
+	return m_depthAttachment.get();
 }
 
 
 void FBO::Render(unsigned int n_colorAttachmentNumber)
 {
-    static Shader* tmp_shader = g_shaderManager.GetShader("fbo");
-    tmp_shader->Begin();
-    tmp_shader->SetTexture("tex",0);
-    tmp_shader->SetMat("modelview",glm::mat4x4());
-    tmp_shader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
-    m_rect->SetTexture(m_colorAttachments[n_colorAttachmentNumber]);
-    m_rect->Render();
-    // reset, as the FBO handles the deletion of the textures and NOT the Mesh!!
-    m_rect->SetTexture(nullptr);
-    tmp_shader->End();
+	static Shader* tmp_shader = g_shaderManager.GetShader("fbo");
+	tmp_shader->Begin();
+	tmp_shader->SetTexture("tex",0);
+	tmp_shader->SetMat("modelview",glm::mat4x4());
+	tmp_shader->SetMat("projection",glm::ortho(0.f,1.f,0.f,1.f,-1.f,1.f));
+	m_rect->SetTexture(m_colorAttachments[n_colorAttachmentNumber].get());
+	m_rect->Render();
+	// reset, as the FBO handles the deletion of the textures and NOT the Mesh!!
+	m_rect->SetTexture(nullptr);
+	tmp_shader->End();
 }
 
 Texture* FBO::GetTexture(unsigned int n_colorAttachmentNumber)
 {
-    if( n_colorAttachmentNumber >= m_colorAttachments.size() ) return nullptr;
-    else return m_colorAttachments[n_colorAttachmentNumber];
+	if( n_colorAttachmentNumber >= m_colorAttachments.size() ) return nullptr;
+	else return m_colorAttachments[n_colorAttachmentNumber].get();
 }
